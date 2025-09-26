@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "rxflow-pharmacy-assistant"
+version = "0.1.0"
+description = "AI-powered pharmacy refill assistant for Qventus interview challenge"
+authors = ["Alireza <alireza@example.com>"]
+readme = "README.md"
+packages = [{include = "rxflow"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+streamlit = "^1.28.0"
+langchain = "^0.2.0"
+langgraph = "^0.1.0"
+langchain-community = "^0.2.0"
+langchain-ollama = "^0.1.0"
+faiss-cpu = "^1.7.4"
+sentence-transformers = "^2.2.2"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
+pydantic = "^2.5.0"
+pydantic-settings = "^2.0.0"
+numpy = "^1.24.0"
+pandas = "^2.1.0"
+geopy = "^2.4.0"
+typing-extensions = "^4.8.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-asyncio = "^0.21.0"
+black = "^23.9.0"
+flake8 = "^6.1.0"
+mypy = "^1.6.0"
+pre-commit = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

@@ -1,0 +1,172 @@
+{
+  "BCBS_TX_001": {
+    "id": "BCBS_TX_001",
+    "name": "Blue Cross Blue Shield of Texas - Plan 001",
+    "type": "commercial",
+    "tier_structure": {
+      "tier_1": {"copay": 10, "description": "Generic drugs"},
+      "tier_2": {"copay": 30, "description": "Preferred brand drugs"},
+      "tier_3": {"copay": 60, "description": "Non-preferred brand drugs"},
+      "tier_4": {"copay": 100, "description": "Specialty drugs"}
+    },
+    "covered_drugs": {
+      "lisinopril": {
+        "rxnorm_code": "29046",
+        "tier": 1,
+        "copay": 10,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "metformin": {
+        "rxnorm_code": "6809",
+        "tier": 1,
+        "copay": 10,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "atorvastatin": {
+        "rxnorm_code": "83367",
+        "tier": 1,
+        "copay": 10,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "lipitor": {
+        "rxnorm_code": "153165",
+        "tier": 3,
+        "copay": 60,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": true,
+        "step_therapy_alternatives": ["atorvastatin", "simvastatin"]
+      },
+      "eliquis": {
+        "rxnorm_code": "1364430",
+        "tier": 3,
+        "copay": 60,
+        "prior_auth": true,
+        "quantity_limit": "60 tablets per 30 days",
+        "step_therapy": true,
+        "step_therapy_alternatives": ["warfarin"]
+      }
+    },
+    "prior_auth_criteria": {
+      "eliquis": [
+        "Patient must have tried and failed warfarin therapy",
+        "Diagnosis of atrial fibrillation or DVT/PE required",
+        "Age 18 or older",
+        "No contraindications to anticoagulation"
+      ]
+    }
+  },
+  "AETNA_001": {
+    "id": "AETNA_001",
+    "name": "Aetna Better Health - Plan 001",
+    "type": "commercial",
+    "tier_structure": {
+      "tier_1": {"copay": 5, "description": "Generic drugs"},
+      "tier_2": {"copay": 25, "description": "Preferred brand drugs"},
+      "tier_3": {"copay": 50, "description": "Non-preferred brand drugs"},
+      "tier_4": {"copay": 150, "description": "Specialty drugs"}
+    },
+    "covered_drugs": {
+      "lisinopril": {
+        "rxnorm_code": "29046",
+        "tier": 1,
+        "copay": 5,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "metformin": {
+        "rxnorm_code": "6809",
+        "tier": 1,
+        "copay": 5,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "atorvastatin": {
+        "rxnorm_code": "83367",
+        "tier": 1,
+        "copay": 5,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "eliquis": {
+        "rxnorm_code": "1364430",
+        "tier": 4,
+        "copay": 150,
+        "prior_auth": true,
+        "quantity_limit": "60 tablets per 30 days",
+        "step_therapy": true,
+        "step_therapy_alternatives": ["warfarin", "rivaroxaban"]
+      }
+    },
+    "prior_auth_criteria": {
+      "eliquis": [
+        "Patient has atrial fibrillation with CHA2DS2-VASc score ≥ 2",
+        "Patient has failed or has contraindication to warfarin",
+        "No active bleeding or high bleeding risk",
+        "Creatinine clearance > 30 mL/min"
+      ]
+    }
+  },
+  "MEDICARE_PART_D": {
+    "id": "MEDICARE_PART_D",
+    "name": "Medicare Part D - Standard Plan",
+    "type": "medicare",
+    "tier_structure": {
+      "tier_1": {"copay": 3, "description": "Preferred generic drugs"},
+      "tier_2": {"copay": 10, "description": "Generic drugs"},
+      "tier_3": {"copay": 47, "description": "Preferred brand drugs"},
+      "tier_4": {"copay": 100, "description": "Non-preferred brand drugs"},
+      "tier_5": {"copay": "33%", "description": "Specialty drugs"}
+    },
+    "covered_drugs": {
+      "lisinopril": {
+        "rxnorm_code": "29046",
+        "tier": 1,
+        "copay": 3,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "metformin": {
+        "rxnorm_code": "6809",
+        "tier": 1,
+        "copay": 3,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "atorvastatin": {
+        "rxnorm_code": "83367",
+        "tier": 2,
+        "copay": 10,
+        "prior_auth": false,
+        "quantity_limit": null,
+        "step_therapy": false
+      },
+      "eliquis": {
+        "rxnorm_code": "1364430",
+        "tier": 4,
+        "copay": 100,
+        "prior_auth": true,
+        "quantity_limit": "60 tablets per 30 days",
+        "step_therapy": false
+      }
+    },
+    "prior_auth_criteria": {
+      "eliquis": [
+        "Diagnosis of atrial fibrillation or venous thromboembolism",
+        "Documented intolerance or contraindication to warfarin",
+        "Age 65 or older OR documented cardiovascular risk factors"
+      ]
+    }
+  }
+}

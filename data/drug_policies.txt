@@ -1,0 +1,183 @@
+ELIQUIS Prior Authorization Criteria:
+
+Eliquis (apixaban) is a Factor Xa inhibitor anticoagulant used for stroke prevention in atrial fibrillation and treatment/prevention of venous thromboembolism.
+
+Prior Authorization Requirements:
+- Patient must have atrial fibrillation with CHA2DS2-VASc score ≥ 2, OR
+- Patient has venous thromboembolism (DVT/PE), OR  
+- Patient requires anticoagulation for other approved indications
+
+Step Therapy Requirements:
+- Patient must have tried and failed warfarin therapy, OR
+- Patient has documented contraindication to warfarin, OR
+- Patient has INR instability on warfarin despite adherence
+
+Clinical Criteria:
+- Age 18 or older
+- No active major bleeding
+- Creatinine clearance > 15 mL/min (dose adjustment required if 15-50 mL/min)
+- No contraindications to anticoagulation
+- Patient able to adhere to twice-daily dosing
+
+Documentation Required:
+- Diagnosis confirmation
+- Previous warfarin trial results (if applicable)
+- Current lab values (CBC, comprehensive metabolic panel)
+- Bleeding risk assessment
+
+Approval Period: 12 months with annual review
+
+---
+
+LISINOPRIL Coverage Policy:
+
+Lisinopril is an ACE inhibitor used for hypertension and heart failure management.
+
+Coverage Status: Preferred - No Prior Authorization Required
+
+Formulary Placement: Tier 1 (Generic)
+
+Clinical Uses:
+- First-line therapy for hypertension
+- Heart failure with reduced ejection fraction
+- Post-myocardial infarction cardioprotection
+- Diabetic nephropathy
+
+Dosing Information:
+- Starting dose: 2.5-10mg daily
+- Maximum dose: 40mg daily
+- Titrate based on blood pressure response
+- Adjust for renal impairment
+
+Special Considerations:
+- Monitor potassium and creatinine
+- Avoid in pregnancy
+- May cause dry cough in some patients
+- First-dose hypotension possible
+
+Alternative Options:
+- Other ACE inhibitors (enalapril, captopril)
+- ARBs if ACE inhibitor intolerant (losartan, valsartan)
+
+---
+
+METFORMIN Coverage Policy:
+
+Metformin is a biguanide antidiabetic medication for type 2 diabetes management.
+
+Coverage Status: Preferred - No Prior Authorization Required
+
+Formulary Placement: Tier 1 (Generic)
+
+Clinical Uses:
+- First-line therapy for type 2 diabetes
+- Prediabetes prevention
+- PCOS management
+- Weight management in diabetes
+
+Dosing Information:
+- Starting dose: 500mg twice daily with meals
+- Maximum dose: 2550mg daily (divided doses)
+- Extended-release formulation available
+- Titrate gradually to minimize GI side effects
+
+Special Considerations:
+- Contraindicated with eGFR < 30 mL/min/1.73m²
+- Hold before contrast procedures
+- Monitor B12 levels with long-term use
+- Risk of lactic acidosis (rare)
+
+Alternative Options:
+- Other antidiabetic agents if metformin contraindicated
+- Combination products available
+
+---
+
+ATORVASTATIN Coverage Policy:
+
+Atorvastatin is an HMG-CoA reductase inhibitor (statin) for cholesterol management.
+
+Coverage Status: Preferred - No Prior Authorization Required
+
+Formulary Placement: Tier 1 (Generic)
+
+Clinical Uses:
+- Primary hypercholesterolemia
+- Mixed dyslipidemia
+- Primary prevention of cardiovascular disease
+- Secondary prevention post-MI/stroke
+
+Dosing Information:
+- Starting dose: 20mg daily
+- Maximum dose: 80mg daily
+- Take any time of day (with or without food)
+- Adjust based on lipid response and tolerance
+
+Special Considerations:
+- Monitor liver enzymes at baseline and as needed
+- Risk of myopathy (rare)
+- Drug interactions with CYP3A4 inhibitors
+- Avoid grapefruit juice
+
+Alternative Options:
+- Other statins (simvastatin, rosuvastatin, pravastatin)
+- Non-statin lipid-lowering agents if statin intolerant
+
+---
+
+DRUG INTERACTION SCREENING CRITERIA:
+
+High-Risk Interactions (Score 8-10):
+- Warfarin + NSAIDs (bleeding risk)
+- ACE inhibitors + potassium supplements (hyperkalemia)
+- Digoxin + amiodarone (digoxin toxicity)
+- Theophylline + ciprofloxacin (theophylline toxicity)
+
+Moderate-Risk Interactions (Score 5-7):
+- Statins + gemfibrozil (myopathy risk)
+- Metformin + contrast dye (lactic acidosis)
+- Lisinopril + lithium (lithium toxicity)
+- Beta blockers + calcium channel blockers (hypotension)
+
+Low-Risk Interactions (Score 1-4):
+- Metformin + alcohol (GI upset)
+- ACE inhibitors + NSAIDs (reduced antihypertensive effect)
+- Statins + grapefruit juice (increased statin levels)
+
+Management Recommendations:
+- Score ≥ 8: Pharmacist consultation required
+- Score 5-7: Monitor closely, consider alternatives
+- Score 1-4: Patient counseling, monitoring as appropriate
+
+---
+
+STEP THERAPY REQUIREMENTS:
+
+High-Cost Medications Requiring Step Therapy:
+
+Brand Name Statins (Lipitor):
+- Must try generic atorvastatin first
+- Exception: documented intolerance to generic
+- Exception: specific formulation requirement
+
+Brand Name ACE Inhibitors:
+- Must try generic lisinopril or enalapril first
+- Exception: documented intolerance
+- Exception: dosing frequency requirements
+
+Novel Anticoagulants (Eliquis, Xarelto):
+- Must try warfarin first (unless contraindicated)
+- Exception: INR instability
+- Exception: inability to monitor INR regularly
+- Exception: major bleeding on warfarin
+
+Specialty Diabetes Medications:
+- Must try metformin + sulfonylurea combination first
+- Exception: contraindication to first-line agents
+- Exception: inadequate glycemic control on maximum doses
+
+Appeal Process:
+- Clinical documentation required
+- Prescriber attestation of medical necessity
+- Prior authorization review within 72 hours
+- Expedited review available for urgent cases

@@ -1,0 +1,77 @@
+{
+  "patient_001": {
+    "id": "patient_001",
+    "name": "John Smith",
+    "date_of_birth": "1975-03-15",
+    "insurance_id": "BCBS_TX_001",
+    "address": {
+      "street": "123 Main St",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78701",
+      "lat": 30.2672,
+      "lon": -97.7431
+    },
+    "phone": "(555) 123-4567",
+    "current_medications": [
+      {
+        "name": "lisinopril",
+        "strength": "10mg",
+        "rxnorm_code": "29046",
+        "prescriber": "Dr. Sarah Johnson",
+        "start_date": "2023-01-15"
+      },
+      {
+        "name": "metformin",
+        "strength": "500mg",
+        "rxnorm_code": "6809",
+        "prescriber": "Dr. Sarah Johnson", 
+        "start_date": "2022-06-10"
+      }
+    ],
+    "allergies": [
+      "penicillin",
+      "sulfa drugs"
+    ],
+    "medical_conditions": [
+      "hypertension",
+      "type 2 diabetes"
+    ]
+  },
+  "patient_002": {
+    "id": "patient_002",
+    "name": "Mary Johnson",
+    "date_of_birth": "1968-11-22",
+    "insurance_id": "AETNA_001",
+    "address": {
+      "street": "456 Oak Ave",
+      "city": "Austin",
+      "state": "TX", 
+      "zip": "78702",
+      "lat": 30.2849,
+      "lon": -97.7341
+    },
+    "phone": "(555) 987-6543",
+    "current_medications": [
+      {
+        "name": "atorvastatin",
+        "strength": "20mg",
+        "rxnorm_code": "83367",
+        "prescriber": "Dr. Michael Brown",
+        "start_date": "2023-03-01"
+      },
+      {
+        "name": "eliquis",
+        "strength": "5mg",
+        "rxnorm_code": "1364430",
+        "prescriber": "Dr. Michael Brown",
+        "start_date": "2023-05-15"
+      }
+    ],
+    "allergies": [],
+    "medical_conditions": [
+      "atrial fibrillation",
+      "high cholesterol"
+    ]
+  }
+}

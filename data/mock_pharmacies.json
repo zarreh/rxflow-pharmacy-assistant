@@ -1,0 +1,170 @@
+{
+  "CVS_12345": {
+    "id": "CVS_12345",
+    "name": "CVS Pharmacy #12345",
+    "chain": "CVS",
+    "address": {
+      "street": "123 Main St",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78701",
+      "lat": 30.2672,
+      "lon": -97.7431
+    },
+    "phone": "(555) 123-0001",
+    "hours": "Mon-Fri: 8AM-10PM, Sat-Sun: 9AM-8PM",
+    "services": ["prescription_filling", "immunizations", "consultation"],
+    "inventory": {
+      "lisinopril_10mg": {
+        "rxnorm_code": "29046",
+        "quantity": 500,
+        "wait_time_hours": 0.5,
+        "price": 15.00
+      },
+      "metformin_500mg": {
+        "rxnorm_code": "6809", 
+        "quantity": 1000,
+        "wait_time_hours": 0.5,
+        "price": 12.00
+      },
+      "atorvastatin_20mg": {
+        "rxnorm_code": "83367",
+        "quantity": 300,
+        "wait_time_hours": 1.0,
+        "price": 25.00
+      },
+      "eliquis_5mg": {
+        "rxnorm_code": "1364430",
+        "quantity": 50,
+        "wait_time_hours": 2.0,
+        "price": 450.00
+      }
+    }
+  },
+  "WALMART_98765": {
+    "id": "WALMART_98765",
+    "name": "Walmart Pharmacy #98765",
+    "chain": "Walmart",
+    "address": {
+      "street": "4515 S Lamar Blvd",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78745",
+      "lat": 30.2295,
+      "lon": -97.7889
+    },
+    "phone": "(555) 123-0002",
+    "hours": "Mon-Sun: 6AM-11PM",
+    "services": ["prescription_filling", "$4_generics", "90_day_supply"],
+    "inventory": {
+      "lisinopril_10mg": {
+        "rxnorm_code": "29046",
+        "quantity": 800,
+        "wait_time_hours": 1.0,
+        "price": 4.00
+      },
+      "metformin_500mg": {
+        "rxnorm_code": "6809",
+        "quantity": 1200,
+        "wait_time_hours": 1.0,
+        "price": 4.00
+      },
+      "atorvastatin_20mg": {
+        "rxnorm_code": "83367",
+        "quantity": 600,
+        "wait_time_hours": 1.5,
+        "price": 10.00
+      },
+      "eliquis_5mg": {
+        "rxnorm_code": "1364430",
+        "quantity": 30,
+        "wait_time_hours": 3.0,
+        "price": 425.00
+      }
+    }
+  },
+  "WALGREENS_55555": {
+    "id": "WALGREENS_55555",
+    "name": "Walgreens #55555",
+    "chain": "Walgreens",
+    "address": {
+      "street": "2025 Guadalupe St",
+      "city": "Austin", 
+      "state": "TX",
+      "zip": "78705",
+      "lat": 30.2849,
+      "lon": -97.7404
+    },
+    "phone": "(555) 123-0003",
+    "hours": "Mon-Fri: 8AM-10PM, Sat-Sun: 9AM-6PM",
+    "services": ["prescription_filling", "immunizations", "health_tests"],
+    "inventory": {
+      "lisinopril_10mg": {
+        "rxnorm_code": "29046",
+        "quantity": 400,
+        "wait_time_hours": 0.75,
+        "price": 14.50
+      },
+      "metformin_500mg": {
+        "rxnorm_code": "6809",
+        "quantity": 900,
+        "wait_time_hours": 0.75,
+        "price": 11.50
+      },
+      "atorvastatin_20mg": {
+        "rxnorm_code": "83367",
+        "quantity": 250,
+        "wait_time_hours": 1.25,
+        "price": 22.00
+      },
+      "eliquis_5mg": {
+        "rxnorm_code": "1364430",
+        "quantity": 75,
+        "wait_time_hours": 2.5,
+        "price": 440.00
+      }
+    }
+  },
+  "HEB_77777": {
+    "id": "HEB_77777",
+    "name": "H-E-B Pharmacy #77777",
+    "chain": "HEB",
+    "address": {
+      "street": "1000 E 41st St",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78751",
+      "lat": 30.2955,
+      "lon": -97.7272
+    },
+    "phone": "(555) 123-0004",
+    "hours": "Mon-Sun: 6AM-12AM",
+    "services": ["prescription_filling", "immunizations", "free_antibiotics"],
+    "inventory": {
+      "lisinopril_10mg": {
+        "rxnorm_code": "29046",
+        "quantity": 600,
+        "wait_time_hours": 0.5,
+        "price": 8.00
+      },
+      "metformin_500mg": {
+        "rxnorm_code": "6809",
+        "quantity": 1100,
+        "wait_time_hours": 0.5,
+        "price": 7.00
+      },
+      "atorvastatin_20mg": {
+        "rxnorm_code": "83367",
+        "quantity": 450,
+        "wait_time_hours": 1.0,
+        "price": 15.00
+      },
+      "eliquis_5mg": {
+        "rxnorm_code": "1364430",
+        "quantity": 60,
+        "wait_time_hours": 2.0,
+        "price": 435.00
+      }
+    }
+  }
+}

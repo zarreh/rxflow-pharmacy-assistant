@@ -1,0 +1,267 @@
+{
+  "lisinopril": {
+    "rxnorm_code": "29046",
+    "generic_name": "lisinopril",
+    "brand_names": ["Prinivil", "Zestril"],
+    "drug_class": "ACE Inhibitor",
+    "indications": ["hypertension", "heart failure", "post-MI"],
+    "common_strengths": ["2.5mg", "5mg", "10mg", "20mg", "40mg"],
+    "common_forms": ["tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 12.00,
+        "90_day": 30.00
+      },
+      "brand": {
+        "30_day": 85.00,
+        "90_day": 240.00
+      }
+    },
+    "interaction_class": "moderate",
+    "common_interactions": [
+      "potassium supplements",
+      "NSAIDs", 
+      "lithium",
+      "potassium-sparing diuretics"
+    ]
+  },
+  "metformin": {
+    "rxnorm_code": "6809",
+    "generic_name": "metformin",
+    "brand_names": ["Glucophage", "Fortamet", "Glumetza"],
+    "drug_class": "Biguanide",
+    "indications": ["type 2 diabetes", "PCOS", "prediabetes"],
+    "common_strengths": ["500mg", "850mg", "1000mg"],
+    "common_forms": ["tablet", "extended-release tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 8.00,
+        "90_day": 20.00
+      },
+      "brand": {
+        "30_day": 65.00,
+        "90_day": 180.00
+      }
+    },
+    "interaction_class": "low",
+    "common_interactions": [
+      "contrast dye",
+      "alcohol",
+      "topiramate"
+    ]
+  },
+  "atorvastatin": {
+    "rxnorm_code": "83367",
+    "generic_name": "atorvastatin",
+    "brand_names": ["Lipitor"],
+    "drug_class": "HMG-CoA Reductase Inhibitor (Statin)",
+    "indications": ["high cholesterol", "cardiovascular disease prevention"],
+    "common_strengths": ["10mg", "20mg", "40mg", "80mg"],
+    "common_forms": ["tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 15.00,
+        "90_day": 40.00
+      },
+      "brand": {
+        "30_day": 320.00,
+        "90_day": 900.00
+      }
+    },
+    "interaction_class": "moderate",
+    "common_interactions": [
+      "warfarin",
+      "digoxin",
+      "grapefruit juice",
+      "gemfibrozil"
+    ]
+  },
+  "lipitor": {
+    "rxnorm_code": "153165",
+    "generic_name": "atorvastatin",
+    "brand_names": ["Lipitor"],
+    "drug_class": "HMG-CoA Reductase Inhibitor (Statin)",
+    "indications": ["high cholesterol", "cardiovascular disease prevention"],
+    "common_strengths": ["10mg", "20mg", "40mg", "80mg"],
+    "common_forms": ["tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 15.00,
+        "90_day": 40.00
+      },
+      "brand": {
+        "30_day": 320.00,
+        "90_day": 900.00
+      }
+    },
+    "interaction_class": "moderate",
+    "common_interactions": [
+      "warfarin",
+      "digoxin", 
+      "grapefruit juice",
+      "gemfibrozil"
+    ]
+  },
+  "eliquis": {
+    "rxnorm_code": "1364430",
+    "generic_name": "apixaban",
+    "brand_names": ["Eliquis"],
+    "drug_class": "Factor Xa Inhibitor",
+    "indications": ["atrial fibrillation", "DVT prevention", "PE prevention"],
+    "common_strengths": ["2.5mg", "5mg"],
+    "common_forms": ["tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": null,
+        "90_day": null
+      },
+      "brand": {
+        "30_day": 450.00,
+        "90_day": 1350.00
+      }
+    },
+    "interaction_class": "high",
+    "common_interactions": [
+      "ketoconazole",
+      "rifampin",
+      "phenytoin",
+      "carbamazepine",
+      "aspirin"
+    ]
+  },
+  "warfarin": {
+    "rxnorm_code": "11289",
+    "generic_name": "warfarin",
+    "brand_names": ["Coumadin", "Jantoven"],
+    "drug_class": "Vitamin K Antagonist",
+    "indications": ["atrial fibrillation", "DVT", "PE", "mechanical heart valves"],
+    "common_strengths": ["1mg", "2mg", "2.5mg", "3mg", "4mg", "5mg", "6mg", "7.5mg", "10mg"],
+    "common_forms": ["tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 12.00,
+        "90_day": 30.00
+      },
+      "brand": {
+        "30_day": 85.00,
+        "90_day": 240.00
+      }
+    },
+    "interaction_class": "severe",
+    "common_interactions": [
+      "aspirin",
+      "NSAIDs",
+      "antibiotics",
+      "vitamin K",
+      "alcohol"
+    ]
+  },
+  "omeprazole": {
+    "rxnorm_code": "7646",
+    "generic_name": "omeprazole",
+    "brand_names": ["Prilosec", "Prilosec OTC"],
+    "drug_class": "Proton Pump Inhibitor (PPI)",
+    "indications": ["GERD", "peptic ulcer disease", "H. pylori eradication", "Zollinger-Ellison syndrome"],
+    "common_strengths": ["10mg", "20mg", "40mg"],
+    "common_forms": ["delayed-release capsule", "delayed-release tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 18.00,
+        "90_day": 45.00
+      },
+      "brand": {
+        "30_day": 95.00,
+        "90_day": 270.00
+      }
+    },
+    "interaction_class": "moderate",
+    "common_interactions": [
+      "warfarin",
+      "clopidogrel",
+      "diazepam",
+      "phenytoin",
+      "atazanavir"
+    ]
+  },
+  "meloxicam": {
+    "rxnorm_code": "64221",
+    "generic_name": "meloxicam",
+    "brand_names": ["Mobic"],
+    "drug_class": "NSAID (COX-2 Selective)",
+    "indications": ["osteoarthritis", "rheumatoid arthritis", "juvenile idiopathic arthritis"],
+    "common_strengths": ["7.5mg", "15mg"],
+    "common_forms": ["tablet", "oral suspension"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 14.00,
+        "90_day": 35.00
+      },
+      "brand": {
+        "30_day": 145.00,
+        "90_day": 420.00
+      }
+    },
+    "interaction_class": "high",
+    "common_interactions": [
+      "warfarin",
+      "ACE inhibitors",
+      "lithium",
+      "methotrexate",
+      "aspirin"
+    ]
+  },
+  "methocarbamol": {
+    "rxnorm_code": "6878",
+    "generic_name": "methocarbamol",
+    "brand_names": ["Robaxin"],
+    "drug_class": "Skeletal Muscle Relaxant",
+    "indications": ["muscle spasm", "acute musculoskeletal conditions", "tetanus adjunct"],
+    "common_strengths": ["500mg", "750mg"],
+    "common_forms": ["tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 22.00,
+        "90_day": 55.00
+      },
+      "brand": {
+        "30_day": 120.00,
+        "90_day": 340.00
+      }
+    },
+    "interaction_class": "moderate",
+    "common_interactions": [
+      "CNS depressants",
+      "alcohol",
+      "benzodiazepines",
+      "opioids",
+      "sedatives"
+    ]
+  },
+  "famotidine": {
+    "rxnorm_code": "3325",
+    "generic_name": "famotidine",
+    "brand_names": ["Pepcid", "Pepcid AC"],
+    "drug_class": "H2 Receptor Antagonist",
+    "indications": ["GERD", "peptic ulcer disease", "heartburn", "acid indigestion"],
+    "common_strengths": ["10mg", "20mg", "40mg"],
+    "common_forms": ["tablet", "oral suspension", "chewable tablet"],
+    "typical_pricing": {
+      "generic": {
+        "30_day": 9.00,
+        "90_day": 22.00
+      },
+      "brand": {
+        "30_day": 45.00,
+        "90_day": 125.00
+      }
+    },
+    "interaction_class": "low",
+    "common_interactions": [
+      "ketoconazole",
+      "itraconazole",
+      "dasatinib",
+      "delavirdine",
+      "cefpodoxime"
+    ]
+  }
+}
