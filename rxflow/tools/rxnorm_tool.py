@@ -2,7 +2,7 @@
 
 import requests
 from langchain.tools import Tool
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 import time
 from ..services.mock_data import MEDICATIONS_DB
 from ..utils.logger import get_logger
@@ -102,54 +102,39 @@ class RxNormTool:
             }
     
     def get_interactions(self, medication_name: str) -> Dict:
-        """Check drug interactions (simplified for demo)"""
+        """Check drug interactions using enhanced interaction database"""
         try:
+            from ..services.mock_data import DRUG_INTERACTIONS
+            
             logger.info(f"[AI USAGE] Checking drug interactions for {medication_name}")
             
-            # Mock interaction data - in real system would use RxNorm interaction API
-            mock_interactions = {
-                "lisinopril": [
-                    {
-                        "interacting_drug": "ibuprofen",
-                        "severity": "moderate", 
-                        "effect": "May reduce effectiveness of lisinopril and increase blood pressure"
-                    },
-                    {
-                        "interacting_drug": "potassium supplements",
-                        "severity": "major",
-                        "effect": "May cause dangerously high potassium levels"
-                    }
-                ],
-                "metformin": [
-                    {
-                        "interacting_drug": "alcohol",
-                        "severity": "moderate",
-                        "effect": "Increased risk of lactic acidosis"
-                    }
-                ],
-                "eliquis": [
-                    {
-                        "interacting_drug": "aspirin",
-                        "severity": "major",
-                        "effect": "Increased risk of bleeding"
-                    },
-                    {
-                        "interacting_drug": "warfarin",
-                        "severity": "major",
-                        "effect": "Increased risk of bleeding - do not use together"
-                    }
-                ]
-            }
+            medication_lower = medication_name.lower().strip()
+            interactions = DRUG_INTERACTIONS.get(medication_lower, [])
             
-            interactions = mock_interactions.get(medication_name.lower(), [])
+            # Categorize interactions by severity
+            major_interactions = [i for i in interactions if i["severity"] == "major"]
+            moderate_interactions = [i for i in interactions if i["severity"] == "moderate"]
+            contraindicated = [i for i in interactions if i["severity"] == "contraindicated"]
             
             return {
                 "success": True,
                 "medication": medication_name,
                 "interactions": interactions,
+                "interaction_summary": {
+                    "total_count": len(interactions),
+                    "major_count": len(major_interactions),
+                    "moderate_count": len(moderate_interactions),
+                    "contraindicated_count": len(contraindicated)
+                },
+                "severity_breakdown": {
+                    "major": major_interactions,
+                    "moderate": moderate_interactions, 
+                    "contraindicated": contraindicated
+                },
                 "has_interactions": len(interactions) > 0,
-                "interaction_count": len(interactions),
-                "source": "mock"
+                "highest_severity": self._get_highest_severity(interactions),
+                "clinical_significance": self._assess_clinical_significance(interactions),
+                "source": "enhanced_mock"
             }
             
         except Exception as e:
@@ -191,7 +176,7 @@ class RxNormTool:
             return self._get_mock_medication_data(medication_name)
     
     def _get_mock_medication_data(self, medication_name: str) -> Dict:
-        """Fallback mock data when API is unavailable"""
+        """Enhanced fallback mock data when API is unavailable"""
         med_lower = medication_name.lower().strip()
         
         if med_lower in self.mock_db:
@@ -200,15 +185,19 @@ class RxNormTool:
                 "success": True,
                 "query": medication_name,
                 "medications": [{
-                    "rxcui": f"mock_{med_lower}",
+                    "rxcui": med_info.get("rxcui", f"mock_{med_lower}"),
                     "name": med_info["generic_name"],
                     "brand_names": med_info["brand_names"],
                     "common_dosages": med_info["common_dosages"],
                     "drug_class": med_info["drug_class"],
-                    "requires_pa": med_info.get("requires_pa", False)
+                    "indication": med_info.get("indication", ""),
+                    "requires_pa": med_info.get("requires_pa", False),
+                    "typical_supply_days": med_info.get("typical_supply_days", [30, 90]),
+                    "contraindications": med_info.get("contraindications", []),
+                    "common_interactions": med_info.get("common_interactions", [])
                 }],
                 "result_count": 1,
-                "source": "mock"
+                "source": "mock_enhanced"
             }
         
         # Return "not found" for unknown medications
@@ -218,8 +207,47 @@ class RxNormTool:
             "error": f"Medication '{medication_name}' not found in database",
             "medications": [],
             "result_count": 0,
-            "source": "mock"
+            "source": "mock",
+            "suggestions": self._get_medication_suggestions(medication_name)
         }
+    
+    def _get_medication_suggestions(self, medication_name: str) -> List[str]:
+        """Provide medication name suggestions for typos or partial matches"""
+        suggestions = []
+        med_lower = medication_name.lower()
+        
+        for med_name in self.mock_db.keys():
+            # Simple fuzzy matching - check if query is substring or vice versa
+            if (med_lower in med_name or 
+                med_name in med_lower or 
+                len(set(med_lower) & set(med_name)) >= min(3, len(med_lower))):
+                suggestions.append(med_name)
+        
+        return suggestions[:3]  # Return top 3 suggestions
+    
+    def _get_highest_severity(self, interactions: List[Dict]) -> str:
+        """Determine the highest severity level among interactions"""
+        if not interactions:
+            return "none"
+        
+        severity_levels = {"contraindicated": 4, "major": 3, "moderate": 2, "minor": 1}
+        highest = max(interactions, key=lambda x: severity_levels.get(x.get("severity", "minor"), 1))
+        return highest.get("severity", "none")
+    
+    def _assess_clinical_significance(self, interactions: List[Dict]) -> str:
+        """Assess overall clinical significance of interactions"""
+        if not interactions:
+            return "No significant interactions found"
+        
+        contraindicated = any(i.get("severity") == "contraindicated" for i in interactions)
+        major_count = sum(1 for i in interactions if i.get("severity") == "major")
+        
+        if contraindicated:
+            return "CRITICAL: Contraindicated drug combination detected"
+        elif major_count > 0:
+            return f"WARNING: {major_count} major interaction(s) require careful monitoring"
+        else:
+            return "CAUTION: Monitor for interaction effects"
 
 # Create LangChain tools
 rxnorm_tool = Tool(

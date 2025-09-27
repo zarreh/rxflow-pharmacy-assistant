@@ -177,23 +177,9 @@ class MockInsuranceFormularyTool:
     """Simulates insurance formulary checks and coverage determination"""
     
     def __init__(self):
-        # Mock formulary data for different insurance plans
-        self.formulary_data = {
-            "BlueCross Shield": {
-                "lisinopril": {"tier": 1, "copay": 10, "pa_required": False, "covered": True},
-                "metformin": {"tier": 1, "copay": 10, "pa_required": False, "covered": True},
-                "atorvastatin": {"tier": 2, "copay": 25, "pa_required": False, "covered": True},
-                "eliquis": {"tier": 3, "copay": 75, "pa_required": True, "covered": True},
-                "insulin": {"tier": 2, "copay": 35, "pa_required": False, "covered": True},
-                "humira": {"tier": 4, "copay": 200, "pa_required": True, "covered": True}
-            },
-            "Aetna": {
-                "lisinopril": {"tier": 1, "copay": 5, "pa_required": False, "covered": True},
-                "metformin": {"tier": 1, "copay": 5, "pa_required": False, "covered": True},
-                "eliquis": {"tier": 3, "copay": 60, "pa_required": True, "covered": True},
-                "atorvastatin": {"tier": 2, "copay": 20, "pa_required": False, "covered": True}
-            }
-        }
+        # Import comprehensive insurance formulary data
+        from ..services.mock_data import INSURANCE_FORMULARIES
+        self.formulary_data = INSURANCE_FORMULARIES
     
     def check_coverage(self, query: str) -> Dict:
         """
@@ -214,8 +200,9 @@ class MockInsuranceFormularyTool:
             
             logger.info(f"[AI USAGE] Checking insurance coverage for {medication} with {insurance_plan}")
             
-            # Check formulary
-            formulary = self.formulary_data.get(insurance_plan, {})
+            # Check formulary using enhanced data structure
+            plan_data = self.formulary_data.get(insurance_plan, {})
+            formulary = plan_data.get("formulary", {})
             coverage = formulary.get(medication)
             
             if coverage:
@@ -223,13 +210,18 @@ class MockInsuranceFormularyTool:
                     "success": True,
                     "medication": medication,
                     "insurance_plan": insurance_plan,
+                    "plan_type": plan_data.get("type", "unknown"),
                     "covered": coverage["covered"],
                     "tier": coverage["tier"],
                     "copay": coverage["copay"],
                     "prior_authorization_required": coverage["pa_required"],
+                    "step_therapy_required": coverage.get("step_therapy", False),
+                    "quantity_limits": coverage.get("quantity_limits"),
                     "tier_description": self._get_tier_description(coverage["tier"]),
+                    "annual_deductible": plan_data.get("deductible", 0),
                     "annual_deductible_applies": coverage["tier"] >= 3,
-                    "source": "mock_formulary"
+                    "pa_criteria": coverage.get("pa_criteria", []),
+                    "source": "enhanced_formulary"
                 }
             else:
                 # Medication not on formulary

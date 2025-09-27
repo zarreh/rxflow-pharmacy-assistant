@@ -22,6 +22,11 @@ from .cost_tools import (
     insurance_tool, 
     prior_auth_tool
 )
+from .order_tools import (
+    order_submission_tool,
+    order_tracking_tool,
+    order_cancellation_tool
+)
 from .tool_manager import ToolManager
 
 __all__ = [
@@ -46,6 +51,11 @@ __all__ = [
     "brand_generic_tool",
     "insurance_tool",
     "prior_auth_tool",
+    
+    # Order tools
+    "order_submission_tool",
+    "order_tracking_tool", 
+    "order_cancellation_tool",
     
     # Tool manager
     "ToolManager"
