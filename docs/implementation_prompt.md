@@ -110,7 +110,7 @@ Each prompt should have:
 - Examples (few-shot)
 - Version tracking
 
-### STEP 5: Implement State Machine (30 minutes)
+### STEP 5: aw (30 minutes)
 File: `rxflow/workflow/state_machine.py`
 
 Define states:

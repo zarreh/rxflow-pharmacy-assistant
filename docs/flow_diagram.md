@@ -1,51 +1,67 @@
-# Pharmacy Refill Assistant - Flow Diagram
+# Pharmacy Refill Workflow - State Machine Diagram
 
-## State Machine Flow
+This document contains the complete state machine diagram for the pharmacy refill AI assistant workflow.
+
+## State Machine Flow Diagram
 
 ```mermaid
 graph TD
-    START([User Input: "I need to refill..."]) --> EXTRACT["Extract Intent & Entities<br/>🤖 AI: Parse medication, dosage, preferences"]
+    start[Start]
+    identify_medication[Identify Medication]
+    clarify_medication[Clarify Medication]
+    confirm_dosage[Confirm Dosage]
+    check_authorization[Check Authorization]
+    select_pharmacy[Select Pharmacy]
+    confirm_order[Confirm Order]
+    escalate_pa[Escalate PA]
+    complete((Complete))
+    error[Error]
     
-    EXTRACT --> IDENTIFY["IDENTIFY_MEDICATION<br/>🔧 Tool: patient_medication_history<br/>🔧 Tool: rxnorm_medication_lookup"]
+    %% Main workflow path
+    start -->|medication_request| identify_medication
+    identify_medication -->|medication_identified| confirm_dosage
+    confirm_dosage -->|dosage_confirmed| check_authorization
+    check_authorization -->|authorized| select_pharmacy
+    select_pharmacy -->|pharmacy_selected| confirm_order
+    confirm_order -->|order_confirmed| complete
     
-    IDENTIFY --> |"Medication found"| CLARIFY["CLARIFY_MEDICATION<br/>🤖 AI: Confirm exact details<br/>🔧 Tool: verify_medication_dosage"]
-    IDENTIFY --> |"Medication unclear"| DISAMBIGUATE["Ask Clarifying Questions<br/>🤖 AI: Generate specific questions"]
+    %% Clarification path
+    identify_medication -->|ambiguous_medication| clarify_medication
+    clarify_medication -->|medication_clarified| confirm_dosage
     
-    DISAMBIGUATE --> IDENTIFY
+    %% Prior authorization path
+    check_authorization -->|prior_auth_required| escalate_pa
+    escalate_pa -->|pa_approved| select_pharmacy
     
-    CLARIFY --> SAFETY["CONFIRM_DOSAGE & SAFETY CHECK<br/>🔧 Tool: check_drug_interactions<br/>🔧 Tool: patient_allergies"]
+    %% Error paths
+    start -->|invalid_input| error
+    identify_medication -->|medication_not_found| error
+    clarify_medication -->|clarification_failed| error
+    confirm_dosage -->|safety_concern| error
+    select_pharmacy -->|no_pharmacy_available| error
+    confirm_order -->|order_failed| error
+    escalate_pa -->|pa_denied| error
     
-    SAFETY --> |"Safety OK"| AUTH["CHECK_AUTHORIZATION<br/>🔧 Tool: insurance_formulary_check<br/>🔧 Tool: prior_authorization_lookup"]
-    SAFETY --> |"Safety concern"| ESCALATE_SAFETY["⚠️ Safety Concern<br/>🤖 AI: Explain issue, recommend doctor consultation"]
+    %% Recovery paths from error
+    error -->|restart_conversation| start
+    error -->|retry_medication| identify_medication
+    error -->|retry_clarification| clarify_medication
     
-    AUTH --> |"Covered, no PA"| PHARMACY["SELECT_PHARMACY<br/>🔧 Tool: find_nearby_pharmacies<br/>🔧 Tool: goodrx_price_lookup<br/>🔧 Tool: check_pharmacy_inventory"]
-    AUTH --> |"PA Required"| ESCALATE_PA["ESCALATE_PA<br/>🤖 AI: Explain PA process<br/>Offer to start PA request"]
+    %% User change paths
+    confirm_order -->|change_pharmacy| select_pharmacy
     
-    PHARMACY --> |"Pharmacy selected"| OPTIMIZE["Cost Optimization<br/>🔧 Tool: compare_brand_generic_prices<br/>🔧 Tool: goodrx_price_lookup"]
+    %% Styling
+    classDef startState fill:#e1f5fe
+    classDef processState fill:#f3e5f5
+    classDef decisionState fill:#fff3e0
+    classDef terminalState fill:#e8f5e8
+    classDef errorState fill:#ffebee
     
-    OPTIMIZE --> CONFIRM["CONFIRM_ORDER<br/>🤖 AI: Summarize all details<br/>Get final confirmation"]
-    
-    CONFIRM --> |"Confirmed"| SUBMIT["Submit Order<br/>🔧 Tool: submit_refill_order<br/>🤖 AI: Generate confirmation"]
-    CONFIRM --> |"Changes needed"| PHARMACY
-    
-    SUBMIT --> COMPLETE["COMPLETE<br/>🤖 AI: Provide pickup details<br/>Show savings achieved"]
-    
-    ESCALATE_SAFETY --> END([End - Refer to Doctor])
-    ESCALATE_PA --> END2([End - PA Process Started])
-    COMPLETE --> END3([End - Order Complete])
-    
-    style EXTRACT fill:#e3f2fd
-    style IDENTIFY fill:#f3e5f5
-    style CLARIFY fill:#f3e5f5
-    style SAFETY fill:#fff3e0
-    style AUTH fill:#fff3e0
-    style PHARMACY fill:#e8f5e8
-    style OPTIMIZE fill:#e8f5e8
-    style CONFIRM fill:#fce4ec
-    style SUBMIT fill:#fce4ec
-    style COMPLETE fill:#e1f5fe
-    style ESCALATE_SAFETY fill:#ffebee
-    style ESCALATE_PA fill:#fff8e1
+    class start startState
+    class identify_medication,clarify_medication,confirm_dosage,select_pharmacy,confirm_order processState
+    class check_authorization,escalate_pa decisionState
+    class complete terminalState
+    class error errorState
 ```
 
 ## Tool Usage by State
