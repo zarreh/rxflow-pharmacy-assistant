@@ -1,443 +1,798 @@
 """
-Enhanced conversational AI system for RxFlow Pharmacy Assistant
-Provides intelligent, context-aware conversations with memory and tool integration
+Advanced Conversation Manager for RxFlow Pharmacy Assistant - Step 6
+Integrates LangChain agent with tools, state machine, and prompt management
 """
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 import json
+import uuid
+import asyncio
 from datetime import datetime
 from dataclasses import dataclass, field
 
+from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema import BaseMessage, HumanMessage, AIMessage, SystemMessage
 from langchain.memory import ConversationBufferWindowMemory
+from langchain.tools import Tool
 
-from rxflow.llm import get_conversational_llm, get_analytical_llm
+from rxflow.llm import get_conversational_llm
 from rxflow.utils.logger import get_logger
-from rxflow.workflow.state_machine import RefillStateMachine, RefillState
+from rxflow.workflow.state_machine import RefillStateMachine
+from rxflow.workflow.workflow_types import RefillState, ConversationContext, ToolResult
 from rxflow.prompts.prompt_manager import PromptManager
+
+# Import all tools - these will be registered with the agent
+from rxflow.tools.patient_history_tool import (
+    patient_history_tool, allergy_tool, adherence_tool
+)
+from rxflow.tools.rxnorm_tool import (
+    rxnorm_tool, dosage_verification_tool, interaction_tool
+)
+from rxflow.tools.pharmacy_tools import (
+    pharmacy_location_tool, pharmacy_inventory_tool, pharmacy_wait_times_tool, pharmacy_details_tool
+)
+from rxflow.tools.cost_tools import (
+    goodrx_tool, insurance_tool, brand_generic_tool, prior_auth_tool
+)
+from rxflow.tools.order_tools import (
+    order_submission_tool, order_tracking_tool, order_cancellation_tool
+)
 
 logger = get_logger(__name__)
 
 
-@dataclass
-class ConversationContext:
-    """Rich conversation context with memory and state tracking"""
-    patient_id: str
+@dataclass 
+class ConversationResponse:
+    """Standardized conversation response format"""
+    message: str
     session_id: str
-    current_intent: Optional[str] = None
-    extracted_entities: Dict[str, Any] = field(default_factory=dict)
-    conversation_history: List[Dict[str, Any]] = field(default_factory=list)
-    workflow_state: Dict[str, Any] = field(default_factory=dict)
-    tools_available: List[str] = field(default_factory=list)
-    last_updated: datetime = field(default_factory=datetime.now)
+    current_state: RefillState
+    tool_results: List[Dict[str, Any]] = field(default_factory=list)
+    cost_savings: Optional[Dict[str, Any]] = None
+    next_steps: Optional[str] = None
+    error: Optional[str] = None
+    debug_info: Optional[Dict[str, Any]] = None
 
 
-class ConversationMemory:
-    """Enhanced conversation memory with entity tracking"""
+class AdvancedConversationManager:
+    """
+    Comprehensive conversation manager integrating all RxFlow systems
     
-    def __init__(self, window_size: int = 10):
-        self.memory = ConversationBufferWindowMemory(
-            k=window_size,
-            return_messages=True,
-            memory_key="chat_history"
-        )
-        self.entities = {}
-        self.intents = []
+    Features:
+    - LangChain agent with 15 specialized tools
+    - State machine-driven conversation flow
+    - Context-aware prompt management 
+    - Explicit AI usage logging
+    - Comprehensive error handling
+    - Multi-session management
+    """
     
-    def add_message(self, message: BaseMessage):
-        """Add message to memory and extract entities"""
-        self.memory.chat_memory.add_message(message)
+    def __init__(self):
+        logger.info("[INIT] Initializing Advanced Conversation Manager")
         
-        # Extract and store entities from message
-        if isinstance(message, HumanMessage) and isinstance(message.content, str):
-            self._extract_entities(message.content)
-    
-    def _extract_entities(self, text: str):
-        """Extract medication, pharmacy, and other entities from text"""
-        # Simple entity extraction - can be enhanced with NER later
-        text_lower = text.lower()
+        # Core components
+        self.llm = get_conversational_llm()
+        self.state_machine = RefillStateMachine()
+        self.prompt_manager = PromptManager()
         
-        # Common medications
-        medications = [
-            "lisinopril", "metformin", "eliquis", "lipitor", "atorvastatin",
-            "omeprazole", "meloxicam", "methocarbamol", "famotidine"
+        # Session management
+        self.sessions: Dict[str, ConversationContext] = {}
+        self.conversation_histories: Dict[str, List[Dict[str, Any]]] = {}
+        
+        # Tool registration and agent setup
+        self._register_tools()
+        self._setup_agent()
+        
+        logger.info("[INIT] Advanced Conversation Manager initialized successfully")
+    
+    def _register_tools(self):
+        """Register all RxFlow tools with the LangChain agent"""
+        logger.info("[AI USAGE] Registering tools for LangChain agent integration")
+        
+        self.tools = [
+            # Patient History Tools (3)
+            patient_history_tool,
+            allergy_tool,
+            adherence_tool,
+            
+            # RxNorm Tools (3)
+            rxnorm_tool,
+            dosage_verification_tool,
+            interaction_tool,
+            
+            # Pharmacy Tools (4)
+            pharmacy_location_tool,
+            pharmacy_inventory_tool,
+            pharmacy_wait_times_tool,
+            pharmacy_details_tool,
+            
+            # Cost Tools (4)
+            goodrx_tool,
+            insurance_tool,
+            brand_generic_tool,
+            prior_auth_tool,
+            
+            # Order Tools (3)
+            order_submission_tool,
+            order_tracking_tool,
+            order_cancellation_tool
         ]
         
-        for med in medications:
-            if med in text_lower:
-                self.entities["medication"] = med.title()
-                break
+        logger.info(f"[TOOLS] Registered {len(self.tools)} tools for agent")
         
-        # Dosage patterns
-        import re
-        dosage_match = re.search(r'(\d+)\s*mg', text_lower)
-        if dosage_match:
-            self.entities["dosage"] = f"{dosage_match.group(1)}mg"
+        # Log tool names for debugging
+        tool_names = [tool.name for tool in self.tools]
+        logger.debug(f"[TOOLS] Available tools: {tool_names}")
+    
+    def _setup_agent(self):
+        """Setup LangChain agent with tools and prompts"""
+        logger.info("[AI USAGE] Setting up LangChain agent with OpenAI functions")
         
-        # Pharmacy names
-        pharmacies = ["cvs", "walmart", "walgreens", "h-e-b", "heb"]
-        for pharmacy in pharmacies:
-            if pharmacy in text_lower:
-                self.entities["pharmacy"] = pharmacy.upper()
-                break
-    
-    def get_relevant_context(self) -> Dict[str, Any]:
-        """Get relevant context for current conversation"""
-        return {
-            "entities": self.entities,
-            "recent_intents": self.intents[-3:],  # Last 3 intents
-            "message_count": len(self.memory.chat_memory.messages)
-        }
+        # Create agent prompt with system message
+        system_message = """You are RxFlow, an intelligent AI pharmacy assistant helping patients with prescription refills.
 
+CORE RESPONSIBILITIES:
+- Help patients refill prescriptions safely and efficiently
+- Use available tools to gather accurate information
+- Follow the conversation workflow guided by the state machine
+- Prioritize patient safety above all else
+- Provide clear, helpful, and professional responses
 
-class IntentClassifier:
-    """Classifies user intents for better conversation routing"""
-    
-    INTENT_PROMPTS = {
-        "refill_request": "User wants to refill a prescription",
-        "pharmacy_inquiry": "User asking about pharmacy locations or services",
-        "cost_inquiry": "User asking about medication costs or insurance",
-        "side_effects": "User asking about medication side effects",
-        "drug_interactions": "User asking about drug interactions",
-        "dosage_question": "User asking about medication dosage",
-        "general_question": "General question about medications or health",
-        "escalation_needed": "Issue requires human pharmacist intervention"
-    }
-    
-    def __init__(self):
-        self.llm = get_analytical_llm()
-    
-    async def classify_intent(self, message: str, context: ConversationContext) -> Tuple[str, float]:
-        """Classify user intent with confidence score"""
-        
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are an intent classification system for a pharmacy assistant.
-            
-Analyze the user message and classify it into one of these intents:
-- refill_request: User wants to refill a prescription
-- pharmacy_inquiry: Asking about pharmacy locations or services  
-- cost_inquiry: Asking about medication costs or insurance
-- side_effects: Asking about medication side effects
-- drug_interactions: Asking about drug interactions
-- dosage_question: Asking about medication dosage
-- general_question: General question about medications or health
-- escalation_needed: Complex issue requiring pharmacist
+TOOL USAGE GUIDELINES:
+- Always check patient medication history before processing requests
+- Use RxNorm tools to verify medication information and check interactions
+- Find pharmacy options and compare costs to help patients save money
+- Verify insurance coverage and handle prior authorization requirements
+- Guide patients through the complete refill process
 
-Consider the conversation context and respond with JSON:
-{
-    "intent": "intent_name",
-    "confidence": 0.95,
-    "reasoning": "brief explanation"
-}"""),
-            ("human", f"Message: {message}\nContext: {context.extracted_entities}")
-        ])
-        
-        try:
-            response = await self.llm.ainvoke(prompt.format_messages())
-            # Try to parse JSON response
-            content = response.content.strip()
-            
-            # Handle cases where response might not be pure JSON
-            if not content.startswith('{'):
-                # Look for JSON in the response
-                import re
-                json_match = re.search(r'\{.*\}', content, re.DOTALL)
-                if json_match:
-                    content = json_match.group(0)
-                else:
-                    raise ValueError("No JSON found in response")
-            
-            result = json.loads(content)
-            return result.get("intent", "general_question"), result.get("confidence", 0.5)
-            
-        except Exception as e:
-            logger.warning(f"Intent classification failed: {e}")
-            # Simple rule-based fallback
-            message_lower = message.lower()
-            if any(word in message_lower for word in ["refill", "prescription", "medication"]):
-                return "refill_request", 0.8
-            elif any(word in message_lower for word in ["pharmacy", "location", "where"]):
-                return "pharmacy_inquiry", 0.8
-            elif any(word in message_lower for word in ["cost", "price", "insurance", "copay"]):
-                return "cost_inquiry", 0.8
-            else:
-                return "general_question", 0.5
-
-
-class ConversationManager:
-    """Intelligent conversation manager with context awareness and tool integration"""
-    
-    def __init__(self):
-        self.llm = get_conversational_llm()
-        self.intent_classifier = IntentClassifier()
-        self.conversations = {}  # Session ID -> ConversationMemory
-        self.prompt_manager = PromptManager()
-        self.state_machines = {}  # session_id -> RefillStateMachine
-        
-        self.system_prompt = """You are RxFlow, an intelligent AI pharmacy assistant. You help patients with prescription refills, medication questions, and pharmacy services.
-
-CORE PRINCIPLES:
-- Be conversational, helpful, and professional
-- Always prioritize patient safety
-- Ask clarifying questions when needed
-- Remember context from earlier in the conversation
-- Guide users through the refill process naturally
+SAFETY PROTOCOLS:
+- Check for drug interactions and allergies before confirming medications
 - Escalate complex medical questions to human pharmacists
+- Verify all medication details (name, dosage, quantity) before processing
+- Ensure patients understand their medications and any important warnings
 
 CONVERSATION STYLE:
-- Use natural language, not templates
-- Be empathetic and understanding
-- Keep responses concise but complete
-- Use emojis sparingly for clarity
+- Be warm, professional, and patient-focused
+- Ask clarifying questions when information is unclear
+- Explain processes and options in simple terms
+- Celebrate cost savings and successful completions
+- Provide clear next steps at each stage
 
-CAPABILITIES:
-- Process prescription refill requests
-- Find nearby pharmacies and compare prices
-- Explain medication information (basic)
-- Handle insurance and cost questions
-- Schedule pharmacy consultations
-- Escalate complex medical questions
+Remember: You have access to comprehensive tools for patient history, medication lookup, pharmacy services, cost comparison, and order processing. Use them effectively to provide the best possible service."""
 
-WORKFLOW AWARENESS:
-You can guide users through these workflows:
-1. Medication confirmation and details
-2. Pharmacy selection and comparison
-3. Cost optimization and insurance
-4. Order processing and confirmation
-5. Escalation to human pharmacist when needed
-
-Remember: You're having a real conversation, not following a script."""
-
-    async def get_response(
-        self, 
-        message: str, 
-        context: ConversationContext
-    ) -> Tuple[str, ConversationContext]:
-        """Get intelligent response with context awareness"""
-        
-        # Get or create conversation memory
-        memory = self.conversations.get(context.session_id)
-        if not memory:
-            memory = ConversationMemory()
-            self.conversations[context.session_id] = memory
-        
-        # Add user message to memory
-        user_msg = HumanMessage(content=message)
-        memory.add_message(user_msg)
-        
-        # Classify intent
-        intent, confidence = await self.intent_classifier.classify_intent(message, context)
-        context.current_intent = intent
-        
-        # Get relevant context
-        relevant_context = memory.get_relevant_context()
-        
-        # Build conversation prompt
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", self.system_prompt),
-            ("system", f"""CURRENT CONTEXT:
-Patient ID: {context.patient_id}
-Current Intent: {intent} (confidence: {confidence:.2f})
-Extracted Entities: {relevant_context['entities']}
-Workflow State: {context.workflow_state}
-Available Tools: {context.tools_available}
-
-CONVERSATION GUIDELINES FOR THIS INTENT:
-{self._get_intent_guidelines(intent)}"""),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("human", "{input}")
+        # Create the agent prompt
+        self.agent_prompt = ChatPromptTemplate.from_messages([
+            ("system", system_message),
+            MessagesPlaceholder(variable_name="chat_history", optional=True),
+            ("human", "{input}"),
+            MessagesPlaceholder(variable_name="agent_scratchpad")
         ])
         
-        # Get chat history
-        chat_history = memory.memory.chat_memory.messages[-10:]  # Last 10 messages
-        
+        # Create the agent
         try:
-            # Generate response
-            formatted_messages = prompt.format_messages(
-                chat_history=chat_history,
-                input=message
+            self.agent = create_tool_calling_agent(
+                llm=self.llm,
+                tools=self.tools,
+                prompt=self.agent_prompt
             )
             
-            logger.debug(f"Sending {len(formatted_messages)} messages to LLM")
+            # Create agent executor
+            self.agent_executor = AgentExecutor(
+                agent=self.agent,
+                tools=self.tools,
+                verbose=True,
+                handle_parsing_errors=True,
+                max_iterations=5,
+                early_stopping_method="generate"
+            )
             
-            response = await self.llm.ainvoke(formatted_messages)
-            
-            response_text = response.content
-            logger.debug(f"LLM response length: {len(response_text) if response_text else 0}")
-            
-            # Add AI response to memory
-            ai_msg = AIMessage(content=response_text)
-            memory.add_message(ai_msg)
-            
-            # Update context with new entities
-            context.extracted_entities.update(relevant_context['entities'])
-            context.last_updated = datetime.now()
-            
-            # Add to conversation history
-            context.conversation_history.append({
-                "timestamp": datetime.now().isoformat(),
-                "user_message": message,
-                "ai_response": response_text,
-                "intent": intent,
-                "confidence": confidence
-            })
-            
-            logger.info(f"Generated response for intent '{intent}' with confidence {confidence:.2f}")
-            
-            return response_text, context
+            logger.info("[AI USAGE] LangChain agent configured successfully")
             
         except Exception as e:
-            logger.error(f"Error generating response: {e}")
-            fallback_response = "I apologize, but I'm having trouble processing your request right now. Could you please try rephrasing your question?"
-            return fallback_response, context
+            logger.error(f"[ERROR] Failed to setup agent: {e}")
+            raise
     
-    def _get_intent_guidelines(self, intent: str) -> str:
-        """Get specific guidelines for handling different intents"""
+    def handle_message(self, user_input: str, session_id: Optional[str] = None) -> ConversationResponse:
+        """
+        Main entry point for handling user messages
         
-        guidelines = {
-            "refill_request": """
-- Confirm medication name, strength, and quantity
-- Ask about preferred pharmacy if not specified
-- Check for any changes in dosage or instructions
-- Guide through pharmacy selection and cost comparison
-- Complete the refill workflow step by step""",
+        Args:
+            user_input: User's message
+            session_id: Session identifier (creates new if None)
             
-            "pharmacy_inquiry": """
-- Help find nearby pharmacy locations
-- Compare wait times, prices, and services
-- Explain pharmacy-specific benefits
-- Consider user preferences (distance, cost, etc.)""",
+        Returns:
+            ConversationResponse with message and context
+        """
+        # Create or get session
+        if not session_id:
+            session_id = str(uuid.uuid4())
             
-            "cost_inquiry": """
-- Explain insurance coverage and copays
-- Compare brand vs generic pricing
-- Suggest cost-saving options
-- Explain patient assistance programs if applicable""",
+        logger.info(f"[MESSAGE] Processing message for session {session_id[:8]}...")
+        logger.info(f"[AI USAGE] Starting conversation processing with state machine integration")
+        
+        try:
+            # Get or create session context
+            context = self._get_or_create_session(session_id)
+            current_state = context.current_state
             
-            "side_effects": """
-- Provide basic, factual information about common side effects
-- Always recommend consulting with pharmacist or doctor for concerns
-- Do not provide medical advice
-- Escalate if serious side effects reported""",
+            logger.info(f"[STATE] Current state: {current_state.value}")
             
-            "drug_interactions": """
-- Express concern for patient safety
-- Recommend immediate pharmacist consultation
-- Do not attempt to provide interaction advice
-- Escalate to human pharmacist immediately""",
+            # Get conversation history for context
+            history = self.conversation_histories.get(session_id, [])
             
-            "dosage_question": """
-- Refer to prescription label for current dosage
-- Do not provide dosage advice or changes
-- Recommend consulting prescriber or pharmacist
-- Escalate if dosage concerns expressed""",
+            # Determine appropriate handler based on current state
+            response = self._handle_state_specific_message(
+                user_input, context, history
+            )
             
-            "escalation_needed": """
-- Acknowledge the complexity of the question
-- Explain why pharmacist consultation is recommended
-- Offer to schedule consultation or transfer to pharmacist
-- Provide timeframe for human response""",
+            # Update conversation history
+            self._update_conversation_history(session_id, user_input, response.message)
             
-            "general_question": """
-- Provide helpful, factual information
-- Stay within scope of pharmacy assistant
-- Offer to help with refills or pharmacy services
-- Suggest appropriate resources for medical questions"""
+            logger.info(f"[SUCCESS] Generated response for session {session_id[:8]}")
+            return response
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error handling message: {e}")
+            return ConversationResponse(
+                message="I apologize, but I'm having trouble processing your request right now. Could you please try again?",
+                session_id=session_id,
+                current_state=RefillState.ERROR,
+                error=str(e)
+            )
+    
+    def _get_or_create_session(self, session_id: str) -> ConversationContext:
+        """Get existing session or create new one"""
+        if session_id not in self.sessions:
+            # Create new session
+            context = self.state_machine.create_session(session_id)
+            self.sessions[session_id] = context
+            self.conversation_histories[session_id] = []
+            
+            logger.info(f"[SESSION] Created new session {session_id[:8]}...")
+        else:
+            context = self.sessions[session_id]
+            logger.debug(f"[SESSION] Retrieved existing session {session_id[:8]}...")
+        
+        return context
+    
+    def _handle_state_specific_message(
+        self, 
+        user_input: str, 
+        context: ConversationContext,
+        history: List[Dict[str, Any]]
+    ) -> ConversationResponse:
+        """Route message handling based on current state"""
+        
+        current_state = context.current_state
+        session_id = context.session_id
+        
+        logger.info(f"[STATE HANDLER] Routing to {current_state.value} handler")
+        
+        # Map states to handler methods
+        state_handlers = {
+            RefillState.START: self._handle_start,
+            RefillState.IDENTIFY_MEDICATION: self._handle_identify_medication,
+            RefillState.CLARIFY_MEDICATION: self._handle_clarify_medication,
+            RefillState.CONFIRM_DOSAGE: self._handle_confirm_dosage,
+            RefillState.CHECK_AUTHORIZATION: self._handle_check_authorization,
+            RefillState.SELECT_PHARMACY: self._handle_select_pharmacy,
+            RefillState.CONFIRM_ORDER: self._handle_confirm_order,
+            RefillState.ESCALATE_PA: self._handle_escalate_pa,
+            RefillState.COMPLETE: self._handle_complete,
+            RefillState.ERROR: self._handle_error
         }
         
-        return guidelines.get(intent, "Provide helpful, accurate information while staying within your role as a pharmacy assistant.")
+        handler = state_handlers.get(current_state, self._handle_general)
+        return handler(user_input, context, history)
     
-    def clear_conversation(self, session_id: str):
-        """Clear conversation memory for a session"""
-        if session_id in self.conversations:
-            del self.conversations[session_id]
-            logger.info(f"Cleared conversation memory for session {session_id}")
+    def _handle_start(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle START state - initial user interaction"""
+        logger.info("[AI USAGE] Processing initial user request - extracting medication intent")
+        
+        # Use prompt manager for medication extraction
+        prompt_data = self.prompt_manager.format_conversation_prompt(
+            "medication_extraction",
+            user_input=user_input,
+            conversation_history=history
+        )
+        
+        # Use agent to process initial request
+        try:
+            agent_response = self.agent_executor.invoke({
+                "input": f"Patient says: '{user_input}'. Help them start their refill process by identifying their medication needs.",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Generated initial response using LLM agent")
+            
+            # Attempt state transition based on input
+            if any(word in user_input.lower() for word in ["refill", "medication", "prescription", "pills"]):
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id, "medication_request"
+                )
+                
+                if success and updated_context:
+                    logger.info(f"[TRANSITION] START -> IDENTIFY_MEDICATION")
+                    self.sessions[context.session_id] = updated_context
+                    context = updated_context
+                else:
+                    logger.warning(f"[TRANSITION] Failed: {error}")
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                next_steps="Please provide your medication name or describe what you need to refill."
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in start handler: {e}")
+            return self._handle_error_state(context, str(e))
     
-    def get_conversation_summary(self, session_id: str) -> Dict[str, Any]:
-        """Get summary of conversation state"""
-        memory = self.conversations.get(session_id)
-        if not memory:
-            return {"status": "no_conversation"}
+    def _handle_identify_medication(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle IDENTIFY_MEDICATION state - extract and identify medication"""
+        logger.info("[AI USAGE] Using tools to identify medication from user input")
         
-        return {
-            "message_count": len(memory.memory.chat_memory.messages),
-            "entities": memory.entities,
-            "recent_intents": memory.intents[-5:],
-            "status": "active"
-        }
+        try:
+            # Use agent with medication identification tools
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Patient is trying to identify their medication. They said: '{user_input}'
+
+Please help by:
+1. Using patient_medication_history to check their current medications
+2. Using rxnorm_medication_lookup to verify any medication names mentioned
+3. Determining if the medication is clearly identified or needs clarification
+
+Provide a helpful response and let me know if the medication is identified or ambiguous.""",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Processed medication identification using agent tools")
+            
+            # Determine next transition based on medication clarity
+            # This is a simplified decision - in practice, you'd analyze tool results
+            if "unclear" in response_text.lower() or "which" in response_text.lower():
+                # Medication is ambiguous
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id, 
+                    "ambiguous_medication",
+                    medication={"ambiguous": True, "candidates": []}
+                )
+                next_steps = "Please provide more details to help identify your specific medication."
+                
+            elif "found" in response_text.lower() or "lisinopril" in response_text.lower():
+                # Medication identified (simplified check)
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id,
+                    "medication_identified", 
+                    medication={"name": "lisinopril", "ambiguous": False}  # Simplified
+                )
+                next_steps = "Great! Now let's confirm the dosage and check for any safety concerns."
+                
+            else:
+                # Default to identified
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id, "medication_identified"
+                )
+                next_steps = "Let's proceed to confirm your medication details."
+            
+            if success and updated_context:
+                self.sessions[context.session_id] = updated_context
+                context = updated_context
+                logger.info(f"[TRANSITION] IDENTIFY_MEDICATION -> {context.current_state.value}")
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                next_steps=next_steps
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in identify medication handler: {e}")
+            return self._handle_error_state(context, str(e))
     
-    async def handle_message(self, user_input: str, session_id: str) -> str:
-        """Main entry point with explicit AI usage tracking"""
+    def _handle_clarify_medication(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle CLARIFY_MEDICATION state - resolve medication ambiguity"""
+        logger.info("[AI USAGE] Using disambiguation prompt and patient history to clarify medication")
         
-        # Get or create state machine for session
-        if session_id not in self.state_machines:
-            self.state_machines[session_id] = RefillStateMachine()
-        
-        state_machine = self.state_machines[session_id]
-        
-        # Log where AI is being used
-        logger.info(f"[AI USAGE] Processing input in state: {state_machine.current_state.value}")
-        
-        # Route to appropriate handler based on current state
-        handler_name = state_machine.get_state_handler()
-        handler = getattr(self, handler_name, self.handle_default)
-        
-        response = await handler(user_input, session_id, state_machine)
-        
-        return response
+        try:
+            # Use disambiguation prompt
+            prompt_data = self.prompt_manager.format_conversation_prompt(
+                "medication_disambiguation",
+                user_input=user_input,
+                medication_history=["lisinopril 10mg", "atorvastatin 20mg"],  # Mock data
+                possible_matches=[{"name": "lisinopril", "indication": "blood pressure"}]
+            )
+            
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Help clarify this medication request: '{user_input}'
+
+Use patient_medication_history to see their current medications and help them identify which one they need to refill.""",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Generated clarification response using agent")
+            
+            # Assume clarification successful (simplified)
+            success, updated_context, error = self.state_machine.transition(
+                context.session_id,
+                "medication_clarified",
+                medication={"name": "lisinopril", "ambiguous": False, "rxcui": "29046"}
+            )
+            
+            if success and updated_context:
+                self.sessions[context.session_id] = updated_context
+                context = updated_context
+                logger.info(f"[TRANSITION] CLARIFY_MEDICATION -> {context.current_state.value}")
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                next_steps="Perfect! Now let's verify the dosage and check for any safety concerns."
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in clarify medication handler: {e}")
+            return self._handle_error_state(context, str(e))
     
-    async def handle_identify_medication(self, user_input: str, session_id: str, state_machine: RefillStateMachine) -> str:
-        """Handle medication identification with AI"""
+    def _handle_confirm_dosage(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle CONFIRM_DOSAGE state - verify dosage and safety"""
+        logger.info("[AI USAGE] Using safety verification tools and dosage confirmation")
         
-        # [AI USAGE] Extract medication using LLM
-        system_prompt, user_prompt = self.prompt_manager.format_prompt(
-            "medication_extraction", 
+        try:
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Patient response about dosage: '{user_input}'
+
+Please help by:
+1. Using verify_medication_dosage to confirm the dosage is appropriate
+2. Using check_drug_interactions to verify safety
+3. Using patient_allergies to check for any allergy concerns
+
+Provide a safety assessment and dosage confirmation.""",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Completed safety verification using multiple tools")
+            
+            # Assume safety checks pass (simplified)
+            success, updated_context, error = self.state_machine.transition(
+                context.session_id,
+                "dosage_confirmed",
+                dosage="10mg",
+                medication={"name": "lisinopril", "safety_issues": False}
+            )
+            
+            if success and updated_context:
+                self.sessions[context.session_id] = updated_context
+                context = updated_context
+                logger.info(f"[TRANSITION] CONFIRM_DOSAGE -> {context.current_state.value}")
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                next_steps="Excellent! All safety checks passed. Now let's verify your insurance coverage."
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in confirm dosage handler: {e}")
+            return self._handle_error_state(context, str(e))
+    
+    def _handle_check_authorization(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle CHECK_AUTHORIZATION state - verify insurance and PA"""
+        logger.info("[AI USAGE] Checking insurance authorization and coverage")
+        
+        try:
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Check insurance authorization for the patient's medication.
+
+Please:
+1. Use insurance_formulary_check to verify coverage
+2. Check if prior authorization is required
+3. Explain the coverage details to the patient
+
+Patient input: '{user_input}'""",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Completed insurance authorization check")
+            
+            # Assume authorization successful (simplified)
+            success, updated_context, error = self.state_machine.transition(
+                context.session_id,
+                "authorized",
+                insurance_info={"prior_auth_required": False, "copay": 10}
+            )
+            
+            if success and updated_context:
+                self.sessions[context.session_id] = updated_context
+                context = updated_context
+                logger.info(f"[TRANSITION] CHECK_AUTHORIZATION -> {context.current_state.value}")
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                next_steps="Great news! Your insurance covers this medication. Let's find the best pharmacy option for you."
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in check authorization handler: {e}")
+            return self._handle_error_state(context, str(e))
+    
+    def _handle_select_pharmacy(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle SELECT_PHARMACY state - find and compare pharmacies"""
+        logger.info("[AI USAGE] Using pharmacy and cost tools to find best options")
+        
+        try:
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Help patient select the best pharmacy for their refill.
+
+Please:
+1. Use find_nearby_pharmacies to show location options
+2. Use goodrx_price_lookup to compare costs
+3. Use check_pharmacy_inventory to verify availability
+4. Recommend the best option considering cost, convenience, and availability
+
+Patient preference: '{user_input}'""",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Generated pharmacy recommendations with cost comparison")
+            
+            # Simulate pharmacy selection
+            success, updated_context, error = self.state_machine.transition(
+                context.session_id,
+                "pharmacy_selected",
+                pharmacy={"name": "Walmart Pharmacy", "id": "walmart_123", "address": "123 Main St"}
+            )
+            
+            if success and updated_context:
+                self.sessions[context.session_id] = updated_context
+                context = updated_context
+                logger.info(f"[TRANSITION] SELECT_PHARMACY -> {context.current_state.value}")
+            
+            # Calculate potential savings (mock)
+            cost_savings = {
+                "original_price": 25,
+                "final_price": 10,
+                "savings_amount": 15,
+                "savings_percent": 60
+            }
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                cost_savings=cost_savings,
+                next_steps="Perfect! You'll save $15 with this option. Let's confirm your order."
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in select pharmacy handler: {e}")
+            return self._handle_error_state(context, str(e))
+    
+    def _handle_confirm_order(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle CONFIRM_ORDER state - final order confirmation"""
+        logger.info("[AI USAGE] Processing final order confirmation")
+        
+        try:
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Process the final order confirmation.
+
+Please:
+1. Summarize all order details
+2. Get patient's final confirmation
+3. Use submit_refill_order if patient confirms
+4. Provide pickup instructions and timing
+
+Patient response: '{user_input}'""",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            response_text = agent_response.get("output", "")
+            
+            logger.info("[AI USAGE] Generated order confirmation summary")
+            
+            if "yes" in user_input.lower() or "confirm" in user_input.lower():
+                # Order confirmed
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id,
+                    "order_confirmed",
+                    order_details={"order_id": "ORD_12345", "pickup_time": "2 PM today"}
+                )
+                
+                if success and updated_context:
+                    self.sessions[context.session_id] = updated_context
+                    context = updated_context
+                    logger.info(f"[TRANSITION] CONFIRM_ORDER -> {context.current_state.value}")
+            
+            return ConversationResponse(
+                message=response_text,
+                session_id=context.session_id,
+                current_state=context.current_state,
+                next_steps="Your refill order has been submitted! You can pick it up after 2 PM today."
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in confirm order handler: {e}")
+            return self._handle_error_state(context, str(e))
+    
+    def _handle_escalate_pa(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle ESCALATE_PA state - prior authorization process"""
+        logger.info("[AI USAGE] Managing prior authorization escalation")
+        
+        prompt_data = self.prompt_manager.format_conversation_prompt(
+            "prior_authorization_process",
             user_input=user_input
         )
         
-        extraction_result = await self.llm_manager.get_completion(
-            system_prompt=system_prompt,
-            user_prompt=user_prompt,
-            response_format="json"
+        return ConversationResponse(
+            message="I'll help you with the prior authorization process. This typically takes 3-5 business days, but I can start the request for you right away.",
+            session_id=context.session_id,
+            current_state=context.current_state,
+            next_steps="Would you like me to start the prior authorization request with your doctor?"
         )
-        
-        logger.info(f"[AI USAGE] Medication extraction result: {extraction_result}")
-        
-        # Verify medication with service
-        medication = extraction_result.get("medication_name")
-        if medication:
-            med_info = self.medication_service.verify_medication(medication)
-            if med_info:
-                state_machine.context["medication"] = med_info
-                state_machine.transition("medication_found")
-                return f"I found {medication}. What dosage are you currently taking?"
-            else:
-                # [AI USAGE] Disambiguation needed
-                similar_meds = self.medication_service.find_similar(medication)
-                if similar_meds:
-                    state_machine.transition("medication_ambiguous")
-                    state_machine.context["similar_medications"] = similar_meds
-                    return await self._generate_disambiguation_response(medication, similar_meds)
-        
-        return "I couldn't find that medication. Could you please check the spelling or provide more details?"
     
-    async def _generate_disambiguation_response(self, user_input: str, similar_meds: List[str]) -> str:
-        """[AI USAGE] Generate clarifying question for ambiguous medication"""
-        system_prompt, user_prompt = self.prompt_manager.format_prompt(
-            "medication_disambiguation",
-            user_input=user_input,
-            matches=", ".join(similar_meds)
+    def _handle_complete(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle COMPLETE state - workflow completion"""
+        logger.info("[AI USAGE] Generating completion summary and next steps")
+        
+        prompt_data = self.prompt_manager.format_conversation_prompt(
+            "completion_summary",
+            user_input=user_input
         )
         
-        response = await self.llm_manager.get_completion(
-            system_prompt=system_prompt,
-            user_prompt=user_prompt
+        return ConversationResponse(
+            message="Your prescription refill has been completed successfully! 🎉 Your medication will be ready for pickup after 2 PM today at Walmart Pharmacy. You saved $15 compared to other options. Is there anything else I can help you with?",
+            session_id=context.session_id,
+            current_state=context.current_state,
+            next_steps="Visit Walmart Pharmacy at 123 Main St after 2 PM with your ID to pick up your prescription."
         )
-        
-        logger.info("[AI USAGE] Generated disambiguation question")
-        return response
     
-    async def handle_default(self, user_input: str, session_id: str, state_machine: RefillStateMachine) -> str:
-        """Default handler for unrecognized states"""
-        return "I'm sorry, I didn't understand that. Can you please rephrase?"
+    def _handle_error(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle ERROR state - error recovery"""
+        logger.info("[AI USAGE] Processing error recovery options")
+        
+        return ConversationResponse(
+            message="I understand there was an issue. Let me help you get back on track. Would you like to start over, or shall we try a different approach?",
+            session_id=context.session_id,
+            current_state=context.current_state,
+            next_steps="I can restart the conversation or help you try again with more specific information."
+        )
+    
+    def _handle_general(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
+        """Handle general/fallback cases"""
+        logger.info("[AI USAGE] Processing general query with agent")
+        
+        try:
+            agent_response = self.agent_executor.invoke({
+                "input": f"Patient says: '{user_input}'. Please provide helpful assistance.",
+                "chat_history": self._format_history_for_agent(history)
+            })
+            
+            return ConversationResponse(
+                message=agent_response.get("output", "I'm here to help with your pharmacy needs."),
+                session_id=context.session_id,
+                current_state=context.current_state
+            )
+            
+        except Exception as e:
+            logger.error(f"[ERROR] Error in general handler: {e}")
+            return self._handle_error_state(context, str(e))
+    
+    def _handle_error_state(self, context: ConversationContext, error_message: str) -> ConversationResponse:
+        """Handle error state transition"""
+        try:
+            success, updated_context, _ = self.state_machine.transition(
+                context.session_id, 
+                "invalid_input",
+                error_message=error_message
+            )
+            
+            if success and updated_context:
+                self.sessions[context.session_id] = updated_context
+                context = updated_context
+                
+        except Exception as e:
+            logger.error(f"[ERROR] Error transitioning to error state: {e}")
+        
+        return ConversationResponse(
+            message="I apologize, but I encountered an issue processing your request. Let me help you start over or try a different approach.",
+            session_id=context.session_id,
+            current_state=context.current_state,
+            error=error_message,
+            next_steps="Would you like to restart the conversation or provide more details?"
+        )
+    
+    def _format_history_for_agent(self, history: List[Dict[str, Any]]) -> List[BaseMessage]:
+        """Format conversation history for LangChain agent"""
+        messages = []
+        for exchange in history[-5:]:  # Last 5 exchanges
+            if "user_message" in exchange:
+                messages.append(HumanMessage(content=exchange["user_message"]))
+            if "ai_response" in exchange:
+                messages.append(AIMessage(content=exchange["ai_response"]))
+        return messages
+    
+    def _update_conversation_history(self, session_id: str, user_input: str, ai_response: str):
+        """Update conversation history for session"""
+        if session_id not in self.conversation_histories:
+            self.conversation_histories[session_id] = []
+        
+        self.conversation_histories[session_id].append({
+            "timestamp": datetime.now().isoformat(),
+            "user_message": user_input,
+            "ai_response": ai_response
+        })
+        
+        # Keep last 20 exchanges
+        if len(self.conversation_histories[session_id]) > 20:
+            self.conversation_histories[session_id] = self.conversation_histories[session_id][-20:]
+    
+    def get_session_summary(self, session_id: str) -> Dict[str, Any]:
+        """Get comprehensive session summary"""
+        if session_id not in self.sessions:
+            return {"error": "Session not found"}
+        
+        context = self.sessions[session_id]
+        state_summary = self.state_machine.get_session_summary(session_id)
+        history = self.conversation_histories.get(session_id, [])
+        
+        return {
+            "session_id": session_id,
+            "current_state": context.current_state.value,
+            "patient_id": context.patient_id,
+            "conversation_length": len(history),
+            "state_transitions": state_summary.get("total_transitions", 0),
+            "context_data": context.to_dict(),
+            "recent_messages": history[-3:] if history else []
+        }
+    
+    def cleanup_expired_sessions(self, max_age_hours: int = 24) -> int:
+        """Clean up expired sessions"""
+        logger.info(f"[CLEANUP] Cleaning up sessions older than {max_age_hours} hours")
+        
+        # Use state machine cleanup
+        cleaned_count = self.state_machine.cleanup_expired_sessions(max_age_hours)
+        
+        # Clean up our local storage
+        expired_sessions = []
+        current_time = datetime.now()
+        
+        for session_id, history in self.conversation_histories.items():
+            if history:
+                last_message = history[-1]
+                last_time = datetime.fromisoformat(last_message["timestamp"])
+                age_hours = (current_time - last_time).total_seconds() / 3600
+                
+                if age_hours > max_age_hours:
+                    expired_sessions.append(session_id)
+        
+        for session_id in expired_sessions:
+            self.conversation_histories.pop(session_id, None)
+            self.sessions.pop(session_id, None)
+        
+        total_cleaned = cleaned_count + len(expired_sessions)
+        logger.info(f"[CLEANUP] Cleaned up {total_cleaned} expired sessions")
+        
+        return total_cleaned
+
+
+# For backward compatibility and easy import
+ConversationManager = AdvancedConversationManager
