@@ -1,7 +1,7 @@
 """Patient History Tool for retrieving patient medication history and adherence data."""
 
 from langchain.tools import Tool
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 import json
 from datetime import datetime, timedelta
 from ..services.mock_data import MOCK_PATIENTS
@@ -143,21 +143,94 @@ class PatientHistoryTool:
                 "source": "mock"
             }
 
-# Create LangChain tools
+def safe_medication_history(query: Union[str, Dict, None]) -> Dict:
+    """Safe wrapper for medication history tool that handles various input types"""
+    try:
+        # Handle different input types and ensure we have a string
+        processed_query: str
+        if query is None or query == {} or query == "":
+            processed_query = "all"  # Default to all medications
+        elif isinstance(query, dict):
+            # If it's a dict, try to extract useful information
+            processed_query = str(query.get("medication", query.get("query", "all")))
+        elif not isinstance(query, str):
+            processed_query = str(query)
+        else:
+            processed_query = query
+        
+        return PatientHistoryTool().get_medication_history(processed_query)
+    except Exception as e:
+        logger.error(f"Error in safe_medication_history: {e}")
+        return {
+            "success": False,
+            "error": f"Failed to process medication history request: {str(e)}",
+            "source": "error_handler"
+        }
+
+def safe_adherence_check(query: Union[str, Dict, None]) -> Dict:
+    """Safe wrapper for adherence check that handles various input types"""
+    try:
+        # Handle different input types and ensure we have a string
+        processed_query: str
+        if query is None or query == {} or query == "":
+            # Default to checking most recent medication for demo patient
+            processed_query = "12345:lisinopril"
+        elif isinstance(query, dict):
+            # If it's a dict, try to extract useful information
+            processed_query = str(query.get("medication", query.get("query", "lisinopril")))
+        elif not isinstance(query, str):
+            processed_query = str(query)
+        else:
+            processed_query = query
+        
+        return PatientHistoryTool().check_adherence(processed_query)
+    except Exception as e:
+        logger.error(f"Error in safe_adherence_check: {e}")
+        return {
+            "success": False,
+            "error": f"Failed to process adherence check: {str(e)}",
+            "source": "error_handler"
+        }
+
+def safe_allergy_check(patient_id: Union[str, Dict, None]) -> Dict:
+    """Safe wrapper for allergy check that handles various input types"""
+    try:
+        # Handle different input types and ensure we have a string
+        processed_patient_id: str
+        if patient_id is None or patient_id == {} or patient_id == "":
+            processed_patient_id = "12345"  # Default patient
+        elif isinstance(patient_id, dict):
+            # If it's a dict, try to extract patient_id
+            processed_patient_id = str(patient_id.get("patient_id", "12345"))
+        elif not isinstance(patient_id, str):
+            processed_patient_id = str(patient_id)
+        else:
+            processed_patient_id = patient_id
+        
+        return PatientHistoryTool().get_allergies(processed_patient_id)
+    except Exception as e:
+        logger.error(f"Error in safe_allergy_check: {e}")
+        return {
+            "success": False,
+            "error": f"Failed to process allergy check: {str(e)}",
+            "source": "error_handler"
+        }
+
+# Create LangChain tools with safe wrappers
 patient_history_tool = Tool(
     name="patient_medication_history",
     description="Retrieve patient medication history, adherence data, and allergies. Use format 'medication_name' or 'patient_id:medication_name'. Returns medication details, refill status, and patient safety information.",
-    func=lambda query: PatientHistoryTool().get_medication_history(query)
+    func=safe_medication_history
 )
 
 adherence_tool = Tool(
     name="check_medication_adherence", 
     description="Check patient medication adherence rates and refill patterns. Use format 'medication_name' or 'patient_id:medication_name'. Returns adherence percentage, status, and refill needs.",
-    func=lambda query: PatientHistoryTool().check_adherence(query)
+    func=safe_adherence_check
 )
 
 allergy_tool = Tool(
     name="patient_allergies",
     description="Get patient allergy information for medication safety checks. Use patient_id (defaults to '12345' for demo).",
-    func=lambda patient_id: PatientHistoryTool().get_allergies(patient_id)
+    func=safe_allergy_check
 )

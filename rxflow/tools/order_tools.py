@@ -266,10 +266,50 @@ order_submission_tool = Tool(
     func=lambda query: OrderSubmissionTool().submit_refill_order(query)
 )
 
+# Safe wrappers for robust parameter handling
+def safe_order_submission(query):
+    """Safe wrapper for order submission"""
+    try:
+        if query is None or query == {} or query == "":
+            return {"success": False, "error": "No order details provided", "source": "validation"}
+        elif isinstance(query, dict):
+            # Try to construct order from dict
+            med = query.get("medication", "")
+            dose = query.get("dosage", "")
+            qty = query.get("quantity", "30")
+            pharmacy = query.get("pharmacy", "CVS")
+            patient = query.get("patient_id", "12345")
+            query = f"{med}:{dose}:{qty}:{pharmacy}:{patient}"
+        elif not isinstance(query, str):
+            query = str(query)
+        return OrderSubmissionTool().submit_refill_order(query)
+    except Exception as e:
+        return {"success": False, "error": f"Order submission failed: {str(e)}", "source": "error"}
+
+def safe_order_tracking(query):
+    """Safe wrapper for order tracking"""
+    try:
+        if query is None or query == {} or query == "":
+            return {"success": False, "error": "No order ID provided", "source": "validation"}
+        elif isinstance(query, dict):
+            query = str(query.get("order_id", query.get("id", "")))
+        elif not isinstance(query, str):
+            query = str(query)
+        return OrderSubmissionTool().track_order(query)
+    except Exception as e:
+        return {"success": False, "error": f"Order tracking failed: {str(e)}", "source": "error"}
+
+# Create LangChain tools with safe wrappers
+order_submission_tool = Tool(
+    name="submit_refill_order",
+    description="Submit a prescription refill order to a pharmacy. Use format 'medication:dosage:quantity:pharmacy_id:patient_id'. Returns confirmation details and pickup information.",
+    func=safe_order_submission
+)
+
 order_tracking_tool = Tool(
     name="track_prescription_order",
     description="Track the status of a prescription order using order ID. Returns current status and estimated pickup time.",
-    func=lambda query: OrderSubmissionTool().track_order(query)
+    func=safe_order_tracking
 )
 
 order_cancellation_tool = Tool(

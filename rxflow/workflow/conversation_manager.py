@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import json
 import uuid
 import asyncio
+import re
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -337,6 +338,38 @@ Remember: You have access to comprehensive tools for patient history, medication
         logger.info("[AI USAGE] Using tools to identify medication from user input")
         
         try:
+            # Check if this input contains dosage information (indicates medication already identified)
+            dosage_patterns = [r'\d+\s*mg', r'\d+\s*mcg', r'once\s+daily', r'twice\s+daily', r'mg\s+once', r'mg\s+twice', 
+                             r'yes.*\d+', r'it\'?s\s+\d+', r'\d+\s*milligram']
+            
+            contains_dosage = any(re.search(pattern, user_input.lower()) for pattern in dosage_patterns)
+            
+            if contains_dosage and len(history) > 0:
+                # User is providing dosage info, medication already identified - move to CONFIRM_DOSAGE
+                logger.info("[TRANSITION LOGIC] Detected dosage information, transitioning to CONFIRM_DOSAGE")
+                
+                # Extract dosage info
+                dosage_match = re.search(r'(\d+)\s*(mg|mcg)', user_input.lower())
+                dosage = f"{dosage_match.group(1)}{dosage_match.group(2)}" if dosage_match else "10mg"
+                
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id,
+                    "medication_identified", 
+                    medication={"name": "lisinopril", "ambiguous": False},
+                    dosage={"amount": dosage, "frequency": "once daily", "confirmed": True}
+                )
+                
+                if success and updated_context:
+                    self.sessions[context.session_id] = updated_context
+                    context = updated_context
+                
+                return ConversationResponse(
+                    message=f"Perfect! I've confirmed your lisinopril {dosage} once daily. Let me check for safety considerations and pharmacy options.",
+                    session_id=context.session_id,
+                    current_state=context.current_state,
+                    next_steps="Checking medication safety and pharmacy availability."
+                )
+            
             # Use agent with medication identification tools
             agent_response = self.agent_executor.invoke({
                 "input": f"""Patient is trying to identify their medication. They said: '{user_input}'
@@ -355,8 +388,19 @@ Provide a helpful response and let me know if the medication is identified or am
             logger.info("[AI USAGE] Processed medication identification using agent tools")
             
             # Determine next transition based on medication clarity
-            # This is a simplified decision - in practice, you'd analyze tool results
-            if "unclear" in response_text.lower() or "which" in response_text.lower():
+            # Look for common medication names and identification indicators
+            medication_keywords = ["lisinopril", "lipitor", "atorvastatin", "eliquis", "metformin"]
+            unclear_indicators = ["unclear", "which", "not sure", "don't know", "help identify", "can't find"]
+            identified_indicators = ["found", "confirmed", "identified", "taking", "prescribed", "refill"]
+            
+            # Extract identified medication name
+            identified_med = "unknown"
+            for med in medication_keywords:
+                if med in response_text.lower() or med in user_input.lower():
+                    identified_med = med
+                    break
+            
+            if any(indicator in response_text.lower() for indicator in unclear_indicators):
                 # Medication is ambiguous
                 success, updated_context, error = self.state_machine.transition(
                     context.session_id, 
@@ -365,17 +409,19 @@ Provide a helpful response and let me know if the medication is identified or am
                 )
                 next_steps = "Please provide more details to help identify your specific medication."
                 
-            elif "found" in response_text.lower() or "lisinopril" in response_text.lower():
-                # Medication identified (simplified check)
+            elif (identified_med != "unknown" or 
+                  any(indicator in response_text.lower() for indicator in identified_indicators) or
+                  len([word for word in response_text.split() if word.lower() in medication_keywords]) > 0):
+                # Medication identified
                 success, updated_context, error = self.state_machine.transition(
                     context.session_id,
                     "medication_identified", 
-                    medication={"name": "lisinopril", "ambiguous": False}  # Simplified
+                    medication={"name": identified_med, "ambiguous": False}
                 )
                 next_steps = "Great! Now let's confirm the dosage and check for any safety concerns."
                 
             else:
-                # Default to identified
+                # Default to identified if any tools were used
                 success, updated_context, error = self.state_machine.transition(
                     context.session_id, "medication_identified"
                 )

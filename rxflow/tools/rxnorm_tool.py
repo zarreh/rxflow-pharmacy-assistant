@@ -262,8 +262,63 @@ dosage_verification_tool = Tool(
     func=lambda query: RxNormTool().verify_dosage(query)
 )
 
+# Safe wrappers for robust parameter handling
+def safe_rxnorm_lookup(query):
+    """Safe wrapper for RxNorm medication lookup"""
+    try:
+        if query is None or query == {} or query == "":
+            return {"success": False, "error": "No medication name provided", "source": "validation"}
+        elif isinstance(query, dict):
+            query = str(query.get("medication", query.get("query", "")))
+        elif not isinstance(query, str):
+            query = str(query)
+        return RxNormTool().search_medication(query)
+    except Exception as e:
+        return {"success": False, "error": f"RxNorm lookup failed: {str(e)}", "source": "error"}
+
+def safe_dosage_verification(query):
+    """Safe wrapper for dosage verification"""
+    try:
+        if query is None or query == {} or query == "":
+            return {"success": False, "error": "No medication:dosage provided", "source": "validation"}
+        elif isinstance(query, dict):
+            med = query.get("medication", "")
+            dose = query.get("dosage", "")
+            query = f"{med}:{dose}" if med and dose else str(query)
+        elif not isinstance(query, str):
+            query = str(query)
+        return RxNormTool().verify_dosage(query)
+    except Exception as e:
+        return {"success": False, "error": f"Dosage verification failed: {str(e)}", "source": "error"}
+
+def safe_interaction_check(query):
+    """Safe wrapper for drug interaction check"""
+    try:
+        if query is None or query == {} or query == "":
+            return {"success": False, "error": "No medication name provided", "source": "validation"}
+        elif isinstance(query, dict):
+            query = str(query.get("medication", query.get("query", "")))
+        elif not isinstance(query, str):
+            query = str(query)
+        return RxNormTool().get_interactions(query)
+    except Exception as e:
+        return {"success": False, "error": f"Interaction check failed: {str(e)}", "source": "error"}
+
+# Create LangChain tools with safe wrappers
+rxnorm_tool = Tool(
+    name="rxnorm_medication_lookup",
+    description="Look up medication information from RxNorm database. Returns drug details, RxCUI, brand names, and classifications. Use medication name as input.",
+    func=safe_rxnorm_lookup
+)
+
+dosage_verification_tool = Tool(
+    name="verify_medication_dosage",
+    description="Verify if a dosage is valid for a medication. Use format 'medication:dosage' (e.g., 'lisinopril:10mg'). Returns validation and available dosages.",
+    func=safe_dosage_verification
+)
+
 interaction_tool = Tool(
     name="check_drug_interactions",
     description="Check for drug interactions for a medication. Use medication name as input. Returns potential interactions and severity levels.",
-    func=lambda query: RxNormTool().get_interactions(query)
+    func=safe_interaction_check
 )
