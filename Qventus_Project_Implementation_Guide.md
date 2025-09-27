@@ -10,265 +10,393 @@ Building an AI-powered pharmacy refill assistant for Qventus interview challenge
 
 ## Technical Stack
 - **Framework**: LangChain + LangGraph (for state management and graph-based conversation flow)
-- **LLM**: Any (OpenAI, Claude, or local LLM)
+- **LLM**: Any (OpenAI, or local LLM)
 - **Frontend**: Streamlit (Python-based, quick to implement)
 - **Vector Store**: FAISS (simple, no infrastructure needed)
 - **Embeddings**: OpenAI or HuggingFace embeddings
 
 ## Core Architecture
 
-### Workflow Selected: Pharmacy Refill & Escalation
-This workflow demonstrates:
-- Multi-turn conversations with state management
-- Tool integration (APIs)
-- RAG for policy retrieval
-- Mathematical optimization (cost/distance)
-- Multiple escalation paths
+### Tool-Based AI Assistant Approach
+This approach demonstrates:
+- **Tool Calling**: LLM decides when to call tools for information
+- **Real + Mock APIs**: Mix of actual (RxNorm) and simulated (GoodRx) integrations
+- **Healthcare Context**: Patient history, drug interactions, cost optimization
+- **Scalable Design**: Easy to add new tools without changing core logic
 
 ### Key Business Value
 - Reduces refill processing time from 15-30 min to 2-3 min
-- Prevents medication errors through automated interaction checking
-- Optimizes costs by suggesting generic alternatives
-- Improves patient satisfaction with faster turnaround
+- Natural conversation experience instead of rigid step-by-step forms
+- Prevents medication errors through automated safety checks
+- Optimizes costs by suggesting alternatives and comparing pharmacies
+- Improves patient satisfaction with AI-powered assistance
 
-## Conversation Flow Architecture
+## Implementation Strategy
 
-### Main Flow States
-1. **Input Parser** → Extract medication request
-2. **Confirmation** → Verify medication details with user
-3. **RxNorm Standardization** → Convert to standard drug codes (backend only)
-4. **Eligibility Check** → Verify prescription status
-5. **Drug Interaction Check** → Safety validation (risk score 0-10)
-6. **Formulary Check** → Insurance coverage verification
-7. **Cost Optimization** → Calculate cheapest options if needed
-8. **Inventory Check** → Find best pharmacy location
-9. **Order Submission** → Submit to selected pharmacy
-10. **Confirmation** → Provide pickup details
+### Phase 1: Tool Creation (1.5 hours)
+Create tools that the AI assistant can call:
+1. **Patient History Tool** → Retrieve medication history, adherence data
+2. **RxNorm Tool** → Real API for medication verification
+3. **Pharmacy Inventory Tool** → Mock real-time inventory checks
+4. **Insurance Tool** → Mock formulary and PA checks
+5. **Cost Comparison Tool** → Mock GoodRx-style pricing
 
-### Escalation Paths
-- **No Refills** → Request new Rx from provider
-- **High Interaction Risk (>7)** → Pharmacist review
-- **Prior Auth Needed** → Provider with PA documentation
-- **Not Covered** → Offer alternatives with user consent
+### Phase 2: LangChain Integration (1.5 hours)  
+Connect tools to existing conversation system:
+- Conversation manager calls tools based on user intent
+- Tools return data that conversation uses in natural responses
+- Simple state tracking to know what's been completed
 
-### Conversation Nodes (User Interaction Points)
-- Confirm medication details
-- Consent for new Rx request
-- Approve alternative medications
-- Select pharmacy location
-- Confirm final order
+### Phase 3: Workflow & Demo (1 hour)  
+Polish the workflow and prepare for demonstration:
+- End-to-end testing of the refill process
+- Ensure all tools and services are properly integrated
+- Prepare demo scenarios that showcase key features
+
+### Conversation Flow (User Experience)
+**Natural conversation that covers all workflow steps:**
+1. User: "I need to refill my lisinopril"
+2. AI: "I'll help you refill Lisinopril. What dosage are you taking?"
+3. User: "10mg, I need a 30-day supply"
+4. AI: "Found your medication. I see 3 pharmacies nearby. CVS is closest but Walmart is $10 cheaper. Which would you prefer?"
+5. User: "Walmart sounds good"
+6. AI: "Perfect! Your Lisinopril 10mg is ready for pickup at Walmart on Main St after 2pm. Confirmation #12345. You saved $10!"
+
+**No rigid steps - conversation adapts to user needs**
 
 ## Implementation Components
 
-### 1. Mock APIs to Create
+### 1. Tool Definitions
 
-#### RxNorm API (Real API Available)
+#### Patient History Tool
 ```python
-# Can use real API: https://rxnav.nlm.nih.gov/REST/
-# Example: /REST/rxcui.json?name=lisinopril
-# No API key required
-```
+# rxflow/tools/patient_history_tool.py
+from langchain.tools import Tool
+from typing import Dict, List
+import json
 
-#### Mock Pharmacy Inventory
-```python
-PHARMACY_INVENTORY = {
-    "CVS_12345": {
-        "name": "CVS Pharmacy #12345",
-        "address": "123 Main St, Austin, TX 78701",
-        "lat": 30.2672, "lon": -97.7431,
-        "inventory": {
-            "lisinopril_10mg": {"quantity": 500, "wait_time": 0.5},
-            "metformin_500mg": {"quantity": 1000, "wait_time": 0.5}
+class PatientHistoryTool:
+    """Mock patient medication history database"""
+    
+    def __init__(self):
+        self.patient_data = {
+            "12345": {  # Mock patient ID
+                "medications": [
+                    {
+                        "name": "lisinopril",
+                        "dosage": "10mg", 
+                        "start_date": "2023-01-15",
+                        "refills_remaining": 2,
+                        "last_filled": "2024-01-05",
+                        "adherence_rate": 0.92
+                    },
+                    {
+                        "name": "metformin",
+                        "dosage": "500mg",
+                        "start_date": "2022-06-20", 
+                        "refills_remaining": 0,
+                        "last_filled": "2023-12-10",
+                        "adherence_rate": 0.88
+                    }
+                ],
+                "allergies": ["penicillin", "sulfa"],
+                "conditions": ["hypertension", "type 2 diabetes"]
+            }
         }
-    }
-    # Add 2-3 more pharmacies
-}
-```
-
-#### Mock Insurance Formulary
-```python
-INSURANCE_FORMULARY = {
-    "BCBS_TX_001": {
-        "covered_drugs": {
-            "lisinopril": {"tier": 1, "copay": 10, "prior_auth": False},
-            "eliquis": {"tier": 3, "copay": 60, "prior_auth": True}
+    
+    def get_medication_history(self, patient_id: str, medication_name: str = None) -> Dict:
+        """Retrieve patient medication history"""
+        patient = self.patient_data.get(patient_id, {})
+        medications = patient.get("medications", [])
+        
+        if medication_name:
+            medications = [m for m in medications if medication_name.lower() in m["name"].lower()]
+        
+        return {
+            "patient_id": patient_id,
+            "medications": medications,
+            "allergies": patient.get("allergies", [])
         }
-    }
-}
-```
+    
+    def check_adherence(self, patient_id: str, medication_name: str) -> Dict:
+        """Check medication adherence and refill patterns"""
+        history = self.get_medication_history(patient_id, medication_name)
+        
+        if history["medications"]:
+            med = history["medications"][0]
+            return {
+                "medication": med["name"],
+                "adherence_rate": med["adherence_rate"],
+                "last_filled": med["last_filled"],
+                "refills_remaining": med["refills_remaining"],
+                "adherence_status": "good" if med["adherence_rate"] > 0.8 else "needs improvement"
+            }
+        
+        return {"error": "Medication not found in history"}
 
-#### Mock Pricing Data
-```python
-DRUG_PRICES = {
-    "lisinopril_10mg": {
-        "brand": 65.00,
-        "generic": 12.00,
-        "pharmacy_prices": {
-            "CVS": 15.00,
-            "Walmart": 4.00,
-            "Walgreens": 14.50
-        }
-    }
-}
-```
-
-### 2. RAG Implementation
-
-#### Documents for Vector Store
-Create policy documents for prior authorization criteria:
-```text
-ELIQUIS Prior Authorization Criteria:
-- Patient must have tried and failed warfarin therapy
-- Diagnosis of atrial fibrillation or DVT/PE required
-- Age 18 or older
-- Approval period: 12 months
-
-LISINOPRIL Coverage Policy:
-- No prior authorization required
-- First-line therapy for hypertension
-- Maximum dose: 40mg daily
-```
-
-#### RAG Setup
-```python
-from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbeddings
-
-# Create vector store with drug policies
-vectorstore = FAISS.from_texts(
-    texts=policy_documents,
-    embedding=OpenAIEmbeddings()
-)
-
-# Query when needed
-relevant_policy = vectorstore.similarity_search(
-    f"Prior authorization criteria for {drug_name}",
-    k=1
+# Create LangChain tool
+patient_history_tool = Tool(
+    name="patient_medication_history",
+    description="Retrieve patient medication history, adherence data, and allergies. Use when needing patient-specific information.",
+    func=lambda query: PatientHistoryTool().get_medication_history("12345", query)
 )
 ```
 
-### 3. Mathematical Optimization
-
-#### Pharmacy Selection Algorithm
+#### RxNorm Integration Tool
 ```python
-def optimize_pharmacy_selection(pharmacies, user_location):
-    """
-    Optimize based on: distance * 2 + wait_time * 10 + price
-    """
-    scores = []
-    for pharmacy in pharmacies:
-        distance = calculate_distance(user_location, pharmacy['location'])
-        score = (distance * 2) + (pharmacy['wait_time'] * 10) + pharmacy['price']
-        scores.append((pharmacy, score))
-    return min(scores, key=lambda x: x[1])[0]
-```
+# rxflow/tools/rxnorm_tool.py
+import requests
+from langchain.tools import Tool
+from typing import Dict, Optional
+import time
 
-#### Cost Optimization
-```python
-def optimize_medication_cost(drug_name, quantity, insurance):
-    """
-    Compare: brand vs generic, 30-day vs 90-day supply
-    """
-    options = []
-    for variant in ['brand', 'generic']:
-        for days in [30, 90]:
-            cost = calculate_total_cost(variant, days, insurance)
-            options.append({'variant': variant, 'days': days, 'cost': cost})
-    return min(options, key=lambda x: x['cost'])
-```
+class RxNormTool:
+    """Real RxNorm API integration for medication verification"""
+    
+    BASE_URL = "https://rxnav.nlm.nih.gov/REST"
+    
+    def search_medication(self, medication_name: str) -> Dict:
+        """Search for medication in RxNorm database"""
+        try:
+            # Real API call to RxNorm
+            response = requests.get(
+                f"{self.BASE_URL}/drugs.json",
+                params={"name": medication_name},
+                timeout=5
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                # Parse and return relevant info
+                return self._parse_rxnorm_response(data)
+            else:
+                # Fallback to mock data if API fails
+                return self._mock_medication_data(medication_name)
+                
+        except Exception as e:
+            # Always have fallback for demo reliability
+            return self._mock_medication_data(medication_name)
+    
+    def get_interactions(self, rxcui: str) -> Dict:
+        """Check drug interactions (simplified)"""
+        # For demo, return mock interactions
+        return {
+            "rxcui": rxcui,
+            "interactions": [
+                {"severity": "moderate", "drug": "ibuprofen", "effect": "May increase blood pressure"}
+            ]
+        }
+    
+    def _parse_rxnorm_response(self, data: Dict) -> Dict:
+        """Parse RxNorm API response"""
+        # Simplified parsing for demo
+        drug_group = data.get("drugGroup", {})
+        concept_group = drug_group.get("conceptGroup", [])
+        
+        medications = []
+        for group in concept_group:
+            if "conceptProperties" in group:
+                for concept in group["conceptProperties"]:
+                    medications.append({
+                        "rxcui": concept.get("rxcui"),
+                        "name": concept.get("name"),
+                        "synonym": concept.get("synonym", ""),
+                        "tty": concept.get("tty")  # Term type
+                    })
+        
+        return {"medications": medications[:5]}  # Limit results
+    
+    def _mock_medication_data(self, medication_name: str) -> Dict:
+        """Fallback mock data"""
+        mock_db = {
+            "lisinopril": {
+                "rxcui": "29046",
+                "generic_name": "lisinopril",
+                "brand_names": ["Prinivil", "Zestril"],
+                "drug_class": "ACE inhibitor"
+            },
+            "metformin": {
+                "rxcui": "6809", 
+                "generic_name": "metformin",
+                "brand_names": ["Glucophage"],
+                "drug_class": "biguanide"
+            }
+        }
+        
+        return {"medication": mock_db.get(medication_name.lower(), {"error": "Not found"})}
 
-### 4. LangGraph State Management
-
-```python
-from typing import TypedDict, List
-from langgraph.graph import StateGraph, END
-
-class RefillState(TypedDict):
-    patient_id: str
-    medication: str
-    rxnorm_code: str
-    dosage: str
-    quantity: int
-    insurance_id: str
-    refills_remaining: int
-    interaction_score: float
-    formulary_status: str
-    selected_pharmacy: str
-    alternatives: List[str]
-    user_consents: dict
-    conversation_history: List[str]
-
-# Define the graph
-workflow = StateGraph(RefillState)
-
-# Add nodes
-workflow.add_node("input_parser", input_parser_node)
-workflow.add_node("confirm_details", confirmation_node)
-workflow.add_node("rxnorm_lookup", rxnorm_node)
-workflow.add_node("eligibility_check", eligibility_node)
-workflow.add_node("interaction_check", interaction_node)
-workflow.add_node("formulary_check", formulary_node)
-workflow.add_node("rag_pa_criteria", rag_pa_node)
-workflow.add_node("cost_optimization", cost_optimizer_node)
-workflow.add_node("inventory_check", inventory_node)
-workflow.add_node("submit_order", submission_node)
-
-# Add conditional edges
-workflow.add_conditional_edges(
-    "eligibility_check",
-    eligibility_router,
-    {
-        "no_refills": "request_new_rx",
-        "too_early": "inform_wait",
-        "valid": "interaction_check"
-    }
+# Create LangChain tool
+rxnorm_tool = Tool(
+    name="rxnorm_medication_lookup",
+    description="Look up medication information from RxNorm database. Returns drug details, RxCUI, and classifications.",
+    func=lambda query: RxNormTool().search_medication(query)
 )
 ```
 
-### 5. Streamlit Frontend Structure
+#### Mock Premium API Tools
+```python
+# rxflow/tools/premium_api_tools.py
+from langchain.tools import Tool
+from typing import Dict, List
+import random
+
+class MockGoodRxTool:
+    """Simulates GoodRx API for price comparison"""
+    
+    def get_prices(self, medication: str, dosage: str, quantity: int = 30) -> Dict:
+        """Mock GoodRx price lookup"""
+        # Simulate API response delay
+        base_price = random.uniform(10, 100)
+        
+        pharmacies = {
+            "CVS": base_price * 1.2,
+            "Walmart": base_price * 0.4,
+            "Walgreens": base_price * 1.1,
+            "Costco": base_price * 0.3,
+            "RiteAid": base_price * 1.15
+        }
+        
+        return {
+            "medication": medication,
+            "dosage": dosage,
+            "quantity": quantity,
+            "prices": pharmacies,
+            "lowest_price": min(pharmacies.values()),
+            "highest_price": max(pharmacies.values()),
+            "savings_potential": max(pharmacies.values()) - min(pharmacies.values())
+        }
+
+class MockInsuranceFormularyTool:
+    """Simulates insurance formulary checks"""
+    
+    def check_coverage(self, medication: str, insurance_plan: str = "Default Plan") -> Dict:
+        """Mock formulary lookup"""
+        # Simulate different coverage tiers
+        mock_formulary = {
+            "lisinopril": {"tier": 1, "copay": 10, "pa_required": False},
+            "metformin": {"tier": 1, "copay": 10, "pa_required": False},
+            "eliquis": {"tier": 3, "copay": 75, "pa_required": True},
+            "humira": {"tier": 4, "copay": 200, "pa_required": True}
+        }
+        
+        med_lower = medication.lower()
+        if med_lower in mock_formulary:
+            return {
+                "medication": medication,
+                "covered": True,
+                **mock_formulary[med_lower]
+            }
+        
+        return {
+            "medication": medication,
+            "covered": False,
+            "reason": "Non-formulary medication",
+            "alternatives": ["generic equivalent available"]
+        }
+
+# Create tools
+goodrx_tool = Tool(
+    name="goodrx_price_lookup",
+    description="Get medication prices from multiple pharmacies. Shows lowest prices and savings opportunities.",
+    func=lambda query: MockGoodRxTool().get_prices(query, "10mg")
+)
+
+insurance_tool = Tool(
+    name="insurance_formulary_check",
+    description="Check if medication is covered by insurance, what tier, and if prior authorization is needed.",
+    func=lambda query: MockInsuranceFormularyTool().check_coverage(query)
+)
+```
+
+### 2. Enhanced Conversation Manager with Tools
 
 ```python
-import streamlit as st
-from langgraph_workflow import RefillWorkflow
+# rxflow/workflow/conversation_manager.py
+from langchain.agents import initialize_agent, AgentType
+from langchain.memory import ConversationBufferMemory
+from rxflow.tools import patient_history_tool, rxnorm_tool, goodrx_tool, insurance_tool
 
-st.title("Pharmacy Refill Assistant")
+class ConversationManager:
+    def __init__(self, llm):
+        self.llm = llm
+        self.tools = [
+            patient_history_tool,
+            rxnorm_tool,
+            goodrx_tool,
+            insurance_tool
+        ]
+        
+        # Initialize agent with tools
+        self.agent = initialize_agent(
+            tools=self.tools,
+            llm=self.llm,
+            agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
+            memory=ConversationBufferMemory(memory_key="chat_history"),
+            verbose=True,  # For demo - shows tool usage
+            agent_kwargs={
+                "system_message": """You are a pharmacy assistant helping with medication refills.
+                Always check patient history first for safety.
+                Verify medications with RxNorm.
+                Check insurance coverage before showing prices.
+                Be helpful and concise."""
+            }
+        )
+    
+    async def handle_refill_request(self, user_input: str) -> str:
+        """Process refill request using tools"""
+        try:
+            # Agent will decide which tools to use
+            response = await self.agent.arun(user_input)
+            return response
+        except Exception as e:
+            return f"I encountered an issue: {str(e)}. Let me help you another way..."
+```
 
-# Chat interface
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+### 3. Tool Usage Examples
 
-# Display chat history
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
+```python
+# Example prompts that trigger different tools:
 
-# User input
-if prompt := st.chat_input("Enter your refill request..."):
-    # Add to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+# Triggers patient history tool
+"I need to refill my blood pressure medication"
+# AI: Let me check your medication history... I see you take lisinopril 10mg with good adherence (92%).
 
-    # Process through LangGraph
-    workflow = RefillWorkflow()
-    response = workflow.process(prompt)
+# Triggers RxNorm tool
+"Is there a generic for Lipitor?"
+# AI: Let me look that up... Yes, the generic for Lipitor is atorvastatin.
 
-    # Display assistant response
-    st.session_state.messages.append({"role": "assistant", "content": response})
+# Triggers insurance + pricing tools
+"How much will my lisinopril cost?"
+# AI: Let me check your insurance... Lisinopril is Tier 1 with $10 copay. Without insurance, Walmart has it for $4.
+
+# Triggers multiple tools
+"I haven't refilled my diabetes medication in a while"
+# AI: Checking your history... Your last metformin refill was 45 days ago. You have 0 refills remaining. 
+#     Your adherence is 88%. Let me check the best price for a new prescription...
 ```
 
 ## Critical Implementation Points
 
 ### Must-Have Features (Core Requirements)
-1. **Intent Recognition**: Clear identification of refill requests
-2. **Entity Extraction**: Medication, dosage, quantity
-3. **Backend Integration**: At least one mock API call
-4. **Modular Design**: Separate prompts, logic, and integrations
-5. **Error Handling**: Handle missing/ambiguous information
+1. **✅ Intent Recognition**: Already working with intelligent conversation
+2. **✅ Entity Extraction**: Already implemented in conversation manager  
+3. **🆕 Backend Services**: Add medication, pharmacy, and cost services
+4. **🆕 Workflow Integration**: Connect services to conversation manager
+5. **✅ Error Handling**: Already implemented
 
-### Bonus Features (If Time Permits)
-1. **Multi-turn Clarification**: Handle ambiguous requests
-2. **RAG Integration**: Policy and criteria retrieval
-3. **Voice Input**: Simple speech-to-text
-4. **Analytics Dashboard**: Show optimization metrics
+### Focus Areas for Implementation (3-4 hours)
+1. **Service Layer**: Create medication, pharmacy, cost services with mock data
+2. **Workflow Orchestrator**: Simple state tracking (not complex LangGraph)
+3. **Service Integration**: Update conversation manager to call services
+4. **Cost Optimization**: Basic pharmacy price comparison
+5. **Demo Scenarios**: 2-3 complete refill workflows
+
+### Out of Scope (Keep it Simple)
+- ❌ Complex LangGraph state machines 
+- ❌ RAG/Vector databases (not needed for core demo)
+- ❌ Real API integrations (use mock data)
+- ❌ Advanced safety checking (basic validation only)
+- ❌ Multiple escalation paths (focus on happy path)
 
 ### Key Differentiators to Highlight
 1. **Healthcare Domain Knowledge**: Use proper medical terminology (RxNorm, formulary, PA)
@@ -319,118 +447,99 @@ Bot: "Switched to atorvastatin. Available at CVS for pickup in 30 minutes."
 - [ ] 1-2 page document on optimization & scalability
 - [ ] Clear documentation of AI assistant usage
 
-## Time Management (4-6 hours)
+## Updated Time Management (4 hours)
 
-1. **Hour 1**: Setup environment, create mock data
-2. **Hour 2**: Build LangGraph workflow structure
-3. **Hour 3**: Implement core nodes and conversation logic
-4. **Hour 4**: Add RAG and optimization features
-5. **Hour 5**: Create Streamlit UI
-6. **Hour 6**: Documentation and testing
+### **Phase 1: Tool Development (1.5 hours)**
+1. **30 min**: Create patient history tool with mock data
+2. **30 min**: Implement RxNorm tool with real API + fallback
+3. **30 min**: Create mock premium API tools (GoodRx, Insurance)
 
-## Code Structure
+### **Phase 2: Integration (1.5 hours)**
+4. **45 min**: Integrate tools with LangChain agent
+5. **45 min**: Test tool calling and conversation flow
+
+### **Phase 3: Workflow & Polish (1 hour)**
+6. **30 min**: Create complete refill scenarios using tools
+7. **30 min**: Documentation and demo preparation
+
+## Simplified Code Structure
 ```
 rxflow-pharmacy-assistant/
 ├── README.md
-├── pyproject.toml            # Poetry configuration
-├── poetry.lock              # Poetry lock file
-├── .env.example             # Example environment variables
-├── .gitignore
-├── app.py                   # Streamlit frontend
-├── workflow/
+├── pyproject.toml            # Poetry configuration  
+├── app.py                   # Streamlit frontend (already exists)
+├── rxflow/
 │   ├── __init__.py
-│   ├── graph.py            # Main LangGraph workflow orchestration
-│   ├── state.py            # State definitions and types
-│   ├── nodes/              # Individual node implementations
+│   ├── llm.py              # Centralized LLM management (already exists)
+│   ├── services/           # NEW: Backend services
 │   │   ├── __init__.py
-│   │   ├── input_nodes.py      # Input parser, confirmation nodes
-│   │   ├── validation_nodes.py # Eligibility, interaction check nodes
-│   │   ├── formulary_nodes.py  # Formulary, cost optimization nodes
-│   │   ├── inventory_nodes.py  # Pharmacy inventory, selection nodes
-│   │   ├── escalation_nodes.py # Provider, pharmacist escalation nodes
-│   │   └── output_nodes.py     # Order submission, confirmation nodes
-│   ├── chains/             # Reusable chains and prompts
+│   │   ├── medication_service.py    # Verify medications
+│   │   ├── pharmacy_service.py      # Find pharmacies, check inventory  
+│   │   ├── cost_service.py          # Price comparisons
+│   │   └── order_service.py         # Submit refill orders
+│   ├── workflow/
 │   │   ├── __init__.py
-│   │   ├── conversation_chains.py  # User interaction chains
-│   │   ├── extraction_chains.py    # Entity extraction chains
-│   │   ├── decision_chains.py      # Decision-making chains
-│   │   └── prompts.py              # All prompt templates
-│   └── routers.py          # Conditional edge routers
-├── tools/
-│   ├── __init__.py
-│   ├── rxnorm_api.py       # RxNorm API integration
-│   ├── mock_apis.py        # Mock pharmacy/insurance APIs
-│   └── optimization.py     # Cost/distance calculations
-├── rag/
-│   ├── __init__.py
-│   ├── documents.py        # PA criteria documents loader
-│   ├── vector_store.py     # FAISS setup and management
-│   └── retriever.py        # RAG retrieval logic
-├── data/
-│   ├── mock_patients.json
-│   ├── mock_pharmacies.json
-│   ├── mock_insurance.json
-│   ├── mock_drugs.json
-│   └── drug_policies.txt
-├── config/
-│   ├── __init__.py
-│   └── settings.py         # Configuration management
-├── utils/
-│   ├── __init__.py
-│   ├── logger.py           # Logging setup
-│   └── helpers.py          # Utility functions
-└── tests/
-    ├── __init__.py
-    ├── test_nodes/
-    │   ├── test_input_nodes.py
-    │   ├── test_validation_nodes.py
-    │   └── test_formulary_nodes.py
-    ├── test_chains/
-    │   ├── test_conversation_chains.py
-    │   └── test_extraction_chains.py
-    ├── test_tools/
-    │   ├── test_rxnorm_api.py
-    │   └── test_optimization.py
-    └── test_workflow.py
+│   │   ├── orchestrator.py          # NEW: Simple workflow state tracking
+│   │   ├── conversation_manager.py  # ENHANCE: Add service integration
+│   │   └── simple_conversation.py   # Already exists
+│   ├── config/
+│   │   ├── __init__.py
+│   │   └── settings.py     # Already exists
+│   └── utils/
+│       ├── __init__.py
+│       └── logger.py       # Already exists
+├── data/                   # NEW: Mock data files
+│   ├── medications.json
+│   ├── pharmacies.json
+│   └── drug_costs.json
+└── tests/                  # Keep existing tests
+    ├── test_services/      # NEW: Test new services
+    └── ... (existing tests)
 ```
 
-## Workflow Diagram (Mermaid)
+**Key Changes from Original Plan:**
+- **Leverage existing architecture** instead of rebuilding
+- **Add services layer** without complex LangGraph nodes  
+- **Simple workflow orchestrator** instead of state machines
+- **Focus on 4-5 new files** instead of 20+ files
+
+## Simplified Implementation Flow
 
 ```mermaid
 graph TD
-    START([START]) --> INPUT["Input Parser Node<br/>Extract initial request<br/>Identify medication mentioned"]
+    START([User Input]) --> CONV["Intelligent Conversation Manager<br/>(Already Built)"]
+    
+    CONV --> EXTRACT["Extract Entities<br/>medication, dosage, preferences"]
+    
+    EXTRACT --> ORCH["Workflow Orchestrator<br/>Track what's been completed"]
+    
+    ORCH --> SERVICES["Call Appropriate Services"]
+    
+    SERVICES --> MED["Medication Service<br/>Verify medication & dosage"]
+    SERVICES --> PHARM["Pharmacy Service<br/>Find nearby locations"]  
+    SERVICES --> COST["Cost Service<br/>Compare prices"]
+    SERVICES --> ORDER["Order Service<br/>Submit refill request"]
+    
+    MED --> RESPONSE["Generate Natural Response<br/>Using service data"]
+    PHARM --> RESPONSE
+    COST --> RESPONSE
+    ORDER --> RESPONSE
+    
+    RESPONSE --> CONV2["Continue Conversation<br/>Until workflow complete"]
+    
+    CONV2 --> END([Complete Refill])
 
-    INPUT --> CONVO1["Conversation Node 1<br/>Confirm medication details<br/>'Is this for Lisinopril 10mg,<br/>30-day supply?'"]
-
-    CONVO1 -->|User Confirms| RXNORM["RxNorm Standardization Tool<br/>Convert to RxNorm code<br/>Store alternatives for later"]
-    CONVO1 -->|User Corrects| INPUT
-
-    RXNORM --> ELIG["Eligibility Check Node<br/>Check refill timing<br/>Verify active prescription<br/>Check remaining refills"]
-
-    ELIG -->|No Refills| CONVO2["Conversation Node 2<br/>'No refills remaining.<br/>Shall I request new Rx<br/>from Dr. Johnson?'"]
-    CONVO2 -->|Yes| NEWRX[Request New Rx Node]
-    CONVO2 -->|No| END4([END - Cancelled])
-
-    ELIG -->|Valid| INTERACT["Drug Interaction Tool<br/>Check current meds<br/>Calculate risk score"]
-
-    INTERACT -->|Score > 7| CONVO4["Conversation Node 4<br/>'Potential interaction detected.<br/>Pharmacist review required.<br/>Proceed?'"]
-
-    INTERACT -->|Score ≤ 7| FORMULARY["Formulary Check<br/>Check insurance coverage<br/>Calculate costs"]
-
-    FORMULARY -->|Prior Auth| RAGPA["RAG: PA Criteria<br/>Retrieve requirements"]
-
-    FORMULARY -->|Not Covered| RAGSUB["RAG: Coverage Policies<br/>Check alternatives coverage"]
-
-    FORMULARY -->|Covered| INVENTORY["Inventory Check<br/>Query 3 pharmacies<br/>Calculate optimal location"]
-
-    INVENTORY --> CONVO7["Conversation Node 7<br/>'Available at:<br/>CVS (0.5mi) - $15<br/>Walmart (3mi) - $4<br/>Which do you prefer?'"]
-
-    CONVO7 -->|User Selects| SUBMIT["Order Submission<br/>Submit to selected pharmacy<br/>Generate confirmation #"]
-
-    SUBMIT --> CONVO_FINAL["Final Confirmation<br/>'Order submitted to [pharmacy]<br/>Pickup after [time]<br/>Confirmation #12345<br/>You saved $X today'"]
-
-    CONVO_FINAL --> END([END - Success])
+    style CONV fill:#e1f5fe
+    style SERVICES fill:#f3e5f5
+    style RESPONSE fill:#e8f5e8
 ```
+
+**Key Differences from Original Complex Flow:**
+- **Single conversation manager** handles all interactions
+- **Services called as needed** based on conversation context
+- **Natural conversation flow** instead of rigid step-by-step nodes
+- **Orchestrator tracks progress** without controlling conversation
+- **Much simpler to implement** in 3-4 hours
 
 ## Final Tips
 - Keep it simple but impressive - show architecture thinking over complex code

@@ -14,6 +14,8 @@ from langchain.memory import ConversationBufferWindowMemory
 
 from rxflow.llm import get_conversational_llm, get_analytical_llm
 from rxflow.utils.logger import get_logger
+from rxflow.workflow.state_machine import RefillStateMachine, RefillState
+from rxflow.prompts.prompt_manager import PromptManager
 
 logger = get_logger(__name__)
 
@@ -163,13 +165,15 @@ Consider the conversation context and respond with JSON:
                 return "general_question", 0.5
 
 
-class SmartConversationManager:
+class ConversationManager:
     """Intelligent conversation manager with context awareness and tool integration"""
     
     def __init__(self):
         self.llm = get_conversational_llm()
         self.intent_classifier = IntentClassifier()
         self.conversations = {}  # Session ID -> ConversationMemory
+        self.prompt_manager = PromptManager()
+        self.state_machines = {}  # session_id -> RefillStateMachine
         
         self.system_prompt = """You are RxFlow, an intelligent AI pharmacy assistant. You help patients with prescription refills, medication questions, and pharmacy services.
 
@@ -362,3 +366,78 @@ CONVERSATION GUIDELINES FOR THIS INTENT:
             "recent_intents": memory.intents[-5:],
             "status": "active"
         }
+    
+    async def handle_message(self, user_input: str, session_id: str) -> str:
+        """Main entry point with explicit AI usage tracking"""
+        
+        # Get or create state machine for session
+        if session_id not in self.state_machines:
+            self.state_machines[session_id] = RefillStateMachine()
+        
+        state_machine = self.state_machines[session_id]
+        
+        # Log where AI is being used
+        logger.info(f"[AI USAGE] Processing input in state: {state_machine.current_state.value}")
+        
+        # Route to appropriate handler based on current state
+        handler_name = state_machine.get_state_handler()
+        handler = getattr(self, handler_name, self.handle_default)
+        
+        response = await handler(user_input, session_id, state_machine)
+        
+        return response
+    
+    async def handle_identify_medication(self, user_input: str, session_id: str, state_machine: RefillStateMachine) -> str:
+        """Handle medication identification with AI"""
+        
+        # [AI USAGE] Extract medication using LLM
+        system_prompt, user_prompt = self.prompt_manager.format_prompt(
+            "medication_extraction", 
+            user_input=user_input
+        )
+        
+        extraction_result = await self.llm_manager.get_completion(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            response_format="json"
+        )
+        
+        logger.info(f"[AI USAGE] Medication extraction result: {extraction_result}")
+        
+        # Verify medication with service
+        medication = extraction_result.get("medication_name")
+        if medication:
+            med_info = self.medication_service.verify_medication(medication)
+            if med_info:
+                state_machine.context["medication"] = med_info
+                state_machine.transition("medication_found")
+                return f"I found {medication}. What dosage are you currently taking?"
+            else:
+                # [AI USAGE] Disambiguation needed
+                similar_meds = self.medication_service.find_similar(medication)
+                if similar_meds:
+                    state_machine.transition("medication_ambiguous")
+                    state_machine.context["similar_medications"] = similar_meds
+                    return await self._generate_disambiguation_response(medication, similar_meds)
+        
+        return "I couldn't find that medication. Could you please check the spelling or provide more details?"
+    
+    async def _generate_disambiguation_response(self, user_input: str, similar_meds: List[str]) -> str:
+        """[AI USAGE] Generate clarifying question for ambiguous medication"""
+        system_prompt, user_prompt = self.prompt_manager.format_prompt(
+            "medication_disambiguation",
+            user_input=user_input,
+            matches=", ".join(similar_meds)
+        )
+        
+        response = await self.llm_manager.get_completion(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt
+        )
+        
+        logger.info("[AI USAGE] Generated disambiguation question")
+        return response
+    
+    async def handle_default(self, user_input: str, session_id: str, state_machine: RefillStateMachine) -> str:
+        """Default handler for unrecognized states"""
+        return "I'm sorry, I didn't understand that. Can you please rephrase?"
