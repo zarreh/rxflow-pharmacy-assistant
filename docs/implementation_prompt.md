@@ -110,7 +110,7 @@ Each prompt should have:
 - Examples (few-shot)
 - Version tracking
 
-### STEP 5: aw (30 minutes)
+### STEP 5: Implement State Machine (30 minutes)
 File: `rxflow/workflow/state_machine.py`
 
 Define states:
@@ -168,7 +168,7 @@ Enhance to show:
 ### STEP 9: Integration Testing (30 minutes)
 Create test scenarios:
 1. Happy path: Simple lisinopril refill
-2. Disambiguation: "blood pressure medication"
+2. Disambiguation: "blood pressure medication"w
 3. Prior auth: Eliquis refill
 4. Cost optimization: Brand vs generic
 5. Error handling: Unknown medication

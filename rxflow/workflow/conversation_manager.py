@@ -193,7 +193,7 @@ Remember: You have access to comprehensive tools for patient history, medication
             logger.error(f"[ERROR] Failed to setup agent: {e}")
             raise
     
-    def handle_message(self, user_input: str, session_id: Optional[str] = None) -> ConversationResponse:
+    async def handle_message(self, user_input: str, session_id: Optional[str] = None, patient_id: str = "12345") -> ConversationResponse:
         """
         Main entry point for handling user messages
         
