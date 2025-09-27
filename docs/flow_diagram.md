@@ -1,108 +1,275 @@
-# Pharmacy Refill Workflow - State Machine Diagram
+# Pharmacy Refill AI Assistant - Flow Diagram
 
-This document contains the complete state machine diagram for the pharmacy refill AI assistant workflow.
+## Overview
+This document contains the complete state machine flow diagram for the pharmacy refill AI assistant, showing conversation states, transitions, tool usage, and decision points.
 
 ## State Machine Flow Diagram
 
 ```mermaid
-graph TD
-    start[Start]
-    identify_medication[Identify Medication]
-    clarify_medication[Clarify Medication]
-    confirm_dosage[Confirm Dosage]
-    check_authorization[Check Authorization]
-    select_pharmacy[Select Pharmacy]
-    confirm_order[Confirm Order]
-    escalate_pa[Escalate PA]
-    complete((Complete))
-    error[Error]
+flowchart TD
+    Start([START]) --> IdentifyMed{Identify Medication}
     
-    %% Main workflow path
-    start -->|medication_request| identify_medication
-    identify_medication -->|medication_identified| confirm_dosage
-    confirm_dosage -->|dosage_confirmed| check_authorization
-    check_authorization -->|authorized| select_pharmacy
-    select_pharmacy -->|pharmacy_selected| confirm_order
-    confirm_order -->|order_confirmed| complete
+    IdentifyMed --> |"User mentions medication name"| ConfirmDosage[CONFIRM_DOSAGE]
+    IdentifyMed --> |"Ambiguous medication"| ClarifyMed[CLARIFY_MEDICATION]
+    IdentifyMed --> |"No medication mentioned"| IdentifyMed
     
-    %% Clarification path
-    identify_medication -->|ambiguous_medication| clarify_medication
-    clarify_medication -->|medication_clarified| confirm_dosage
+    ClarifyMed --> |"Medication clarified"| ConfirmDosage
+    ClarifyMed --> |"Still ambiguous"| ClarifyMed
     
-    %% Prior authorization path
-    check_authorization -->|prior_auth_required| escalate_pa
-    escalate_pa -->|pa_approved| select_pharmacy
+    ConfirmDosage --> |"Dosage confirmed + Safe"| CheckAuth[CHECK_AUTHORIZATION]
+    ConfirmDosage --> |"Safety concerns"| ErrorState[ERROR]
     
-    %% Error paths
-    start -->|invalid_input| error
-    identify_medication -->|medication_not_found| error
-    clarify_medication -->|clarification_failed| error
-    confirm_dosage -->|safety_concern| error
-    select_pharmacy -->|no_pharmacy_available| error
-    confirm_order -->|order_failed| error
-    escalate_pa -->|pa_denied| error
+    CheckAuth --> |"Authorized"| SelectPharm[SELECT_PHARMACY]
+    CheckAuth --> |"Prior Auth Required"| EscalatePA[ESCALATE_PA]
+    CheckAuth --> |"Coverage denied"| SelectPharm
     
-    %% Recovery paths from error
-    error -->|restart_conversation| start
-    error -->|retry_medication| identify_medication
-    error -->|retry_clarification| clarify_medication
+    EscalatePA --> |"PA initiated"| Complete[COMPLETE]
+    EscalatePA --> |"PA denied"| SelectPharm
     
-    %% User change paths
-    confirm_order -->|change_pharmacy| select_pharmacy
+    SelectPharm --> |"Pharmacy selected"| ConfirmOrder[CONFIRM_ORDER]
+    SelectPharm --> |"Need more options"| SelectPharm
     
-    %% Styling
+    ConfirmOrder --> |"Order confirmed"| Complete
+    ConfirmOrder --> |"Order cancelled"| SelectPharm
+    
+    ErrorState --> |"Retry"| IdentifyMed
+    ErrorState --> |"Escalate"| Complete
+    
+    Complete --> |"New request"| Start
+    
+    %% Tool Usage Annotations
+    IdentifyMed -.-> |"🔧 patient_history_tool<br/>🔧 rxnorm_tool"| IdentifyMed
+    ClarifyMed -.-> |"🔧 rxnorm_tool<br/>🔧 patient_history_tool"| ClarifyMed
+    ConfirmDosage -.-> |"🔧 dosage_verification_tool<br/>🔧 interaction_tool<br/>🔧 allergy_tool"| ConfirmDosage
+    CheckAuth -.-> |"🔧 insurance_tool<br/>🔧 prior_auth_tool"| CheckAuth
+    SelectPharm -.-> |"🔧 pharmacy_location_tool<br/>🔧 pharmacy_inventory_tool<br/>🔧 goodrx_tool<br/>🔧 cost_comparison_tool"| SelectPharm
+    ConfirmOrder -.-> |"🔧 order_submission_tool<br/>🔧 order_tracking_tool"| ConfirmOrder
+    
+    %% State Styling
     classDef startState fill:#e1f5fe
     classDef processState fill:#f3e5f5
     classDef decisionState fill:#fff3e0
-    classDef terminalState fill:#e8f5e8
+    classDef completeState fill:#e8f5e8
     classDef errorState fill:#ffebee
     
-    class start startState
-    class identify_medication,clarify_medication,confirm_dosage,select_pharmacy,confirm_order processState
-    class check_authorization,escalate_pa decisionState
-    class complete terminalState
-    class error errorState
+    class Start startState
+    class ConfirmDosage,CheckAuth,SelectPharm,ConfirmOrder,ClarifyMed,EscalatePA processState
+    class IdentifyMed decisionState
+    class Complete completeState
+    class ErrorState errorState
 ```
 
-## Tool Usage by State
+## Detailed State Descriptions
 
-### IDENTIFY_MEDICATION
-- **patient_medication_history**: Look up current medications
-- **rxnorm_medication_lookup**: Verify medication exists and get details
-- **AI Processing**: Parse user input, match to patient history
+### START State
+**Purpose**: Initial entry point for user interaction
+**Tools Used**: None (conversation initiation)
+**Transitions**:
+- ➡️ IDENTIFY_MEDICATION: When user mentions refill need
+**Example Input**: "Hi, I need to refill my medication"
+**AI Usage**: Extract intent and medication mentions from user input
 
-### CLARIFY_MEDICATION  
-- **verify_medication_dosage**: Check if dosage is valid
-- **AI Processing**: Generate clarifying questions if needed
+### IDENTIFY_MEDICATION State
+**Purpose**: Extract and identify the specific medication
+**Tools Used**:
+- 🔧 `patient_medication_history`: Check current medications
+- 🔧 `rxnorm_medication_lookup`: Verify medication names
+**Transitions**:
+- ➡️ CONFIRM_DOSAGE: Clear medication identified
+- ➡️ CLARIFY_MEDICATION: Ambiguous medication name
+- 🔄 IDENTIFY_MEDICATION: No medication mentioned
+**Example Inputs**: 
+- Clear: "lisinopril 10mg"
+- Ambiguous: "blood pressure medication"
+**AI Usage**: NLP to extract medication names, fuzzy matching
 
-### CONFIRM_DOSAGE (Safety Check)
-- **check_drug_interactions**: Check for dangerous interactions
-- **patient_allergies**: Verify no allergy conflicts
-- **AI Processing**: Evaluate safety and explain any concerns
+### CLARIFY_MEDICATION State
+**Purpose**: Resolve medication ambiguity through clarifying questions
+**Tools Used**:
+- 🔧 `patient_medication_history`: Show current medications
+- 🔧 `rxnorm_medication_lookup`: Find similar medications
+**Transitions**:
+- ➡️ CONFIRM_DOSAGE: Medication clarified
+- 🔄 CLARIFY_MEDICATION: Still needs clarification
+**Example Interaction**:
+- AI: "I found several blood pressure medications. Are you referring to lisinopril, amlodipine, or metoprolol?"
+- User: "Lisinopril"
+**AI Usage**: Generate disambiguation questions, process clarification
 
-### CHECK_AUTHORIZATION
-- **insurance_formulary_check**: Check coverage and copay
-- **prior_authorization_lookup**: Get PA requirements if needed
-- **AI Processing**: Explain coverage details and PA process
+### CONFIRM_DOSAGE State
+**Purpose**: Verify dosage and perform safety checks
+**Tools Used**:
+- 🔧 `verify_medication_dosage`: Validate dosage appropriateness
+- 🔧 `check_drug_interactions`: Safety screening
+- 🔧 `patient_allergies`: Allergy verification
+**Transitions**:
+- ➡️ CHECK_AUTHORIZATION: Safety checks pass
+- ➡️ ERROR: Safety concerns identified
+**Safety Checks**:
+- Dosage within normal range
+- No dangerous drug interactions
+- No known allergies
+**AI Usage**: Interpret safety data, generate safety warnings
 
-### SELECT_PHARMACY
-- **find_nearby_pharmacies**: Get pharmacy locations and details
-- **check_pharmacy_inventory**: Verify medication in stock
-- **pharmacy_wait_times**: Get current wait times
-- **AI Processing**: Present options based on patient preferences
+### CHECK_AUTHORIZATION State
+**Purpose**: Verify insurance coverage and prior authorization
+**Tools Used**:
+- 🔧 `insurance_formulary_check`: Check coverage
+- 🔧 `prior_authorization_lookup`: PA requirements
+**Transitions**:
+- ➡️ SELECT_PHARMACY: Coverage approved
+- ➡️ ESCALATE_PA: Prior authorization required
+- ➡️ SELECT_PHARMACY: Coverage denied (cash pay)
+**Coverage Scenarios**:
+- ✅ Covered: Direct to pharmacy selection
+- ⏳ PA Required: Escalation workflow
+- ❌ Not covered: Cash pay options
+**AI Usage**: Explain coverage decisions, guide through alternatives
 
-### Cost Optimization
-- **goodrx_price_lookup**: Get cash prices and discount options
-- **compare_brand_generic_prices**: Show generic savings
-- **AI Processing**: Calculate and present savings opportunities
+### ESCALATE_PA State
+**Purpose**: Handle prior authorization process
+**Tools Used**:
+- 🔧 `prior_authorization_lookup`: PA status tracking
+**Transitions**:
+- ➡️ COMPLETE: PA initiated successfully
+- ➡️ SELECT_PHARMACY: PA denied, continue with cash
+**PA Process**:
+1. Initiate PA request with doctor
+2. Provide timeline expectations
+3. Offer interim solutions
+**AI Usage**: Explain PA process, set expectations, provide alternatives
 
-### CONFIRM_ORDER
-- **AI Processing**: Summarize all details, get final confirmation
-- **submit_refill_order**: Actually submit the prescription request
+### SELECT_PHARMACY State
+**Purpose**: Find optimal pharmacy considering cost, location, and availability
+**Tools Used**:
+- 🔧 `find_nearby_pharmacies`: Location-based search
+- 🔧 `check_pharmacy_inventory`: Availability verification
+- 🔧 `goodrx_price_lookup`: Cost comparison
+- 🔧 `pharmacy_wait_times`: Service timing
+**Transitions**:
+- ➡️ CONFIRM_ORDER: Pharmacy selected
+- 🔄 SELECT_PHARMACY: Need different options
+**Selection Criteria**:
+- 📍 Distance/convenience
+- 💰 Cost optimization
+- ⏰ Wait times
+- 📦 Inventory availability
+**AI Usage**: Rank pharmacy options, explain cost savings, recommend best choice
+
+### CONFIRM_ORDER State
+**Purpose**: Final order confirmation and processing
+**Tools Used**:
+- 🔧 `submit_refill_order`: Process the order
+- 🔧 `get_order_status`: Track submission
+**Transitions**:
+- ➡️ COMPLETE: Order confirmed and submitted
+- ➡️ SELECT_PHARMACY: User wants different pharmacy
+**Order Details**:
+- Medication and dosage confirmation
+- Pharmacy details
+- Pickup time estimate
+- Cost breakdown
+**AI Usage**: Summarize order details, confirm accuracy, process submission
+
+### COMPLETE State
+**Purpose**: Successful workflow completion with summary
+**Tools Used**: None (summary generation)
+**Transitions**:
+- ➡️ START: New refill request
+**Completion Summary**:
+- ✅ Order confirmation number
+- 📍 Pharmacy pickup location
+- ⏰ Estimated pickup time
+- 💰 Cost savings achieved
+- 📞 Next steps and contact info
+**AI Usage**: Generate completion summary, celebrate savings, provide next steps
+
+### ERROR State
+**Purpose**: Handle errors and provide recovery options
+**Tools Used**: Context-dependent recovery tools
+**Transitions**:
+- ➡️ IDENTIFY_MEDICATION: Restart process
+- ➡️ COMPLETE: Escalate to human
+**Error Types**:
+- 🚫 Safety contraindications
+- ❌ System errors
+- ⚠️ Invalid inputs
+- 🔄 Timeout scenarios
+**AI Usage**: Explain errors clearly, provide recovery options, escalate when needed
+
+## Tool Usage Matrix
+
+| State | Primary Tools | Secondary Tools | Purpose |
+|-------|---------------|-----------------|---------|
+| START | None | None | Conversation initiation |
+| IDENTIFY_MEDICATION | patient_history_tool, rxnorm_tool | None | Medication identification |
+| CLARIFY_MEDICATION | patient_history_tool, rxnorm_tool | None | Disambiguation |
+| CONFIRM_DOSAGE | dosage_verification_tool, interaction_tool | allergy_tool | Safety verification |
+| CHECK_AUTHORIZATION | insurance_tool | prior_auth_tool | Coverage verification |
+| ESCALATE_PA | prior_auth_tool | None | PA process management |
+| SELECT_PHARMACY | pharmacy_location_tool, goodrx_tool | pharmacy_inventory_tool, wait_times_tool | Pharmacy optimization |
+| CONFIRM_ORDER | order_submission_tool | order_tracking_tool | Order processing |
+| COMPLETE | None | None | Summary generation |
+| ERROR | Context-dependent | None | Error recovery |
+
+## Decision Points and Branching Logic
+
+### Medication Identification Decision
+```
+if medication_clearly_identified:
+    → CONFIRM_DOSAGE
+elif medication_ambiguous:
+    → CLARIFY_MEDICATION
+else:
+    → stay in IDENTIFY_MEDICATION
+```
+
+### Safety Check Decision
+```
+if dosage_valid and no_interactions and no_allergies:
+    → CHECK_AUTHORIZATION
+else:
+    → ERROR (with safety warnings)
+```
+
+### Authorization Decision
+```
+if covered_by_insurance:
+    → SELECT_PHARMACY
+elif prior_auth_required:
+    → ESCALATE_PA
+else:
+    → SELECT_PHARMACY (cash pay option)
+```
+
+### Prior Auth Decision
+```
+if pa_approved:
+    → SELECT_PHARMACY
+elif pa_initiated:
+    → COMPLETE (with follow-up instructions)
+else:
+    → SELECT_PHARMACY (cash alternatives)
+```
+
+## Happy Path Flow
+The typical successful conversation follows this path:
+1. **START** → User: "I need to refill my lisinopril"
+2. **IDENTIFY_MEDICATION** → AI identifies lisinopril using tools
+3. **CONFIRM_DOSAGE** → AI verifies 10mg dosage, checks safety
+4. **CHECK_AUTHORIZATION** → AI confirms insurance coverage
+5. **SELECT_PHARMACY** → AI finds best pharmacy option with savings
+6. **CONFIRM_ORDER** → AI processes order successfully
+7. **COMPLETE** → AI provides pickup details and celebrates savings
+
+## Escalation Paths
+- **Safety Issues**: CONFIRM_DOSAGE → ERROR → Human escalation
+- **Prior Authorization**: CHECK_AUTHORIZATION → ESCALATE_PA → Manual PA process
+- **System Errors**: Any state → ERROR → Recovery or escalation
 
 ## Conversation Flow Examples
 
-### Happy Path
+### Happy Path Example
 ```
 User: "I need to refill my lisinopril"
 🤖 AI: "I'll help you refill Lisinopril. Let me check your current prescription..."
@@ -115,10 +282,11 @@ User: "Yes"
 🔧 Tool: goodrx_price_lookup("lisinopril:10mg:30")
 🤖 AI: "Walmart has the same $10 copay but shorter wait time. Shall I order it there?"
 User: "Yes"
-🤖 AI: "Perfect! Order confirmed for pickup after 2 PM. Confirmation #RX12345."
+🔧 Tool: submit_refill_order(...)
+🤖 AI: "Perfect! Order confirmed for pickup after 2 PM. Confirmation #RX12345. You saved $15!"
 ```
 
-### Prior Authorization Path
+### Prior Authorization Path Example
 ```
 User: "Refill my Eliquis"
 🔧 Tool: patient_medication_history("eliquis")
@@ -127,49 +295,28 @@ User: "Refill my Eliquis"
 🔧 Tool: prior_authorization_lookup("eliquis") 
 🤖 AI: "I can start the PA process with your doctor. It typically takes 3-5 days. Shall I proceed?"
 User: "Yes"
-🤖 AI: "PA request submitted. You'll be notified when approved. Here's your reference number..."
+🔧 Tool: prior_authorization_request(...)
+🤖 AI: "PA request submitted to Dr. Smith. You'll be notified when approved. Reference: PA789."
 ```
 
-### Safety Concern Path
+### Safety Concern Example
 ```
 User: "Refill lisinopril, and I've been taking ibuprofen for pain"
 🔧 Tool: check_drug_interactions("lisinopril")
-🤖 AI: "I found a potential interaction between Lisinopril and ibuprofen that could affect your blood pressure control..."
-🤖 AI: "I recommend discussing this with your doctor before we proceed. Would you like me to provide information to share with them?"
+🤖 AI: "⚠️ I found a potential interaction between Lisinopril and ibuprofen that could affect your blood pressure..."
+🤖 AI: "I recommend discussing this with your doctor before proceeding. Would you like me to provide information to share with them?"
+User: "Yes, please"
+🤖 AI: "I'll prepare a summary of the interaction for your doctor visit..."
 ```
 
-## State Transitions
+## AI Usage Patterns
+Throughout the flow, AI is used for:
+- 🧠 **Natural Language Understanding**: Extract medication names, dosages, preferences
+- 🔍 **Information Retrieval**: Query tools for patient data, drug information, prices
+- ⚖️ **Decision Making**: Evaluate safety, select best pharmacy, optimize costs
+- 💬 **Response Generation**: Create helpful, contextual responses
+- 🎯 **Goal Achievement**: Guide users through complete refill workflow
 
-| From State | Trigger | To State | Tools Used |
-|------------|---------|----------|------------|
-| START | User mentions medication | IDENTIFY_MEDICATION | patient_medication_history |
-| IDENTIFY_MEDICATION | Medication found | CLARIFY_MEDICATION | verify_medication_dosage |
-| IDENTIFY_MEDICATION | Medication unclear | DISAMBIGUATE | None (AI generation) |
-| CLARIFY_MEDICATION | Details confirmed | CONFIRM_DOSAGE | check_drug_interactions, patient_allergies |
-| CONFIRM_DOSAGE | Safety OK | CHECK_AUTHORIZATION | insurance_formulary_check |
-| CONFIRM_DOSAGE | Safety concern | ESCALATE_SAFETY | None (AI explanation) |
-| CHECK_AUTHORIZATION | Covered, no PA | SELECT_PHARMACY | find_nearby_pharmacies |
-| CHECK_AUTHORIZATION | PA required | ESCALATE_PA | prior_authorization_lookup |
-| SELECT_PHARMACY | Pharmacy chosen | CONFIRM_ORDER | goodrx_price_lookup |
-| CONFIRM_ORDER | Confirmed | COMPLETE | submit_refill_order |
-
-## AI vs Tool Responsibilities
-
-### AI Responsibilities (🤖)
-- Natural language understanding and generation
-- User intent recognition and entity extraction
-- Explaining complex medical/insurance information
-- Asking clarifying questions
-- Generating conversational responses
-- Decision making for workflow transitions
-- Safety concern explanations
-
-### Tool Responsibilities (🔧)
-- Data retrieval (patient history, drug info)
-- External API calls (RxNorm, insurance systems)
-- Price and inventory lookups
-- Validation (dosage verification, interaction checking)
-- Order submission
-- Structured data processing
+This flow diagram ensures a comprehensive, safe, and cost-effective medication refill experience with proper AI integration at each step.
 
 This separation ensures the AI focuses on conversation and decision-making while tools handle data operations and external integrations.
