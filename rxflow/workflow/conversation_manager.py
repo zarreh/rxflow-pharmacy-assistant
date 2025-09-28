@@ -18,7 +18,8 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain.tools import Tool
 
 from rxflow.llm import get_conversational_llm
-from rxflow.utils.logger import get_logger
+from rxflow.utils.logger import get_logger, get_session_logger, close_session_logger
+import logging
 from rxflow.workflow.state_machine import RefillStateMachine
 from rxflow.workflow.workflow_types import RefillState, ConversationContext, ToolResult
 from rxflow.prompts.prompt_manager import PromptManager
@@ -78,8 +79,10 @@ class AdvancedConversationManager:
         self.prompt_manager = PromptManager()
         
         # Session management
+        # Initialize conversation state management
         self.sessions: Dict[str, ConversationContext] = {}
         self.conversation_histories: Dict[str, List[Dict[str, Any]]] = {}
+        self.session_loggers: Dict[str, logging.Logger] = {}  # Track session-specific loggers
         
         # Tool registration and agent setup
         self._register_tools()
@@ -209,8 +212,13 @@ Remember: You have access to comprehensive tools for patient history, medication
         if not session_id:
             session_id = str(uuid.uuid4())
             
+        # Get session-specific logger for file logging
+        session_logger = get_session_logger(session_id)
+        
         logger.info(f"[MESSAGE] Processing message for session {session_id[:8]}...")
+        session_logger.info(f"[MESSAGE] Processing message for session {session_id[:8]}...")
         logger.info(f"[AI USAGE] Starting conversation processing with state machine integration")
+        session_logger.info(f"[AI USAGE] Starting conversation processing with state machine integration")
         
         try:
             # Get or create session context
@@ -218,6 +226,7 @@ Remember: You have access to comprehensive tools for patient history, medication
             current_state = context.current_state
             
             logger.info(f"[STATE] Current state: {current_state.value}")
+            session_logger.info(f"[STATE] Current state: {current_state.value}")
             
             # Get conversation history for context
             history = self.conversation_histories.get(session_id, [])
@@ -231,10 +240,15 @@ Remember: You have access to comprehensive tools for patient history, medication
             self._update_conversation_history(session_id, user_input, response.message)
             
             logger.info(f"[SUCCESS] Generated response for session {session_id[:8]}")
+            session_logger.info(f"[SUCCESS] Generated response for session {session_id[:8]}")
+            session_logger.info(f"[USER INPUT] {user_input}")
+            session_logger.info(f"[AI RESPONSE] {response.message}")
             return response
             
         except Exception as e:
             logger.error(f"[ERROR] Error handling message: {e}")
+            session_logger.error(f"[ERROR] Error handling message: {e}")
+            session_logger.error(f"[USER INPUT] {user_input}")
             return ConversationResponse(
                 message="I apologize, but I'm having trouble processing your request right now. Could you please try again?",
                 session_id=session_id,
@@ -251,6 +265,9 @@ Remember: You have access to comprehensive tools for patient history, medication
             self.conversation_histories[session_id] = []
             
             logger.info(f"[SESSION] Created new session {session_id[:8]}...")
+            # Initialize session logger for this new session
+            session_logger = get_session_logger(session_id)
+            session_logger.info(f"[SESSION] Created new session {session_id}")
         else:
             context = self.sessions[session_id]
             logger.debug(f"[SESSION] Retrieved existing session {session_id[:8]}...")
@@ -270,6 +287,10 @@ Remember: You have access to comprehensive tools for patient history, medication
         
         logger.info(f"[STATE HANDLER] Routing to {current_state.value} handler")
         
+        # Get session logger for state-specific logging
+        session_logger = get_session_logger(session_id)
+        session_logger.info(f"[STATE HANDLER] Routing to {current_state.value} handler")
+        
         # Map states to handler methods
         state_handlers = {
             RefillState.START: self._handle_start,
@@ -285,7 +306,12 @@ Remember: You have access to comprehensive tools for patient history, medication
         }
         
         handler = state_handlers.get(current_state, self._handle_general)
-        return handler(user_input, context, history)
+        result = handler(user_input, context, history)
+        
+        # Log state transition if it occurred
+        session_logger.info(f"[STATE TRANSITION] {current_state.value} -> {result.current_state.value}")
+        
+        return result
     
     def _handle_start(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
         """Handle START state - initial user interaction"""
@@ -848,6 +874,37 @@ Patient response: '{user_input}'""",
         logger.info(f"[CLEANUP] Cleaned up {total_cleaned} expired sessions")
         
         return total_cleaned
+    
+    def close_session(self, session_id: str) -> None:
+        """Close a conversation session and cleanup resources"""
+        if session_id in self.sessions:
+            # Log final session state
+            session_logger = get_session_logger(session_id)
+            context = self.sessions[session_id]
+            session_logger.info(f"[SESSION CLOSE] Final state: {context.current_state.value}")
+            session_logger.info(f"[SESSION CLOSE] Total messages: {len(self.conversation_histories.get(session_id, []))}")
+            
+            # Close session logger and cleanup
+            close_session_logger(session_id)
+            
+            # Remove session data
+            del self.sessions[session_id]
+            if session_id in self.conversation_histories:
+                del self.conversation_histories[session_id]
+            
+            logger.info(f"[SESSION] Closed and cleaned up session {session_id[:8]}")
+    
+    def get_session_log_path(self, session_id: str) -> Optional[str]:
+        """Get the log file path for a specific session"""
+        from rxflow.utils.logger import get_all_session_logs
+        
+        session_logs = get_all_session_logs()
+        session_short_id = session_id[:8]
+        
+        if session_short_id in session_logs:
+            return str(session_logs[session_short_id])
+        
+        return None
 
 
 # For backward compatibility and easy import

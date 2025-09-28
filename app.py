@@ -15,7 +15,8 @@ import streamlit as st
 
 # Import configuration and utilities
 from rxflow.config.settings import get_settings
-from rxflow.utils.logger import get_logger, setup_logging
+from rxflow.utils.logger import get_logger, setup_logging, get_all_session_logs
+from pathlib import Path
 
 # Import advanced conversation manager (Step 6)
 from rxflow.workflow.conversation_manager import ConversationManager
@@ -258,6 +259,34 @@ def render_sidebar():
         value=st.session_state.show_debug_info
     )
 
+    # Session Logs Section
+    st.sidebar.markdown("### 📋 Session Logs")
+    
+    # Show current session log status
+    log_path = st.session_state.conversation_manager.get_session_log_path(st.session_state.session_id)
+    if log_path and Path(log_path).exists():
+        st.sidebar.success("✅ Session logged to file")
+        st.sidebar.text(f"Log: {Path(log_path).name}")
+        
+        # Button to view current session log
+        if st.sidebar.button("📖 View Current Log", use_container_width=True):
+            show_session_log(log_path)
+    else:
+        st.sidebar.info("📝 Session logging active")
+    
+    # Show all available logs
+    all_logs = get_all_session_logs()
+    if all_logs:
+        st.sidebar.markdown("**Available Logs:**")
+        log_options = [f"{session_id[:8]} - {path.name}" for session_id, path in all_logs.items()]
+        selected_log = st.sidebar.selectbox("Select log to view:", ["None"] + log_options)
+        
+        if selected_log != "None" and st.sidebar.button("📄 View Selected Log"):
+            # Extract session ID and find corresponding path
+            selected_session_id = selected_log.split(" - ")[0]
+            if selected_session_id in all_logs:
+                show_session_log(str(all_logs[selected_session_id]))
+    
     # Action buttons
     st.sidebar.markdown("### 🎬 Actions")
     
@@ -283,6 +312,20 @@ def reset_conversation():
     # Create new conversation manager instance
     st.session_state.conversation_manager = ConversationManager()
     st.rerun()
+
+
+def show_session_log(log_file_path: str):
+    """Display session log content in a modal or expander"""
+    try:
+        with open(log_file_path, 'r', encoding='utf-8') as f:
+            log_content = f.read()
+        
+        # Show in an expander in the main area
+        with st.expander(f"📋 Session Log: {Path(log_file_path).name}", expanded=True):
+            st.code(log_content, language="text")
+        
+    except Exception as e:
+        st.error(f"Error reading log file: {e}")
 
 
 def export_session_data():

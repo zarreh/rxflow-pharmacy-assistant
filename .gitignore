@@ -48,6 +48,9 @@ coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
+
+# Session logs (exclude actual log files but keep directory)
+logs/*.log
 .pytest_cache/
 cover/
 
