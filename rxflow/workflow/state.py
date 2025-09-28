@@ -88,7 +88,7 @@ class RefillState(TypedDict):
 
 # Helper function to create initial state
 def create_initial_state(
-    patient_id: str = "patient_001",
+    patient_id: str = "12345",
     insurance_id: str = "BCBS_TX_001",
     medication_input: str = "",
 ) -> RefillState:

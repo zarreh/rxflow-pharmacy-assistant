@@ -37,7 +37,8 @@ class PatientHistoryTool:
             show_all_medications = (
                 not medication_name or 
                 medication_name.lower() in ["all", "", "unknown", "none", "any", "yes", "no", "ok", "sure"] or
-                len(medication_name.strip()) < 3  # Very short queries likely want all medications
+                len(medication_name.strip()) < 3 or  # Very short queries likely want all medications
+                medication_name.strip().isdigit()  # If query is just a patient ID, show all medications
             )
             
             if not show_all_medications:

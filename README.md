@@ -112,7 +112,7 @@ rxflow_pharmacy_assistant/ (Production-Ready)
 ### Prerequisites
 - **Python 3.12+** (required for latest type hinting)
 - **Poetry** (dependency management)
-- **Ollama** (local LLM) or OpenAI API key
+- **OpenAI API Key** (primary LLM provider) or **Ollama** (local alternative)
 
 ### Installation & Setup
 
@@ -128,19 +128,34 @@ cp .env.example .env
 poetry install
 ```
 
-3. **Setup LLM (choose one):**
+3. **Configure LLM Provider (.env file):**
 
-**Option A: Ollama (Local, Free)**
+**Default: OpenAI GPT-4 Mini (Recommended)**
 ```bash
-# Install and setup Ollama
+# Edit .env file - OpenAI is now the default provider
+DEFAULT_LLM_PROVIDER=openai
+OPENAI_API_KEY=your-openai-api-key-here
+OPENAI_MODEL=gpt-4o-mini
+```
+
+**Alternative: Ollama (Local, Free)**
+```bash
+# To use Ollama instead, set in .env:
+DEFAULT_LLM_PROVIDER=ollama
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2
+
+# Then install Ollama locally:
 curl -fsSL https://ollama.ai/install.sh | sh
 ollama pull llama3.2
 ```
 
-**Option B: OpenAI (Cloud, API Key Required)**
-```bash
-# Edit .env file with your OpenAI API key
-export OPENAI_API_KEY="your-api-key-here"
+**🔄 Runtime Switching:**
+```python
+# Switch providers programmatically
+from rxflow.llm import switch_to_openai, switch_to_ollama
+switch_to_openai()  # Use OpenAI GPT-4 Mini
+switch_to_ollama()  # Use Ollama Llama 3.2
 ```
 
 4. **Run the application:**

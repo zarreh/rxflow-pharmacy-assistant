@@ -160,6 +160,105 @@ class PharmacyLocationTool:
                 "source": "error"
             }
 
+class PharmacyCostTool:
+    """Find cheapest pharmacy options for medications"""
+    
+    def __init__(self):
+        self.pharmacy_data = PHARMACY_INVENTORY
+        self.location_tool = PharmacyLocationTool()
+    
+    def find_cheapest_pharmacy(self, query: str) -> Dict:
+        """
+        Find the cheapest pharmacy for a medication
+        Query format: "medication_name" or JSON string with preferences
+        """
+        try:
+            logger.info(f"[AI USAGE] Finding cheapest pharmacy options with query: {query}")
+            
+            # Parse query - could be medication name or JSON with preferences
+            medication = None
+            distance_matters = True
+            
+            if query.startswith('{') and query.endswith('}'):
+                try:
+                    import json
+                    params = json.loads(query)
+                    medication = params.get('medication', 'omeprazole')  # Default from context
+                    distance_matters = not params.get('distant_to_pharmacy', False)
+                except:
+                    # If JSON parsing fails, treat as medication name
+                    medication = query.strip().lower()
+            else:
+                medication = query.strip().lower()
+            
+            # Get all pharmacies
+            pharmacies = self.location_tool.find_nearby_pharmacies("default")
+            
+            if not pharmacies.get("success", False):
+                return {
+                    "success": False,
+                    "error": "Unable to retrieve pharmacy information",
+                    "source": "error"
+                }
+            
+            # Find pricing for the medication across pharmacies
+            pricing_options = []
+            for pharmacy in pharmacies.get("pharmacies", []):
+                pharm_id = pharmacy["id"]
+                inventory = self.pharmacy_data.get(pharm_id, {})
+                
+                # Look for medication pricing
+                medication_found = False
+                for item_key, item_info in inventory.get("inventory", {}).items():
+                    if medication in item_key.lower():
+                        pricing_options.append({
+                            "pharmacy_name": pharmacy["name"],
+                            "pharmacy_id": pharm_id,
+                            "medication_item": item_key,
+                            "price": item_info.get("price", 0),
+                            "quantity_available": item_info.get("quantity_available", 0),
+                            "wait_time": item_info.get("wait_time", "15-30 minutes"),
+                            "distance_miles": pharmacy.get("distance_miles", 0),
+                            "address": pharmacy.get("address", ""),
+                            "phone": pharmacy.get("phone", "")
+                        })
+                        medication_found = True
+                        break
+                
+                if not medication_found:
+                    # Add pharmacy even if no specific pricing (with estimated cost)
+                    pricing_options.append({
+                        "pharmacy_name": pharmacy["name"],
+                        "pharmacy_id": pharm_id,
+                        "medication_item": f"{medication} (estimated)",
+                        "price": 15.00,  # Default estimated price
+                        "quantity_available": 30,
+                        "wait_time": "20-30 minutes",
+                        "distance_miles": pharmacy.get("distance_miles", 0),
+                        "address": pharmacy.get("address", ""),
+                        "phone": pharmacy.get("phone", "")
+                    })
+            
+            # Sort by price (cheapest first)
+            pricing_options.sort(key=lambda x: x["price"])
+            
+            return {
+                "success": True,
+                "medication": medication,
+                "cheapest_option": pricing_options[0] if pricing_options else None,
+                "all_options": pricing_options[:3],  # Top 3 cheapest
+                "distance_preference": distance_matters,
+                "source": "mock"
+            }
+            
+        except Exception as e:
+            logger.error(f"Error finding cheapest pharmacy: {str(e)}")
+            return {
+                "success": False,
+                "error": f"Failed to find cheapest pharmacy: {str(e)}",
+                "source": "error"
+            }
+
 class PharmacyInventoryTool:
     """Check pharmacy inventory and availability"""
     
@@ -306,4 +405,10 @@ pharmacy_details_tool = Tool(
     name="get_pharmacy_details",
     description="Get detailed information for a specific pharmacy including hours, contact info, and services. Use pharmacy_id as input.",
     func=lambda query: PharmacyLocationTool().get_pharmacy_details(query)
+)
+
+find_cheapest_pharmacy_tool = Tool(
+    name="find_cheapest_pharmacy",
+    description="Find the cheapest pharmacy options for a medication. Use medication name or JSON with preferences like {'medication': 'omeprazole', 'distant_to_pharmacy': true, 'cheapest_price': true}.",
+    func=lambda query: PharmacyCostTool().find_cheapest_pharmacy(query)
 )

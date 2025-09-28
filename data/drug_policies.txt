@@ -29,6 +29,126 @@ Approval Period: 12 months with annual review
 
 ---
 
+OMEPRAZOLE Coverage Policy:
+
+Omeprazole is a proton pump inhibitor (PPI) used for treatment of gastroesophageal reflux disease (GERD), peptic ulcer disease, and acid-related conditions.
+
+Coverage Criteria:
+- Tier 1 (Generic) - Preferred formulary status
+- No prior authorization required for standard indications
+- Quantity limits: 30-day supply (30 capsules) or 90-day supply (90 capsules)
+
+Clinical Indications:
+- GERD maintenance therapy
+- Peptic ulcer disease treatment and prevention
+- Zollinger-Ellison syndrome
+- H. pylori eradication (combination therapy)
+- NSAID-induced ulcer prevention in high-risk patients
+
+Dosage Guidelines:
+- GERD: 20mg once daily before breakfast
+- Peptic ulcer: 20-40mg once daily
+- Maximum duration without re-evaluation: 12 months
+
+Special Considerations:
+- Long-term use (>1 year) may require periodic monitoring
+- Consider step-down therapy after symptom control
+- Drug interactions: May affect absorption of certain medications
+
+---
+
+FAMOTIDINE Coverage Policy:
+
+Famotidine is an H2 receptor antagonist used for treatment of acid-related gastrointestinal conditions.
+
+Coverage Criteria:
+- Tier 1 (Generic) - Preferred formulary status
+- No prior authorization required
+- Available over-the-counter and prescription strength
+
+Clinical Indications:
+- Gastroesophageal reflux disease (GERD)
+- Peptic ulcer disease
+- Heartburn prevention and treatment
+- Stress ulcer prophylaxis in hospitalized patients
+
+Dosage Guidelines:
+- GERD: 20mg twice daily or 40mg at bedtime
+- Peptic ulcer: 40mg once daily at bedtime
+- Heartburn prevention: 10-20mg 15-60 minutes before meals
+
+Coverage Notes:
+- Prescription strength covered when OTC insufficient
+- No quantity limits for standard therapy
+- May be preferred alternative to PPIs for some patients
+
+---
+
+MELOXICAM Coverage Policy:
+
+Meloxicam is a nonsteroidal anti-inflammatory drug (NSAID) used for treatment of osteoarthritis, rheumatoid arthritis, and acute pain.
+
+Coverage Criteria:
+- Tier 1 (Generic) - Preferred formulary status
+- No prior authorization required for standard indications
+- Quantity limits: 30-day supply standard
+
+Clinical Indications:
+- Osteoarthritis pain and inflammation
+- Rheumatoid arthritis
+- Ankylosing spondylitis
+- Acute musculoskeletal pain (short-term use)
+
+Safety Requirements:
+- Cardiovascular risk assessment required
+- Gastrointestinal risk evaluation needed
+- Renal function monitoring for long-term use
+- Avoid in patients with severe heart failure
+
+Dosage Guidelines:
+- Osteoarthritis: 7.5-15mg once daily
+- Rheumatoid arthritis: 15mg once daily
+- Maximum dose: 15mg daily
+
+Contraindications:
+- Active GI bleeding or ulceration
+- Severe renal impairment
+- Known hypersensitivity to NSAIDs
+
+---
+
+METHOCARBAMOL Coverage Policy:
+
+Methocarbamol is a muscle relaxant used for treatment of acute musculoskeletal conditions and muscle spasms.
+
+Coverage Criteria:
+- Tier 1 (Generic) - Preferred formulary status
+- No prior authorization required
+- Quantity limits: 30-day supply for acute use, 90-day for chronic conditions
+
+Clinical Indications:
+- Acute muscle spasms and musculoskeletal pain
+- Adjunct to rest and physical therapy
+- Tetanus muscle spasms (injectable form)
+
+Usage Guidelines:
+- Intended for short-term use (2-3 weeks typically)
+- Should be combined with rest, physical therapy, and other measures
+- Long-term use requires periodic review
+
+Dosage Guidelines:
+- Initial: 1500mg four times daily for 2-3 days
+- Maintenance: 750-1000mg three times daily
+- Maximum: 8000mg daily in severe cases
+
+Safety Considerations:
+- May cause drowsiness and dizziness
+- Avoid alcohol and CNS depressants
+- Use caution in elderly patients
+- Monitor for signs of dependency with prolonged use
+
+---
+
 LISINOPRIL Coverage Policy:
 
 Lisinopril is an ACE inhibitor used for hypertension and heart failure management.

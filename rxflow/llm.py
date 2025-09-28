@@ -93,12 +93,19 @@ class OpenAIFactory(BaseLLMFactory):
         if not OPENAI_AVAILABLE:
             raise ImportError("OpenAI not available. Install with: pip install langchain-openai")
             
+        settings = get_settings()
+        
         # Handle OpenAI parameters
         params = {
             "model": config.model,
             "temperature": config.temperature,
             **config.kwargs
         }
+        
+        # Add API key from settings if available
+        if settings.openai_api_key:
+            params["api_key"] = settings.openai_api_key
+            
         if config.max_tokens is not None:
             params["max_tokens"] = config.max_tokens
             
@@ -158,6 +165,7 @@ class LLMManager:
                 LLMProvider.ANTHROPIC: AnthropicFactory(),
                 LLMProvider.GEMINI: GeminiFactory(),
             }
+            self.default_provider = None  # Will be set by settings
             self.initialized = True
     
     def get_llm(
@@ -183,7 +191,12 @@ class LLMManager:
         
         # Use defaults from settings if not provided
         if provider is None:
-            provider = LLMProvider.OLLAMA  # Default provider
+            # Use switched provider if available, otherwise get from settings
+            if hasattr(self, 'default_provider') and self.default_provider:
+                provider = self.default_provider
+            else:
+                default_provider = getattr(settings, 'default_llm_provider', 'openai')
+                provider = LLMProvider(default_provider.lower())
         elif isinstance(provider, str):
             provider = LLMProvider(provider.lower())
             
@@ -191,13 +204,17 @@ class LLMManager:
             if provider == LLMProvider.OLLAMA:
                 model = settings.ollama_model
             elif provider == LLMProvider.OPENAI:
-                model = "gpt-4o-mini"
+                model = getattr(settings, 'openai_model', 'gpt-4o-mini')
             elif provider == LLMProvider.ANTHROPIC:
                 model = "claude-3-haiku-20240307"
             elif provider == LLMProvider.GEMINI:
                 model = "gemini-1.5-flash"
             else:
                 model = "gpt-4o-mini"  # Fallback default
+                
+        # Ensure model is never None
+        if model is None:
+            model = "gpt-4o-mini"
         
         # Create cache key
         cache_key = f"{provider.value}:{model}:{temperature}:{hash(str(kwargs))}"
@@ -301,6 +318,24 @@ def get_tool_llm() -> BaseLanguageModel:
 def switch_llm_provider(provider: str):
     """Switch LLM provider globally"""
     llm_manager.switch_provider(provider)
+
+
+def switch_to_openai():
+    """Quick switch to OpenAI GPT-4 Mini"""
+    switch_llm_provider("openai")
+    logger.info("Switched to OpenAI GPT-4 Mini")
+
+
+def switch_to_ollama():
+    """Quick switch to Ollama Llama 3.2"""
+    switch_llm_provider("ollama") 
+    logger.info("Switched to Ollama Llama 3.2")
+
+
+def get_current_provider() -> str:
+    """Get the current LLM provider"""
+    settings = get_settings()
+    return getattr(settings, 'default_llm_provider', 'openai')
 
 
 def clear_llm_cache():

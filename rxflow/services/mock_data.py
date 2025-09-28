@@ -147,7 +147,7 @@ PHARMACY_INVENTORY = {
         "hours": "Mon-Fri: 8AM-10PM, Sat-Sun: 9AM-7PM",
         "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Medicare"],
         "services": ["prescription_refills", "vaccinations", "health_screenings"],
-        "in_stock": ["lisinopril", "metformin", "atorvastatin", "omeprazole", "amlodipine", "levothyroxine"],
+        "in_stock": ["lisinopril", "metformin", "atorvastatin", "omeprazole", "amlodipine", "levothyroxine", "meloxicam"],
         "out_of_stock": ["eliquis", "insulin"],
         "prices": {
             "lisinopril_10mg_30": 15.99,
@@ -157,7 +157,8 @@ PHARMACY_INVENTORY = {
             "atorvastatin_20mg_30": 12.99,
             "omeprazole_20mg_30": 18.99,
             "amlodipine_5mg_30": 9.99,
-            "levothyroxine_100mcg_30": 14.99
+            "levothyroxine_100mcg_30": 14.99,
+            "meloxicam_15mg_30": 22.99
         },
         "drive_through": True,
         "parking_available": True
@@ -171,7 +172,7 @@ PHARMACY_INVENTORY = {
         "hours": "Mon-Sun: 7AM-11PM",
         "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Medicare", "Medicaid"],
         "services": ["prescription_refills", "vaccinations", "$4_generics"],
-        "in_stock": ["lisinopril", "metformin", "eliquis", "atorvastatin", "levothyroxine", "omeprazole"],
+        "in_stock": ["lisinopril", "metformin", "eliquis", "atorvastatin", "levothyroxine", "omeprazole", "meloxicam"],
         "out_of_stock": ["insulin"],
         "prices": {
             "lisinopril_10mg_30": 4.00,
@@ -181,7 +182,8 @@ PHARMACY_INVENTORY = {
             "eliquis_5mg_30": 485.00,
             "atorvastatin_20mg_30": 4.00,
             "omeprazole_20mg_30": 4.00,
-            "levothyroxine_100mcg_30": 4.00
+            "levothyroxine_100mcg_30": 4.00,
+            "meloxicam_15mg_30": 18.99
         },
         "drive_through": True,
         "parking_available": True,
@@ -197,7 +199,7 @@ PHARMACY_INVENTORY = {
         "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Cigna"],
         "services": ["prescription_refills", "vaccinations", "24hour_service"],
         "in_stock": ["lisinopril", "metformin", "atorvastatin", "omeprazole", "amlodipine", "insulin"],
-        "out_of_stock": ["eliquis"],
+        "out_of_stock": ["eliquis", "meloxicam"],
         "prices": {
             "lisinopril_10mg_30": 13.99,
             "metformin_500mg_60": 7.99,

@@ -22,13 +22,17 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
 
     # LLM Configuration
+    default_llm_provider: str = Field(default="openai", alias="DEFAULT_LLM_PROVIDER")
+    
+    # Ollama Configuration (alternative)
     ollama_base_url: str = Field(
         default="http://localhost:11434", alias="OLLAMA_BASE_URL"
     )
     ollama_model: str = Field(default="llama3.2", alias="OLLAMA_MODEL")
 
-    # Alternative LLM configurations (for future use)
+    # OpenAI Configuration (primary)
     openai_api_key: Optional[str] = Field(default=None, alias="OPENAI_API_KEY")
+    openai_model: str = Field(default="gpt-4o-mini", alias="OPENAI_MODEL")
     google_api_key: Optional[str] = Field(default=None, alias="GOOGLE_API_KEY")
 
     # Mock Data
