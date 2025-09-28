@@ -498,7 +498,14 @@ async def process_user_input_async(user_input: str) -> Dict[str, Any]:
         
         # Update session state with conversation info
         st.session_state.current_state = result.current_state
-        st.session_state.conversation_context = result.context.to_dict()
+        
+        # Get the conversation context from the state machine
+        conversation_context = conversation_manager.state_machine.get_session(session_id)
+        if conversation_context:
+            st.session_state.conversation_context = conversation_context.to_dict()
+        else:
+            logger.warning(f"No conversation context found for session {session_id}")
+            st.session_state.conversation_context = {}
         
         # Add tool logs from this interaction
         if hasattr(result, 'tool_calls') and result.tool_calls:
