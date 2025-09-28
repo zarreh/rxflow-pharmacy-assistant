@@ -41,6 +41,7 @@ from rxflow.tools.cost_tools import (
 from rxflow.tools.order_tools import (
     order_submission_tool, order_tracking_tool, order_cancellation_tool
 )
+from rxflow.tools.escalation_tools import escalation_check_tool
 
 logger = get_logger(__name__)
 
@@ -122,7 +123,10 @@ class AdvancedConversationManager:
             # Order Tools (3)
             order_submission_tool,
             order_tracking_tool,
-            order_cancellation_tool
+            order_cancellation_tool,
+            
+            # Escalation Tools (1)
+            escalation_check_tool
         ]
         
         logger.info(f"[TOOLS] Registered {len(self.tools)} tools for agent")

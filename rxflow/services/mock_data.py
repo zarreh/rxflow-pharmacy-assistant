@@ -133,6 +133,21 @@ MEDICATIONS_DB = {
         "common_interactions": ["ACE inhibitors", "beta blockers"],
         "contraindications": ["hypoglycemia"],
         "typical_supply_days": [30]
+    },
+    "lorazepam": {
+        "rxcui": "6470",
+        "generic_name": "lorazepam",
+        "brand_names": ["Ativan"],
+        "common_dosages": ["0.5mg", "1mg", "2mg"],
+        "requires_pa": True,
+        "drug_class": "benzodiazepine",
+        "indication": "Anxiety disorders, insomnia, seizures",
+        "common_interactions": ["alcohol", "opioids", "CNS depressants"],
+        "contraindications": ["severe respiratory depression", "acute narrow-angle glaucoma"],
+        "controlled_substance": True,
+        "schedule": "IV",
+        "requires_doctor_consultation": True,
+        "typical_supply_days": [30]
     }
 }
 
@@ -272,11 +287,13 @@ MOCK_PATIENTS = {
                 "dosage": "10mg",
                 "strength": "10mg tablets",
                 "start_date": "2023-01-15",
-                "refills_remaining": 2,
+                "refills_remaining": 0,
                 "last_filled": "2024-01-05",
                 "adherence_rate": 0.92,
                 "quantity": 30,
-                "directions": "Take 1 tablet daily"
+                "directions": "Take 1 tablet daily",
+                "prescription_expired": True,
+                "last_prescription_date": "2024-01-05"
             },
             {
                 "name": "metformin",
@@ -332,6 +349,20 @@ MOCK_PATIENTS = {
                 "adherence_rate": 0.91,
                 "quantity": 60,
                 "directions": "Take 1 tablet twice daily as needed for heartburn"
+            },
+            {
+                "name": "lorazepam",
+                "dosage": "0.5mg",
+                "strength": "0.5mg tablets",
+                "start_date": "2024-06-01",
+                "refills_remaining": 0,
+                "last_filled": "2024-08-15",
+                "adherence_rate": 0.95,
+                "quantity": 30,
+                "directions": "Take 1 tablet as needed for anxiety, maximum 3 per day",
+                "controlled_substance": True,
+                "schedule": "IV",
+                "requires_doctor_consultation": True
             }
         ],
         "allergies": ["penicillin", "sulfa drugs"],
