@@ -74,6 +74,42 @@ MEDICATIONS_DB = {
         "contraindications": ["hypersensitivity to PPIs"],
         "typical_supply_days": [30, 90]
     },
+    "methocarbamol": {
+        "rxcui": "6878",
+        "generic_name": "methocarbamol",
+        "brand_names": ["Robaxin"],
+        "common_dosages": ["500mg", "750mg"],
+        "requires_pa": False,
+        "drug_class": "muscle relaxant",
+        "indication": "Muscle spasms, musculoskeletal pain",
+        "common_interactions": ["alcohol", "CNS depressants", "pyridostigmine"],
+        "contraindications": ["myasthenia gravis", "hypersensitivity"],
+        "typical_supply_days": [30, 90]
+    },
+    "meloxicam": {
+        "rxcui": "77492", 
+        "generic_name": "meloxicam",
+        "brand_names": ["Mobic"],
+        "common_dosages": ["7.5mg", "15mg"],
+        "requires_pa": False,
+        "drug_class": "NSAID (COX-2 selective)",
+        "indication": "Osteoarthritis, rheumatoid arthritis, pain",
+        "common_interactions": ["warfarin", "ACE inhibitors", "lithium"],
+        "contraindications": ["active bleeding", "severe heart failure", "pregnancy (3rd trimester)"],
+        "typical_supply_days": [30, 90]
+    },
+    "famotidine": {
+        "rxcui": "4278",
+        "generic_name": "famotidine",
+        "brand_names": ["Pepcid"],
+        "common_dosages": ["20mg", "40mg"],
+        "requires_pa": False,
+        "drug_class": "H2 receptor antagonist",
+        "indication": "GERD, peptic ulcers, heartburn",
+        "common_interactions": ["ketoconazole", "atazanavir", "dasatinib"],
+        "contraindications": ["hypersensitivity to H2 antagonists"],
+        "typical_supply_days": [30, 90]
+    },
     "amlodipine": {
         "rxcui": "17767",
         "generic_name": "amlodipine",
@@ -225,9 +261,9 @@ PHARMACY_INVENTORY = {
 # Mock patient data
 MOCK_PATIENTS = {
     "12345": {  # Mock patient ID for demo
-        "name": "John Doe",
-        "dob": "1975-06-15",
-        "insurance": "BlueCross Shield",
+        "name": "John Smith", 
+        "dob": "1975-03-15",
+        "insurance": "BCBS_TX_001",
         "medications": [
             {
                 "name": "lisinopril",
@@ -244,7 +280,7 @@ MOCK_PATIENTS = {
                 "name": "metformin",
                 "dosage": "500mg",
                 "strength": "500mg tablets",
-                "start_date": "2022-06-20", 
+                "start_date": "2022-06-10", 
                 "refills_remaining": 0,
                 "last_filled": "2023-12-10",
                 "adherence_rate": 0.88,
@@ -252,19 +288,52 @@ MOCK_PATIENTS = {
                 "directions": "Take 1 tablet twice daily with meals"
             },
             {
-                "name": "atorvastatin",
-                "dosage": "20mg",
-                "strength": "20mg tablets", 
-                "start_date": "2023-03-01",
+                "name": "methocarbamol",
+                "dosage": "500mg",
+                "strength": "500mg tablets",
+                "start_date": "2024-02-20",
+                "refills_remaining": 4,
+                "last_filled": "2024-08-15",
+                "adherence_rate": 0.89,
+                "quantity": 60,
+                "directions": "Take 1 tablet 3-4 times daily as needed for muscle spasms"
+            },
+            {
+                "name": "meloxicam",
+                "dosage": "15mg",
+                "strength": "15mg tablets",
+                "start_date": "2024-03-10",
                 "refills_remaining": 3,
-                "last_filled": "2024-01-15",
-                "adherence_rate": 0.95,
+                "last_filled": "2024-07-20",
+                "adherence_rate": 0.93,
                 "quantity": 30,
-                "directions": "Take 1 tablet daily at bedtime"
+                "directions": "Take 1 tablet daily with food"
+            },
+            {
+                "name": "omeprazole",
+                "dosage": "20mg",
+                "strength": "20mg capsules",
+                "start_date": "2024-01-08",
+                "refills_remaining": 5,
+                "last_filled": "2024-08-01",
+                "adherence_rate": 0.96,
+                "quantity": 30,
+                "directions": "Take 1 capsule daily before breakfast"
+            },
+            {
+                "name": "famotidine",
+                "dosage": "20mg",
+                "strength": "20mg tablets",
+                "start_date": "2024-04-15",
+                "refills_remaining": 2,
+                "last_filled": "2024-07-10",
+                "adherence_rate": 0.91,
+                "quantity": 60,
+                "directions": "Take 1 tablet twice daily as needed for heartburn"
             }
         ],
         "allergies": ["penicillin", "sulfa drugs"],
-        "conditions": ["hypertension", "type 2 diabetes", "hyperlipidemia"]
+        "conditions": ["hypertension", "type 2 diabetes", "muscle spasms", "gastroesophageal reflux disease"]
     },
     "67890": {  # Additional test patient
         "name": "Jane Smith",

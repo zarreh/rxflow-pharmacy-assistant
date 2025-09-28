@@ -20,6 +20,7 @@ from langchain.tools import Tool
 from rxflow.llm import get_conversational_llm
 from rxflow.utils.logger import get_logger, get_session_logger, close_session_logger
 import logging
+import re
 from rxflow.workflow.state_machine import RefillStateMachine
 from rxflow.workflow.workflow_types import RefillState, ConversationContext, ToolResult
 from rxflow.prompts.prompt_manager import PromptManager
@@ -317,42 +318,52 @@ Remember: You have access to comprehensive tools for patient history, medication
         """Handle START state - initial user interaction"""
         logger.info("[AI USAGE] Processing initial user request - extracting medication intent")
         
-        # Use prompt manager for medication extraction
-        prompt_data = self.prompt_manager.format_conversation_prompt(
-            "medication_extraction",
-            user_input=user_input,
-            conversation_history=history
-        )
-        
-        # Use agent to process initial request
         try:
+            # Let the agent handle the interaction and determine next steps
             agent_response = self.agent_executor.invoke({
-                "input": f"Patient says: '{user_input}'. Help them start their refill process by identifying their medication needs.",
+                "input": f"""Patient says: '{user_input}'
+                
+Help them with their request. If they want a medication refill:
+1. Use patient_medication_history to check their current medications
+2. Help them identify which medication they need
+3. Answer any questions they have about their medications
+
+Do NOT assume anything - use the tools to get accurate information.
+
+If they clearly mention a specific medication for refill, I'll help transition to the next step. Otherwise, help them explore their options.""",
                 "chat_history": self._format_history_for_agent(history)
             })
             
             response_text = agent_response.get("output", "")
-            
             logger.info("[AI USAGE] Generated initial response using LLM agent")
             
-            # Attempt state transition based on input
-            if any(word in user_input.lower() for word in ["refill", "medication", "prescription", "pills"]):
+            # Only transition if there's clear medication refill intent AND specific medication mentioned
+            refill_keywords = ["refill", "medication", "prescription", "pills", "medicine"]
+            specific_med_mentioned = any(med in user_input.lower() for med in 
+                ["lisinopril", "metformin", "atorvastatin", "eliquis", "methocarbamol", "meloxicam", "omeprazole", "famotidine"])
+            
+            has_refill_intent = any(word in user_input.lower() for word in refill_keywords)
+            
+            # Only transition if both intent and specific medication are clear
+            if has_refill_intent and specific_med_mentioned:
                 success, updated_context, error = self.state_machine.transition(
                     context.session_id, "medication_request"
                 )
                 
                 if success and updated_context:
-                    logger.info(f"[TRANSITION] START -> IDENTIFY_MEDICATION")
+                    logger.info(f"[TRANSITION] START -> IDENTIFY_MEDICATION (clear intent + specific medication)")
                     self.sessions[context.session_id] = updated_context
                     context = updated_context
                 else:
                     logger.warning(f"[TRANSITION] Failed: {error}")
+            else:
+                logger.info("[NO TRANSITION] Staying in START - need clearer medication identification")
             
             return ConversationResponse(
                 message=response_text,
                 session_id=context.session_id,
                 current_state=context.current_state,
-                next_steps="Please provide your medication name or describe what you need to refill."
+                next_steps="Feel free to ask about your medications or specify which one you'd like to refill."
             )
             
         except Exception as e:
@@ -364,105 +375,72 @@ Remember: You have access to comprehensive tools for patient history, medication
         logger.info("[AI USAGE] Using tools to identify medication from user input")
         
         try:
-            # Check if this input contains dosage information (indicates medication already identified)
-            dosage_patterns = [r'\d+\s*mg', r'\d+\s*mcg', r'once\s+daily', r'twice\s+daily', r'mg\s+once', r'mg\s+twice', 
-                             r'yes.*\d+', r'it\'?s\s+\d+', r'\d+\s*milligram']
+            # Let the agent use tools to properly identify the medication
+            agent_response = self.agent_executor.invoke({
+                "input": f"""Patient is trying to identify their medication for refill. They said: '{user_input}'
+
+Please help by:
+1. Using patient_medication_history to check their current medications
+2. Using rxnorm_medication_lookup if they mention a specific drug name
+3. Answer any questions they have about their medications
+4. Help them identify which specific medication they want to refill
+
+Only proceed to dosage confirmation if:
+- The medication is clearly identified AND confirmed by the patient
+- They provide specific dosage information (like "10mg" or "twice daily")
+
+Otherwise, keep helping them identify the right medication.""",
+                "chat_history": self._format_history_for_agent(history)
+            })
             
-            contains_dosage = any(re.search(pattern, user_input.lower()) for pattern in dosage_patterns)
+            response_text = agent_response.get("output", "")
+            logger.info("[AI USAGE] Processed medication identification using agent tools")
             
-            if contains_dosage and len(history) > 0:
-                # User is providing dosage info, medication already identified - move to CONFIRM_DOSAGE
-                logger.info("[TRANSITION LOGIC] Detected dosage information, transitioning to CONFIRM_DOSAGE")
+            # Check if medication is clearly identified with dosage info
+            dosage_patterns = [r'\d+\s*mg', r'\d+\s*mcg', r'once\s+daily', r'twice\s+daily']
+            has_dosage_info = any(re.search(pattern, user_input.lower()) for pattern in dosage_patterns)
+            
+            # Look for confirmation words and specific medication names
+            confirmation_words = ["yes", "correct", "that's right", "confirmed", "exactly"]
+            medication_names = ["lisinopril", "metformin", "atorvastatin", "eliquis", "methocarbamol", "meloxicam", "omeprazole", "famotidine"]
+            
+            has_confirmation = any(word in user_input.lower() for word in confirmation_words)
+            mentions_specific_med = any(med in user_input.lower() or med in response_text.lower() for med in medication_names)
+            
+            # Only transition if we have BOTH medication identification AND dosage confirmation
+            if has_dosage_info and mentions_specific_med and (has_confirmation or "confirmed" in response_text.lower()):
                 
-                # Extract dosage info
+                # Extract the identified medication and dosage
+                identified_med = next((med for med in medication_names if med in user_input.lower() or med in response_text.lower()), "medication")
                 dosage_match = re.search(r'(\d+)\s*(mg|mcg)', user_input.lower())
-                dosage = f"{dosage_match.group(1)}{dosage_match.group(2)}" if dosage_match else "10mg"
+                dosage = f"{dosage_match.group(1)}{dosage_match.group(2)}" if dosage_match else "standard dose"
                 
                 success, updated_context, error = self.state_machine.transition(
                     context.session_id,
                     "medication_identified", 
-                    medication={"name": "lisinopril", "ambiguous": False},
-                    dosage={"amount": dosage, "frequency": "once daily", "confirmed": True}
+                    medication={"name": identified_med, "ambiguous": False},
+                    dosage={"amount": dosage, "frequency": "as prescribed", "confirmed": True}
                 )
                 
                 if success and updated_context:
                     self.sessions[context.session_id] = updated_context
                     context = updated_context
-                
-                return ConversationResponse(
-                    message=f"Perfect! I've confirmed your lisinopril {dosage} once daily. Let me check for safety considerations and pharmacy options.",
-                    session_id=context.session_id,
-                    current_state=context.current_state,
-                    next_steps="Checking medication safety and pharmacy availability."
-                )
+                    logger.info(f"[TRANSITION] IDENTIFY_MEDICATION -> CONFIRM_DOSAGE (medication and dosage confirmed)")
+                    
+                    return ConversationResponse(
+                        message=f"Perfect! I've confirmed your {identified_med} {dosage}. Let me now check for safety considerations and pharmacy options.",
+                        session_id=context.session_id,
+                        current_state=context.current_state,
+                        next_steps="Checking medication safety and finding the best pharmacy options for you."
+                    )
             
-            # Use agent with medication identification tools
-            agent_response = self.agent_executor.invoke({
-                "input": f"""Patient is trying to identify their medication. They said: '{user_input}'
-
-Please help by:
-1. Using patient_medication_history to check their current medications
-2. Using rxnorm_medication_lookup to verify any medication names mentioned
-3. Determining if the medication is clearly identified or needs clarification
-
-Provide a helpful response and let me know if the medication is identified or ambiguous.""",
-                "chat_history": self._format_history_for_agent(history)
-            })
-            
-            response_text = agent_response.get("output", "")
-            
-            logger.info("[AI USAGE] Processed medication identification using agent tools")
-            
-            # Determine next transition based on medication clarity
-            # Look for common medication names and identification indicators
-            medication_keywords = ["lisinopril", "lipitor", "atorvastatin", "eliquis", "metformin"]
-            unclear_indicators = ["unclear", "which", "not sure", "don't know", "help identify", "can't find"]
-            identified_indicators = ["found", "confirmed", "identified", "taking", "prescribed", "refill"]
-            
-            # Extract identified medication name
-            identified_med = "unknown"
-            for med in medication_keywords:
-                if med in response_text.lower() or med in user_input.lower():
-                    identified_med = med
-                    break
-            
-            if any(indicator in response_text.lower() for indicator in unclear_indicators):
-                # Medication is ambiguous
-                success, updated_context, error = self.state_machine.transition(
-                    context.session_id, 
-                    "ambiguous_medication",
-                    medication={"ambiguous": True, "candidates": []}
-                )
-                next_steps = "Please provide more details to help identify your specific medication."
-                
-            elif (identified_med != "unknown" or 
-                  any(indicator in response_text.lower() for indicator in identified_indicators) or
-                  len([word for word in response_text.split() if word.lower() in medication_keywords]) > 0):
-                # Medication identified
-                success, updated_context, error = self.state_machine.transition(
-                    context.session_id,
-                    "medication_identified", 
-                    medication={"name": identified_med, "ambiguous": False}
-                )
-                next_steps = "Great! Now let's confirm the dosage and check for any safety concerns."
-                
-            else:
-                # Default to identified if any tools were used
-                success, updated_context, error = self.state_machine.transition(
-                    context.session_id, "medication_identified"
-                )
-                next_steps = "Let's proceed to confirm your medication details."
-            
-            if success and updated_context:
-                self.sessions[context.session_id] = updated_context
-                context = updated_context
-                logger.info(f"[TRANSITION] IDENTIFY_MEDICATION -> {context.current_state.value}")
-            
+            # Stay in current state - continue helping with identification
+            logger.info("[NO TRANSITION] Continuing medication identification - need clearer confirmation")
             return ConversationResponse(
                 message=response_text,
                 session_id=context.session_id,
                 current_state=context.current_state,
-                next_steps=next_steps
+                next_steps="Please confirm the specific medication and dosage you'd like to refill."
             )
             
         except Exception as e:
@@ -759,19 +737,31 @@ Patient response: '{user_input}'""",
         )
     
     def _handle_general(self, user_input: str, context: ConversationContext, history: List) -> ConversationResponse:
-        """Handle general/fallback cases"""
-        logger.info("[AI USAGE] Processing general query with agent")
+        """Handle general/fallback cases - support Q&A without forced transitions"""
+        logger.info("[AI USAGE] Processing general query with agent - allowing Q&A")
         
         try:
+            # Enhanced general handler that supports questions and exploration
             agent_response = self.agent_executor.invoke({
-                "input": f"Patient says: '{user_input}'. Please provide helpful assistance.",
+                "input": f"""Patient says: '{user_input}'
+
+Please provide helpful assistance. You can:
+1. Use patient_medication_history to answer questions about their medications
+2. Use rxnorm_medication_lookup to provide drug information
+3. Answer questions about medications, side effects, interactions, etc.
+4. Help them explore their medication options
+5. Provide general pharmacy assistance
+
+Do NOT force any state transitions - let them ask questions and explore freely.
+Only suggest moving forward with refills when they explicitly want to proceed.""",
                 "chat_history": self._format_history_for_agent(history)
             })
             
             return ConversationResponse(
-                message=agent_response.get("output", "I'm here to help with your pharmacy needs."),
+                message=agent_response.get("output", "I'm here to help with your pharmacy needs. Feel free to ask any questions about your medications!"),
                 session_id=context.session_id,
-                current_state=context.current_state
+                current_state=context.current_state,
+                next_steps="Ask me anything about your medications or let me know when you're ready to proceed with a refill."
             )
             
         except Exception as e:
