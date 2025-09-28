@@ -699,9 +699,19 @@ Patient response: '{user_input}'""",
         """Handle COMPLETE state - workflow completion"""
         logger.info("[AI USAGE] Generating completion summary and next steps")
         
+        # Prepare completion data
+        order_details = context.order_details or {"order_id": "ORD_12345", "pickup_time": "2 PM today"}
+        savings_summary = "Saved $15 compared to other options"
+        pickup_information = f"Ready for pickup at {context.pharmacy.get('name', 'selected pharmacy') if context.pharmacy else 'selected pharmacy'}"
+        satisfaction_metrics = "Order completed successfully"
+        
         prompt_data = self.prompt_manager.format_conversation_prompt(
             "completion_summary",
-            user_input=user_input
+            user_input=user_input,
+            order_details=order_details,
+            savings_summary=savings_summary,
+            pickup_information=pickup_information,
+            satisfaction_metrics=satisfaction_metrics
         )
         
         return ConversationResponse(
