@@ -33,8 +33,15 @@ class PatientHistoryTool:
             patient = self.patient_data.get(patient_id, {})
             medications = patient.get("medications", [])
             
-            if medication_name and medication_name.lower() != "all":
-                # Filter by medication name
+            # Handle different query types
+            show_all_medications = (
+                not medication_name or 
+                medication_name.lower() in ["all", "", "unknown", "none", "any"] or
+                len(medication_name.strip()) < 3  # Very short queries likely want all medications
+            )
+            
+            if not show_all_medications:
+                # Filter by medication name only for specific medication queries
                 medications = [
                     m for m in medications 
                     if medication_name.lower() in m["name"].lower()
