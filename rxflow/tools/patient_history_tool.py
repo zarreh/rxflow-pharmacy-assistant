@@ -36,15 +36,21 @@ class PatientHistoryTool:
             # Handle different query types
             show_all_medications = (
                 not medication_name or 
-                medication_name.lower() in ["all", "", "unknown", "none", "any"] or
+                medication_name.lower() in ["all", "", "unknown", "none", "any", "yes", "no", "ok", "sure"] or
                 len(medication_name.strip()) < 3  # Very short queries likely want all medications
             )
             
             if not show_all_medications:
                 # Filter by medication name only for specific medication queries
+                # Extract just the medication name from queries like "Omeprazole (20mg capsules)"
+                medication_search = medication_name.lower()
+                if '(' in medication_search:
+                    medication_search = medication_search.split('(')[0].strip()
+                
                 medications = [
                     m for m in medications 
-                    if medication_name.lower() in m["name"].lower()
+                    if (medication_search in m["name"].lower() or 
+                        m["name"].lower() in medication_search)
                 ]
             
             return {
