@@ -375,9 +375,88 @@ If they clearly mention a specific medication for refill, I'll help transition t
         logger.info("[AI USAGE] Using tools to identify medication from user input")
         
         try:
-            # Let the agent use tools to properly identify the medication
+            # Check conversation history to see if medication was already identified
+            recent_history = history[-4:] if len(history) >= 4 else history
+            conversation_context = " ".join([msg.get("content", "") for msg in recent_history])
+            
+            # Look for confirmation words that indicate user wants to proceed with refill
+            confirmation_words = ["yes", "correct", "that's right", "confirmed", "exactly", "please", "go ahead", "proceed"]
+            refill_confirmation = ["refill", "assist", "help", "request", "proceed with", "Would you like me to"]
+            
+            has_confirmation = any(word in user_input.lower().strip() for word in confirmation_words)
+            mentions_refill_context = any(word in conversation_context.lower() for word in refill_confirmation)
+            
+            # Check if a specific medication was mentioned in recent conversation
+            medication_names = ["lisinopril", "metformin", "atorvastatin", "eliquis", "methocarbamol", "meloxicam", "omeprazole", "famotidine"]
+            identified_medication = None
+            dosage_info = None
+            
+            # Look for medication in recent conversation history - more flexible matching
+            for med in medication_names:
+                if med in conversation_context.lower():
+                    identified_medication = med
+                    # Extract dosage from context - look for various patterns
+                    dosage_patterns = [
+                        rf'{med}.*?(\d+\s*mg)',
+                        rf'(\d+\s*mg).*?{med}',
+                        rf'{med}\s*\((\d+mg[^)]*)\)'
+                    ]
+                    for pattern in dosage_patterns:
+                        dosage_match = re.search(pattern, conversation_context.lower())
+                        if dosage_match:
+                            dosage_info = dosage_match.group(1)
+                            break
+                    break
+            
+            # More liberal confirmation logic - if user says yes and we have medication context
+            user_input_clean = user_input.lower().strip()
+            simple_confirmations = ["yes", "y", "ok", "okay", "sure", "proceed", "go ahead"]
+            is_simple_confirmation = user_input_clean in simple_confirmations
+            
+            # Check if recent conversation mentions proceeding with refill/assistance
+            refill_proceed_patterns = [
+                "proceed with", "assist with", "can i have", "help with", "refill", 
+                "would you like me to", "i can help", "schedule a refill", "find a nearby pharmacy"
+            ]
+            has_proceed_context = any(pattern in conversation_context.lower() for pattern in refill_proceed_patterns)
+            
+            # Check for question patterns that expect yes/no confirmation
+            question_patterns = [
+                "would you like me to", "can you please confirm", "should i proceed", 
+                "would you like", "do you want", "shall i", "can i help"
+            ]
+            has_confirmation_question = any(pattern in conversation_context.lower() for pattern in question_patterns)
+            
+            logger.info(f"[CONFIRMATION DEBUG] user_input='{user_input}', is_simple_confirmation={is_simple_confirmation}, identified_medication='{identified_medication}', has_proceed_context={has_proceed_context}, has_confirmation_question={has_confirmation_question}")
+            
+            # If user is confirming and we have medication + context indicating they want to proceed
+            if (has_confirmation or is_simple_confirmation) and identified_medication and (has_proceed_context or has_confirmation_question):
+                logger.info(f"[CONFIRMATION] User confirmed refill for {identified_medication}")
+                
+                success, updated_context, error = self.state_machine.transition(
+                    context.session_id,
+                    "medication_identified", 
+                    medication={"name": identified_medication, "ambiguous": False},
+                    dosage={"amount": dosage_info or "standard dose", "frequency": "as prescribed", "confirmed": True}
+                )
+                
+                if success and updated_context:
+                    self.sessions[context.session_id] = updated_context
+                    context = updated_context
+                    logger.info(f"[TRANSITION] IDENTIFY_MEDICATION -> CONFIRM_DOSAGE (user confirmed refill request)")
+                    
+                    return ConversationResponse(
+                        message=f"Perfect! I'll help you with your {identified_medication} refill. Let me check for safety considerations and find the best pharmacy options for you.",
+                        session_id=context.session_id,
+                        current_state=context.current_state,
+                        next_steps="Checking medication safety and finding pharmacy options."
+                    )
+            
+            # Otherwise, use the agent to help identify medication
             agent_response = self.agent_executor.invoke({
                 "input": f"""Patient is trying to identify their medication for refill. They said: '{user_input}'
+
+Context from recent conversation: {conversation_context}
 
 Please help by:
 1. Using patient_medication_history to check their current medications
@@ -385,33 +464,23 @@ Please help by:
 3. Answer any questions they have about their medications
 4. Help them identify which specific medication they want to refill
 
-Only proceed to dosage confirmation if:
-- The medication is clearly identified AND confirmed by the patient
-- They provide specific dosage information (like "10mg" or "twice daily")
-
-Otherwise, keep helping them identify the right medication.""",
+If they're confirming a medication that was already discussed, acknowledge that and ask for final confirmation to proceed.""",
                 "chat_history": self._format_history_for_agent(history)
             })
             
             response_text = agent_response.get("output", "")
             logger.info("[AI USAGE] Processed medication identification using agent tools")
             
-            # Check if medication is clearly identified with dosage info
+            # Check if medication is clearly identified with dosage info in current input
             dosage_patterns = [r'\d+\s*mg', r'\d+\s*mcg', r'once\s+daily', r'twice\s+daily']
             has_dosage_info = any(re.search(pattern, user_input.lower()) for pattern in dosage_patterns)
+            mentions_specific_med = any(med in user_input.lower() for med in medication_names)
             
-            # Look for confirmation words and specific medication names
-            confirmation_words = ["yes", "correct", "that's right", "confirmed", "exactly"]
-            medication_names = ["lisinopril", "metformin", "atorvastatin", "eliquis", "methocarbamol", "meloxicam", "omeprazole", "famotidine"]
-            
-            has_confirmation = any(word in user_input.lower() for word in confirmation_words)
-            mentions_specific_med = any(med in user_input.lower() or med in response_text.lower() for med in medication_names)
-            
-            # Only transition if we have BOTH medication identification AND dosage confirmation
-            if has_dosage_info and mentions_specific_med and (has_confirmation or "confirmed" in response_text.lower()):
+            # Only transition if we have explicit medication identification AND dosage confirmation in current input
+            if has_dosage_info and mentions_specific_med:
                 
                 # Extract the identified medication and dosage
-                identified_med = next((med for med in medication_names if med in user_input.lower() or med in response_text.lower()), "medication")
+                identified_med = next((med for med in medication_names if med in user_input.lower()), "medication")
                 dosage_match = re.search(r'(\d+)\s*(mg|mcg)', user_input.lower())
                 dosage = f"{dosage_match.group(1)}{dosage_match.group(2)}" if dosage_match else "standard dose"
                 
