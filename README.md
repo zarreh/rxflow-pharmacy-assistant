@@ -11,7 +11,23 @@ An enterprise-grade pharmacy refill assistant showcasing advanced AI conversatio
 **✅ Intelligent Pharmacy Fallback System**  
 **✅ Doctor/Pharmacist Escalation Routing**  
 **✅ 16+ Specialized Healthcare Tools Implemented**  
-**✅ Comprehensive Documentation Suite**  
+**✅ ## 📚 Documentation
+
+### **For End Users**
+📖 **[User Guide](docs/user-guide/index.md)**: Complete usage instructions with examples
+
+### **For Developers** 
+🛠️ **[Developer Guide](docs/developer-guide/index.md)**: Architecture, extension patterns, and best practices  
+🔗 **[API Reference](docs/api/)**: Complete API documentation for all components
+
+### **For Operations Teams**
+🚀 **[Deployment Guide](docs/deployment/index.md)**: Docker and production deployment  
+🐳 **[Docker Guide](docs/deployment/docker-deployment.md)**: Comprehensive Docker setup
+📋 **[Deployment Checklist](docs/deployment/deployment-checklist.md)**: Production readiness checklist
+
+### **Getting Started**
+⚡ **[Quick Start](docs/getting-started/quickstart.md)**: Fast setup and demo
+🛠️ **[Installation](docs/getting-started/installation.md)**: Detailed installation guideDocumentation Suite**  
 **✅ Multiple Deployment Options Available**
 
 ## 🎯 Enhanced System Capabilities
@@ -366,7 +382,34 @@ sequenceDiagram
     UI-->>User: Display escalation guidance
 ```
 
-### Enhanced Project Structure
+### Project Structure
+```
+rxflow_pharmacy_assistant/
+├── 🐳 Dockerfile              # Production Docker configuration
+├── 📦 docker-compose.yml      # Container orchestration
+├── app.py                     # Streamlit application entry point
+├── pyproject.toml            # Poetry dependencies & project config
+├── data/                     # Mock healthcare data
+│   ├── mock_drugs.json       # Medication database with controlled substances
+│   ├── mock_patients.json    # Patient profiles with escalation scenarios
+│   ├── mock_pharmacies.json  # Multi-pharmacy inventory system
+│   └── mock_insurance.json   # Insurance formulary data
+├── rxflow/                   # Core application system
+│   ├── workflow/             # AI conversation management
+│   ├── tools/                # 16+ specialized healthcare tools
+│   ├── config/               # Application configuration
+│   ├── utils/                # Logging and helper utilities
+│   └── services/             # Mock API services
+├── docs/                     # Complete documentation suite
+│   ├── deployment/           # Docker & production deployment guides
+│   ├── api/                  # API documentation
+│   ├── developer-guide/      # Technical implementation details
+│   ├── getting-started/      # Installation and setup
+│   └── user-guide/           # End-user documentation
+└── tests/                    # Comprehensive test suite
+    ├── test_escalation_scenarios.py  # Medical escalation tests
+    └── test_integration.py          # Full workflow integration tests
+```
 ```
 rxflow_pharmacy_assistant/ (Enhanced Production-Ready v2.0)
 ├── 📊 Escalation Test Results: 100% Success (5/5)
@@ -413,65 +456,57 @@ rxflow_pharmacy_assistant/ (Enhanced Production-Ready v2.0)
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- **Python 3.12+** (required for latest type hinting)
-- **Poetry** (dependency management)
-- **OpenAI API Key** (primary LLM provider) or **Ollama** (local alternative)
+### 🐳 Docker Deployment (Recommended)
 
-### Installation & Setup
+**Prerequisites**: Docker and Docker Compose
 
-1. **Clone and configure the project:**
 ```bash
+# 1. Clone and configure
+git clone https://github.com/zarreh/rxflow-pharmacy-assistant.git
+cd rxflow-pharmacy-assistant
+git checkout deployment
+
+# 2. Configure environment
+cp .env.production.example .env
+# Edit .env and add your OpenAI API key
+
+# 3. Deploy with Docker
+docker-compose up -d
+
+# 4. Access the application
+# http://localhost:8080
+```
+
+### 🛠️ Development Setup
+
+**Prerequisites**: Python 3.12+, Poetry, OpenAI API Key
+
+```bash
+# 1. Clone and configure
 git clone <repository-url>
 cd rxflow_pharmacy_assistant
 cp .env.example .env
-```
 
-2. **Install dependencies:**
-```bash
+# 2. Install dependencies
 poetry install
-```
 
-3. **Configure LLM Provider (.env file):**
-
-**Default: OpenAI GPT-4 Mini (Recommended)**
-```bash
-# Edit .env file - OpenAI is now the default provider
+# 3. Configure LLM Provider
+# Edit .env file:
 DEFAULT_LLM_PROVIDER=openai
 OPENAI_API_KEY=your-openai-api-key-here
-OPENAI_MODEL=gpt-4o-mini
-```
 
-**Alternative: Ollama (Local, Free)**
-```bash
-# To use Ollama instead, set in .env:
-DEFAULT_LLM_PROVIDER=ollama
-OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_MODEL=llama3.2
-
-# Then install Ollama locally:
-curl -fsSL https://ollama.ai/install.sh | sh
-ollama pull llama3.2
-```
-
-**🔄 Runtime Switching:**
-```python
-# Switch providers programmatically
-from rxflow.llm import switch_to_openai, switch_to_ollama
-switch_to_openai()  # Use OpenAI GPT-4 Mini
-switch_to_ollama()  # Use Ollama Llama 3.2
-```
-
-4. **Run the application:**
-```bash
-# Using Poetry
+# 4. Run application
 poetry run streamlit run app.py
-
-# Or using Make commands
-make run
+# Access at http://localhost:8501
 ```
 
-**🌐 Access the application at `http://localhost:8501`**
+### ⚡ Alternative: Direct Docker Run
+
+```bash
+docker run -d -p 8080:8080 \
+  -e OPENAI_API_KEY=your_key_here \
+  zarreh/rxflow-pharmacy-assistant:latest
+```
 
 ## 🎮 Enhanced Interactive Demo Scenarios
 
@@ -649,14 +684,48 @@ RXFLOW_WORKER_TIMEOUT=300
 
 ## 🚀 Deployment Options
 
-### **🐳 Docker Deployment** (Recommended for Demo)
+### **🐳 Docker Deployment** (Production Ready)
+
+**Pre-built Image Available**: `zarreh/rxflow-pharmacy-assistant:latest`
+
+#### Quick Docker Deployment
 ```bash
-# Single command deployment
+# Using Docker Compose (Recommended)
+cp .env.production.example .env
+# Edit .env with your OpenAI API key
 docker-compose up -d
 
-# Access at http://localhost:8501
-# Includes Redis, load balancer, and monitoring
+# Access at http://localhost:8080
 ```
+
+#### Manual Docker Deployment
+```bash
+# Pull and run the production image
+docker run -d \
+  --name rxflow-pharmacy-assistant \
+  -p 8080:8080 \
+  -e OPENAI_API_KEY=your_key_here \
+  -e DEFAULT_LLM_PROVIDER=openai \
+  zarreh/rxflow-pharmacy-assistant:latest
+```
+
+#### VPS Deployment
+```bash
+# On your VPS
+git clone https://github.com/zarreh/rxflow-pharmacy-assistant.git
+cd rxflow-pharmacy-assistant
+git checkout deployment
+cp .env.production.example .env
+# Configure .env with your settings
+docker-compose up -d
+```
+
+### **📦 Image Specifications**
+- **Repository**: `zarreh/rxflow-pharmacy-assistant`
+- **Size**: 864MB (optimized for production)
+- **Architecture**: Multi-arch (amd64, arm64)
+- **Base**: Python 3.12 slim
+- **Security**: Non-root user, minimal dependencies
 
 ### **☸️ Kubernetes Deployment** (Enterprise Scale)
 ```bash
@@ -669,7 +738,7 @@ kubectl apply -f k8s/
 - **AWS ECS/Fargate**: Serverless container deployment
 - **Google Cloud Run**: Fully managed container platform  
 - **Azure Container Instances**: Simplified container deployment
-- **Complete Terraform configurations provided**
+- **Docker Hub Integration**: Public image available
 
 ## 📚 Comprehensive Documentation Suite
 

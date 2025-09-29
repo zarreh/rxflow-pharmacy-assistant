@@ -2,50 +2,92 @@
 
 ## Overview
 
-This guide covers deploying RxFlow Pharmacy Assistant in different environments, from development setups to production healthcare environments with strict security and compliance requirements.
+This guide covers deploying RxFlow Pharmacy Assistant using Docker and container orchestration. The application is available as a pre-built Docker image on Docker Hub for easy deployment.
+
+## 🐳 Docker Hub Image
+
+**Public Repository**: `zarreh/rxflow-pharmacy-assistant:latest`
+
+- **Image Size**: 864MB (production optimized)
+- **Base**: Python 3.12 slim
+- **Architecture**: Multi-arch (amd64, arm64)
+- **Security**: Non-root user execution
+- **Health Checks**: Built-in container health monitoring
 
 ## Prerequisites
 
 ### System Requirements
 
-- **Python**: 3.11 or higher
-- **Memory**: Minimum 4GB RAM, recommended 8GB+ for production
-- **Storage**: Minimum 10GB, recommended 50GB+ for logs and data
-- **CPU**: 2+ cores recommended for production workloads
-- **Network**: HTTPS capability, firewall configuration for healthcare compliance
+- **Docker**: 20.10+ and Docker Compose v2.0+
+- **Memory**: Minimum 2GB RAM, recommended 4GB+ for production
+- **Storage**: Minimum 5GB for image and logs
+- **CPU**: 1+ core, 2+ cores recommended for production
+- **Network**: Port 8080 available, HTTPS capability for production
 
-### Security Requirements
+### Required Environment Variables
 
-- **Encryption**: TLS 1.3 for data in transit
-- **Authentication**: Multi-factor authentication capability
-- **Logging**: Comprehensive audit logging for HIPAA compliance
-- **Data Protection**: Encryption at rest for patient data
-- **Access Control**: Role-based access control (RBAC)
+- **OPENAI_API_KEY**: Your OpenAI API key for production use
+- **DEFAULT_LLM_PROVIDER**: Set to "openai" for production
+
+## 🚀 Quick Start Deployment
+
+### 1. Docker Compose (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/zarreh/rxflow-pharmacy-assistant.git
+cd rxflow-pharmacy-assistant
+git checkout deployment
+
+# Configure environment
+cp .env.production.example .env
+nano .env  # Add your OpenAI API key
+
+# Deploy with Docker Compose
+docker-compose up -d
+
+# Access at http://localhost:8080
+```
+
+### 2. Direct Docker Run
+
+```bash
+# Pull and run the image
+docker run -d \
+  --name rxflow-pharmacy-assistant \
+  -p 8080:8080 \
+  -e OPENAI_API_KEY=your_key_here \
+  -e DEFAULT_LLM_PROVIDER=openai \
+  -e USE_MOCK_DATA=true \
+  zarreh/rxflow-pharmacy-assistant:latest
+```
+
+### 3. VPS Production Deployment
+
+```bash
+# On your VPS (Ubuntu/Debian)
+sudo apt update && sudo apt install -y docker.io docker-compose-v2
+
+# Clone and deploy
+git clone https://github.com/zarreh/rxflow-pharmacy-assistant.git
+cd rxflow-pharmacy-assistant
+git checkout deployment
+
+# Configure for production
+cp .env.production.example .env
+# Edit .env with your production settings
+
+# Deploy
+docker-compose up -d
+
+# Optional: Set up reverse proxy (Nginx)
+sudo apt install -y nginx
+# Configure SSL and domain
+```
 
 ## Development Environment
 
-### Local Development Setup
-
-```bash
-# Clone repository
-git clone https://github.com/your-org/rxflow_pharmacy_assistant.git
-cd rxflow_pharmacy_assistant
-
-# Install dependencies using Poetry
-poetry install
-
-# Set up environment variables
-cp .env.example .env.development
-# Edit .env.development with your settings
-
-# Initialize database (if using)
-poetry run python -m rxflow.scripts.init_db
-
-# Run development server
-poetry run python -m rxflow.main --environment development
-```
-
-### Development Docker Setup
+### Local Development with Poetry
 
 ```bash
 # Build and run with Docker Compose

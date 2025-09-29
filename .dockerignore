@@ -1,0 +1,99 @@
+# Docker ignore file for RxFlow Pharmacy Assistant
+
+# Python cache and build files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Development tools
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Documentation and dev files
+docs/
+site/
+mkdocs.yml
+README.md
+*.md
+
+# Requirements file (using Poetry instead)
+requirements.txt
+
+# Test files
+tests/
+pytest.ini
+.pytest_cache/
+
+# Development requirements
+requirements-docs.txt
+
+# Makefile and dev tools
+Makefile
+.pre-commit-config.yaml
+
+# Docker files (avoid recursive copy)
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/

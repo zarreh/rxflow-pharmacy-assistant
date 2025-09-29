@@ -68,27 +68,39 @@ graph TB
 
 ## 🚀 **Quick Start**
 
-Get started with RxFlow in minutes:
+Get started with RxFlow using Docker:
 
-1. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### **🐳 Docker Deployment (Recommended)**
+```bash
+# Pull and run the production image
+docker run -d -p 8080:8080 \
+  -e OPENAI_API_KEY=your_key_here \
+  zarreh/rxflow-pharmacy-assistant:latest
 
-2. **Configure Environment**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your API keys
-   ```
+# Access at http://localhost:8080
+```
 
-3. **Run the Application**
-   ```bash
-   streamlit run app.py
-   ```
+### **📦 Docker Compose**
+```bash
+git clone https://github.com/zarreh/rxflow-pharmacy-assistant.git
+cd rxflow-pharmacy-assistant
+cp .env.production.example .env
+# Edit .env with your OpenAI API key
+docker-compose up -d
+```
 
-4. **Start a Conversation**
-   Navigate to `http://localhost:8501` and try:
-   > "I need to refill my omeprazole 20mg"
+### **🛠️ Development Setup**
+```bash
+poetry install
+cp .env.example .env
+# Edit .env with your API keys
+poetry run streamlit run app.py
+# Access at http://localhost:8501
+```
+
+### **💬 Try a Demo Conversation**
+Navigate to the application and try:
+> "I need to refill my omeprazole 20mg"
 
 ## 📊 **System Statistics**
 
