@@ -1,0 +1,19 @@
+# MkDocs Documentation Dependencies
+
+# Core MkDocs
+mkdocs>=1.5.3
+mkdocs-material>=9.4.6
+
+# API Documentation
+mkdocstrings[python]>=0.23.0
+mkdocs-autorefs>=0.5.0
+
+# Enhanced Features  
+pymdown-extensions>=10.3.1
+mkdocs-mermaid2-plugin>=0.6.0
+
+# Optional: Version management
+mike>=1.1.2
+
+# Optional: PDF generation
+mkdocs-pdf-export-plugin>=0.5.10
