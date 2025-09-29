@@ -169,86 +169,145 @@ class PharmacyCostTool:
     
     def find_cheapest_pharmacy(self, query: str) -> Dict:
         """
-        Find the cheapest pharmacy for a medication
+        STEP 4 WORKFLOW: Find the cheapest pharmacy with promotions and price comparison
         Query format: "medication_name" or JSON string with preferences
+        Analyzes prices, promotions, discounts, and provides cost optimization recommendations
         """
         try:
-            logger.info(f"[AI USAGE] Finding cheapest pharmacy options with query: {query}")
+            logger.info(f"[AI USAGE] STEP 4 WORKFLOW - Finding cheapest pharmacy with promotions for: {query}")
             
             # Parse query - could be medication name or JSON with preferences
             medication = None
-            distance_matters = True
+            customer_age = None
+            is_member = False
             
             if query.startswith('{') and query.endswith('}'):
                 try:
                     import json
                     params = json.loads(query)
-                    medication = params.get('medication', 'omeprazole')  # Default from context
-                    distance_matters = not params.get('distant_to_pharmacy', False)
+                    medication = params.get('medication', query).strip().lower()
+                    customer_age = params.get('customer_age', 0)
+                    is_member = params.get('is_member', False)
                 except:
-                    # If JSON parsing fails, treat as medication name
                     medication = query.strip().lower()
             else:
                 medication = query.strip().lower()
             
-            # Get all pharmacies
-            pharmacies = self.location_tool.find_nearby_pharmacies("default")
+            # Load pharmacy data directly from JSON files
+            import json
+            import os
             
-            if not pharmacies.get("success", False):
-                return {
-                    "success": False,
-                    "error": "Unable to retrieve pharmacy information",
-                    "source": "error"
-                }
+            data_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'data')
+            pharmacy_file = os.path.join(data_dir, 'mock_pharmacies.json')
             
-            # Find pricing for the medication across pharmacies
+            try:
+                with open(pharmacy_file, 'r') as f:
+                    pharmacy_data = json.load(f)
+            except:
+                return {"success": False, "error": "Unable to load pharmacy data"}
+            
+            # Find pricing for the medication across pharmacies with promotions
             pricing_options = []
-            for pharmacy in pharmacies.get("pharmacies", []):
-                pharm_id = pharmacy["id"]
-                inventory = self.pharmacy_data.get(pharm_id, {})
+            
+            for pharmacy_id, pharmacy_info in pharmacy_data.items():
+                inventory = pharmacy_info.get("inventory", {})
+                promotions = pharmacy_info.get("promotions", {})
                 
                 # Look for medication pricing
-                medication_found = False
-                for item_key, item_info in inventory.get("inventory", {}).items():
+                for item_key, item_info in inventory.items():
                     if medication in item_key.lower():
+                        base_price = item_info.get("price", 0)
+                        is_generic = item_info.get("is_generic", False)
+                        manufacturer = item_info.get("manufacturer", "Unknown")
+                        
+                        # Calculate discounted prices based on promotions
+                        best_discount = 0
+                        applicable_promotions = []
+                        final_price = base_price
+                        
+                        for promo_id, promo_info in promotions.items():
+                            applies = False
+                            discount_amount = 0
+                            
+                            # Check if promotion applies
+                            applies_to = promo_info.get("applies_to", [])
+                            
+                            if "all" in applies_to:
+                                applies = True
+                            elif "generic" in applies_to and is_generic:
+                                applies = True
+                            elif "club_member" in applies_to and is_member:
+                                applies = True
+                            elif customer_age and customer_age >= 65 and "senior" in promo_info.get("description", "").lower():
+                                applies = True
+                            
+                            if applies:
+                                if promo_info.get("discount_type") == "fixed_price":
+                                    # Fixed price program (e.g., Walmart $4 generics)
+                                    discount_amount = base_price - promo_info.get("fixed_price", base_price)
+                                    if discount_amount > best_discount:
+                                        best_discount = discount_amount
+                                        final_price = promo_info.get("fixed_price", base_price)
+                                elif promo_info.get("discount_percent", 0) > 0:
+                                    # Percentage discount
+                                    discount_percent = promo_info.get("discount_percent", 0)
+                                    discount_amount = base_price * (discount_percent / 100)
+                                    if discount_amount > best_discount:
+                                        best_discount = discount_amount
+                                        final_price = base_price - discount_amount
+                                
+                                if applies:
+                                    applicable_promotions.append({
+                                        "name": promo_id,
+                                        "description": promo_info.get("description", ""),
+                                        "discount_amount": discount_amount,
+                                        "savings": f"${discount_amount:.2f}"
+                                    })
+                        
                         pricing_options.append({
-                            "pharmacy_name": pharmacy["name"],
-                            "pharmacy_id": pharm_id,
+                            "pharmacy_name": pharmacy_info.get("name", pharmacy_id),
+                            "pharmacy_id": pharmacy_id,
+                            "address": pharmacy_info.get("address", {}).get("street", "Address not available"),
+                            "phone": pharmacy_info.get("phone", "Phone not available"),
                             "medication_item": item_key,
-                            "price": item_info.get("price", 0),
-                            "quantity_available": item_info.get("quantity_available", 0),
-                            "wait_time": item_info.get("wait_time", "15-30 minutes"),
-                            "distance_miles": pharmacy.get("distance_miles", 0),
-                            "address": pharmacy.get("address", ""),
-                            "phone": pharmacy.get("phone", "")
+                            "base_price": base_price,
+                            "final_price": final_price,
+                            "total_savings": best_discount,
+                            "savings_percent": (best_discount / base_price * 100) if base_price > 0 else 0,
+                            "is_generic": is_generic,
+                            "manufacturer": manufacturer,
+                            "quantity_available": item_info.get("quantity", 0),
+                            "wait_time_hours": item_info.get("wait_time_hours", 0.5),
+                            "applicable_promotions": applicable_promotions,
+                            "services": pharmacy_info.get("services", [])
                         })
-                        medication_found = True
-                        break
-                
-                if not medication_found:
-                    # Add pharmacy even if no specific pricing (with estimated cost)
-                    pricing_options.append({
-                        "pharmacy_name": pharmacy["name"],
-                        "pharmacy_id": pharm_id,
-                        "medication_item": f"{medication} (estimated)",
-                        "price": 15.00,  # Default estimated price
-                        "quantity_available": 30,
-                        "wait_time": "20-30 minutes",
-                        "distance_miles": pharmacy.get("distance_miles", 0),
-                        "address": pharmacy.get("address", ""),
-                        "phone": pharmacy.get("phone", "")
-                    })
             
-            # Sort by price (cheapest first)
-            pricing_options.sort(key=lambda x: x["price"])
+            # Sort by final price (cheapest first), then by savings
+            pricing_options.sort(key=lambda x: (x["final_price"], -x["total_savings"]))
+            
+            # Calculate additional insights
+            if pricing_options:
+                cheapest_price = pricing_options[0]["final_price"]
+                most_expensive = max(pricing_options, key=lambda x: x["final_price"])["final_price"]
+                max_savings = cheapest_price - most_expensive if len(pricing_options) > 1 else 0
+            else:
+                max_savings = 0
             
             return {
                 "success": True,
-                "medication": medication,
+                "medication_searched": medication,
+                "total_pharmacies_checked": len(pricing_options),
                 "cheapest_option": pricing_options[0] if pricing_options else None,
-                "all_options": pricing_options[:3],  # Top 3 cheapest
-                "distance_preference": distance_matters,
-                "source": "mock"
+                "top_3_options": pricing_options[:3],  # Top 3 cheapest with promotions
+                "max_potential_savings": max_savings,
+                "cost_optimization_summary": {
+                    "cheapest_price": pricing_options[0]["final_price"] if pricing_options else 0,
+                    "average_savings": sum(opt["total_savings"] for opt in pricing_options) / len(pricing_options) if pricing_options else 0,
+                    "generic_available": any(opt["is_generic"] for opt in pricing_options),
+                    "promotions_available": any(opt["applicable_promotions"] for opt in pricing_options)
+                },
+                "recommendation": f"Cheapest option: {pricing_options[0]['pharmacy_name']} at ${pricing_options[0]['final_price']:.2f}" if pricing_options else "No options found",
+                "source": "enhanced_mock_with_promotions"
             }
             
         except Exception as e:
@@ -409,6 +468,6 @@ pharmacy_details_tool = Tool(
 
 find_cheapest_pharmacy_tool = Tool(
     name="find_cheapest_pharmacy",
-    description="Find the cheapest pharmacy options for a medication. Use medication name or JSON with preferences like {'medication': 'omeprazole', 'distant_to_pharmacy': true, 'cheapest_price': true}.",
+    description="STEP 4 WORKFLOW: Find the cheapest pharmacy option for a medication with current promotions and pricing. ALWAYS use after cost optimization to compare pharmacy prices. Returns ranked options by price with specific dollar amounts and promotions. Use medication name as input.",
     func=lambda query: PharmacyCostTool().find_cheapest_pharmacy(query)
 )

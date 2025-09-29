@@ -345,7 +345,7 @@ goodrx_tool = Tool(
 
 brand_generic_tool = Tool(
     name="compare_brand_generic_prices",
-    description="Compare brand name vs generic medication prices to find savings opportunities. Use medication name as input.",
+    description="STEP 3 WORKFLOW: Compare brand name vs generic medication prices to find savings opportunities. ALWAYS use after dosage verification to offer cost-saving alternatives. Use medication name as input. Returns specific dollar savings and percentage savings.",
     func=lambda query: MockGoodRxTool().compare_brand_vs_generic(query)
 )
 

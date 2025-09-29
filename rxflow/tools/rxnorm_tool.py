@@ -194,7 +194,9 @@ class RxNormTool:
                     "requires_pa": med_info.get("requires_pa", False),
                     "typical_supply_days": med_info.get("typical_supply_days", [30, 90]),
                     "contraindications": med_info.get("contraindications", []),
-                    "common_interactions": med_info.get("common_interactions", [])
+                    "common_interactions": med_info.get("common_interactions", []),
+                    "common_side_effects": med_info.get("common_side_effects", []),
+                    "serious_side_effects": med_info.get("serious_side_effects", [])
                 }],
                 "result_count": 1,
                 "source": "mock_enhanced"
@@ -249,12 +251,7 @@ class RxNormTool:
         else:
             return "CAUTION: Monitor for interaction effects"
 
-# Create LangChain tools
-rxnorm_tool = Tool(
-    name="rxnorm_medication_lookup",
-    description="Look up medication information from RxNorm database. Returns drug details, RxCUI, brand names, and classifications. Use medication name as input.",
-    func=lambda query: RxNormTool().search_medication(query)
-)
+# Create LangChain tools (defined at end of file with safe wrappers)
 
 dosage_verification_tool = Tool(
     name="verify_medication_dosage",
@@ -307,13 +304,13 @@ def safe_interaction_check(query):
 # Create LangChain tools with safe wrappers
 rxnorm_tool = Tool(
     name="rxnorm_medication_lookup",
-    description="Look up medication information from RxNorm database. Returns drug details, RxCUI, brand names, and classifications. Use medication name as input.",
+    description="Look up comprehensive medication information including side effects, drug interactions, dosages, and safety information. ALWAYS use this tool when patients ask about side effects, drug information, or medication details. Use medication name as input.",
     func=safe_rxnorm_lookup
 )
 
 dosage_verification_tool = Tool(
     name="verify_medication_dosage",
-    description="Verify if a dosage is valid for a medication. Use format 'medication:dosage' (e.g., 'lisinopril:10mg'). Returns validation and available dosages.",
+    description="STEP 2 WORKFLOW: Verify if a dosage is valid for a medication. ALWAYS use after medication identification to confirm proper dosage before proceeding. Use format 'medication:dosage' (e.g., 'lisinopril:10mg'). Returns validation and available dosages.",
     func=safe_dosage_verification
 )
 

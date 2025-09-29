@@ -18,36 +18,60 @@
       "immunizations",
       "consultation"
     ],
+    "promotions": {
+      "generic_discount": {
+        "description": "10% off all generic medications",
+        "discount_percent": 10,
+        "applies_to": ["generic"],
+        "valid_until": "2024-12-31"
+      },
+      "senior_discount": {
+        "description": "15% senior discount (65+)",
+        "discount_percent": 15,
+        "applies_to": ["all"],
+        "valid_until": "2024-12-31"
+      }
+    },
     "inventory": {
       "lisinopril_10mg": {
         "rxnorm_code": "29046",
         "quantity": 500,
         "wait_time_hours": 0.5,
-        "price": 15.0
+        "price": 15.0,
+        "is_generic": true,
+        "manufacturer": "Teva"
       },
       "metformin_500mg": {
         "rxnorm_code": "6809",
         "quantity": 1000,
         "wait_time_hours": 0.5,
-        "price": 12.0
+        "price": 12.0,
+        "is_generic": true,
+        "manufacturer": "Aurobindo"
       },
       "atorvastatin_20mg": {
         "rxnorm_code": "83367",
         "quantity": 300,
         "wait_time_hours": 1.0,
-        "price": 25.0
+        "price": 25.0,
+        "is_generic": true,
+        "manufacturer": "Greenstone"
       },
       "eliquis_5mg": {
         "rxnorm_code": "1364430",
         "quantity": 50,
         "wait_time_hours": 2.0,
-        "price": 450.0
+        "price": 450.0,
+        "is_generic": false,
+        "manufacturer": "Bristol-Myers Squibb"
       },
       "methocarbamol_500mg": {
         "rxnorm_code": "6878",
         "quantity": 750,
         "wait_time_hours": 0.5,
-        "price": 18.0
+        "price": 18.0,
+        "is_generic": true,
+        "manufacturer": "Mylan"
       },
       "meloxicam_15mg": {
         "rxnorm_code": "77492",
@@ -88,18 +112,37 @@
       "$4_generics",
       "90_day_supply"
     ],
+    "promotions": {
+      "four_dollar_generics": {
+        "description": "$4 generic medications program",
+        "discount_type": "fixed_price",
+        "fixed_price": 4.0,
+        "applies_to": ["generic"],
+        "valid_until": "ongoing"
+      },
+      "ninety_day_discount": {
+        "description": "20% off 90-day supplies",
+        "discount_percent": 20,
+        "applies_to": ["90_day_supply"],
+        "valid_until": "ongoing"
+      }
+    },
     "inventory": {
       "lisinopril_10mg": {
         "rxnorm_code": "29046",
         "quantity": 800,
         "wait_time_hours": 1.0,
-        "price": 4.0
+        "price": 4.0,
+        "is_generic": true,
+        "manufacturer": "Sandoz"
       },
       "metformin_500mg": {
         "rxnorm_code": "6809",
         "quantity": 1200,
         "wait_time_hours": 1.0,
-        "price": 4.0
+        "price": 4.0,
+        "is_generic": true,
+        "manufacturer": "Accord"
       },
       "atorvastatin_20mg": {
         "rxnorm_code": "83367",
@@ -158,36 +201,60 @@
       "immunizations",
       "health_tests"
     ],
+    "promotions": {
+      "mywalgreens_rewards": {
+        "description": "5% myWalgreens cash rewards on prescriptions",
+        "discount_percent": 5,
+        "applies_to": ["all"],
+        "valid_until": "ongoing"
+      },
+      "prescription_savings_club": {
+        "description": "Prescription Savings Club discount",
+        "discount_percent": 25,
+        "applies_to": ["club_member"],
+        "valid_until": "ongoing"
+      }
+    },
     "inventory": {
       "lisinopril_10mg": {
         "rxnorm_code": "29046",
         "quantity": 400,
         "wait_time_hours": 0.75,
-        "price": 14.5
+        "price": 14.5,
+        "is_generic": true,
+        "manufacturer": "Lupin"
       },
       "metformin_500mg": {
         "rxnorm_code": "6809",
         "quantity": 900,
         "wait_time_hours": 0.75,
-        "price": 11.5
+        "price": 11.5,
+        "is_generic": true,
+        "manufacturer": "Zydus"
       },
       "atorvastatin_20mg": {
         "rxnorm_code": "83367",
         "quantity": 250,
         "wait_time_hours": 1.25,
-        "price": 22.0
+        "price": 22.0,
+        "is_generic": true,
+        "manufacturer": "Ranbaxy"
       },
       "eliquis_5mg": {
         "rxnorm_code": "1364430",
         "quantity": 75,
         "wait_time_hours": 2.5,
-        "price": 440.0
+        "price": 440.0,
+        "is_generic": false,
+        "manufacturer": "Bristol-Myers Squibb"
       },
       "methocarbamol_500mg": {
         "rxnorm_code": "6878",
         "quantity": 750,
         "wait_time_hours": 1.0,
-        "price": 19.8
+        "price": 19.8,
+        "is_generic": true,
+        "manufacturer": "Par"
       },
       "meloxicam_15mg": {
         "rxnorm_code": "77492",

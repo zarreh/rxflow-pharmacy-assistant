@@ -20,7 +20,7 @@ from pathlib import Path
 
 # Import advanced conversation manager (Step 6)
 from rxflow.workflow.conversation_manager import ConversationManager
-from rxflow.workflow.workflow_types import RefillState
+from rxflow.workflow.workflow_types import WorkflowState
 
 # Setup logging
 setup_logging()
@@ -156,7 +156,7 @@ def initialize_session_state():
         st.session_state.session_id = str(uuid.uuid4())
 
     if "current_state" not in st.session_state:
-        st.session_state.current_state = RefillState.START
+        st.session_state.current_state = WorkflowState.GREETING
 
     if "conversation_context" not in st.session_state:
         st.session_state.conversation_context = {}
@@ -262,17 +262,9 @@ def render_sidebar():
     # Session Logs Section
     st.sidebar.markdown("### 📋 Session Logs")
     
-    # Show current session log status
-    log_path = st.session_state.conversation_manager.get_session_log_path(st.session_state.session_id)
-    if log_path and Path(log_path).exists():
-        st.sidebar.success("✅ Session logged to file")
-        st.sidebar.text(f"Log: {Path(log_path).name}")
-        
-        # Button to view current session log
-        if st.sidebar.button("📖 View Current Log", use_container_width=True):
-            show_session_log(log_path)
-    else:
-        st.sidebar.info("📝 Session logging active")
+    # Show current session log status - simplified logging
+    st.sidebar.info("📝 Session logging active")
+    # Note: Detailed session log files are not available in simplified version
     
     # Show all available logs
     all_logs = get_all_session_logs()
@@ -304,7 +296,7 @@ def reset_conversation():
     """Reset conversation state"""
     st.session_state.messages = []
     st.session_state.session_id = str(uuid.uuid4())
-    st.session_state.current_state = RefillState.START
+    st.session_state.current_state = WorkflowState.GREETING
     st.session_state.conversation_context = {}
     st.session_state.tool_logs = []
     st.session_state.cost_savings = {"total_saved": 0, "comparisons": []}
@@ -442,18 +434,13 @@ def render_state_visualization():
     """Render current conversation state"""
     st.markdown("### 🎯 Conversation State")
     
-    # State indicator
+    # State indicator for simplified workflow
     state_colors = {
-        RefillState.START: "🟢",
-        RefillState.IDENTIFY_MEDICATION: "🔵", 
-        RefillState.CLARIFY_MEDICATION: "🟡",
-        RefillState.CONFIRM_DOSAGE: "🟠",
-        RefillState.CHECK_AUTHORIZATION: "🟣",
-        RefillState.SELECT_PHARMACY: "🔵",
-        RefillState.CONFIRM_ORDER: "🟢",
-        RefillState.ESCALATE_PA: "🔴",
-        RefillState.COMPLETE: "✅",
-        RefillState.ERROR: "❌"
+        WorkflowState.GREETING: "�",
+        WorkflowState.PROCESSING: "", 
+        WorkflowState.ESCALATED: "🔴",
+        WorkflowState.COMPLETED: "✅",
+        WorkflowState.ERROR: "❌"
     }
     
     current_state = st.session_state.current_state
@@ -461,17 +448,19 @@ def render_state_visualization():
     
     st.markdown(f"**Current State:** {state_icon} {current_state.value.replace('_', ' ').title()}")
     
-    # Progress indicator
+    # Progress indicator for simplified workflow
     state_order = [
-        RefillState.START, RefillState.IDENTIFY_MEDICATION, RefillState.CLARIFY_MEDICATION,
-        RefillState.CONFIRM_DOSAGE, RefillState.CHECK_AUTHORIZATION, RefillState.SELECT_PHARMACY,
-        RefillState.CONFIRM_ORDER, RefillState.COMPLETE
+        WorkflowState.GREETING, WorkflowState.PROCESSING, WorkflowState.COMPLETED
     ]
     
     if current_state in state_order:
         progress = (state_order.index(current_state) + 1) / len(state_order)
         st.progress(progress)
         st.text(f"Progress: {progress:.1%}")
+    elif current_state == WorkflowState.ESCALATED:
+        st.info("🏥 Case escalated to pharmacist")
+    elif current_state == WorkflowState.ERROR:
+        st.error("❌ Error occurred")
     
     # Context information
     context = st.session_state.conversation_context
@@ -533,19 +522,18 @@ async def process_user_input_async(user_input: str) -> Dict[str, Any]:
         patient_id = st.session_state.patient_id
         
         # Process message through conversation manager
-        result = await conversation_manager.handle_message(
-            user_input=user_input,
+        result = await conversation_manager.process_message(
             session_id=session_id,
-            patient_id=patient_id
+            message=user_input
         )
         
         # Update session state with conversation info
         st.session_state.current_state = result.current_state
         
-        # Get the conversation context from the state machine
-        conversation_context = conversation_manager.state_machine.get_session(session_id)
+        # Get the conversation context from the session
+        conversation_context = conversation_manager.get_session(session_id)
         if conversation_context:
-            st.session_state.conversation_context = conversation_context.to_dict()
+            st.session_state.conversation_context = conversation_context
         else:
             logger.warning(f"No conversation context found for session {session_id}")
             st.session_state.conversation_context = {}

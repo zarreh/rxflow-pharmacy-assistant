@@ -27,7 +27,6 @@ from .order_tools import (
     order_tracking_tool,
     order_cancellation_tool
 )
-from .tool_manager import ToolManager
 
 __all__ = [
     # Patient history tools
@@ -55,8 +54,5 @@ __all__ = [
     # Order tools
     "order_submission_tool",
     "order_tracking_tool", 
-    "order_cancellation_tool",
-    
-    # Tool manager
-    "ToolManager"
+    "order_cancellation_tool"
 ]

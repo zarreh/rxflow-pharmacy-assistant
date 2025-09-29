@@ -51,3 +51,11 @@ class ToolResult:
     data: Optional[Dict] = None
     error: Optional[str] = None
     source: str = "unknown"  # "api", "mock", "cache"
+
+class WorkflowState(Enum):
+    """Basic workflow states"""
+    GREETING = "greeting"
+    PROCESSING = "processing"
+    ESCALATED = "escalated"
+    COMPLETED = "completed"
+    ERROR = "error"

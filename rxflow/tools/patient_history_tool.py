@@ -42,11 +42,32 @@ class PatientHistoryTool:
             )
             
             if not show_all_medications:
-                # Filter by medication name only for specific medication queries
-                # Extract just the medication name from queries like "Omeprazole (20mg capsules)"
+                # Enhanced medication search - handle both medication names and conditions
                 medication_search = medication_name.lower()
                 if '(' in medication_search:
                     medication_search = medication_search.split('(')[0].strip()
+                
+                # Map common conditions to medications
+                condition_to_med = {
+                    "acid reflux": "omeprazole",
+                    "heartburn": "omeprazole", 
+                    "gerd": "omeprazole",
+                    "stomach acid": "omeprazole",
+                    "blood pressure": "lisinopril",
+                    "hypertension": "lisinopril",
+                    "diabetes": "metformin",
+                    "blood sugar": "metformin",
+                    "muscle spasm": "methocarbamol",
+                    "muscle pain": "methocarbamol", 
+                    "pain": "meloxicam",
+                    "inflammation": "meloxicam"
+                }
+                
+                # Check if query is a condition and map to medication
+                for condition, med_name in condition_to_med.items():
+                    if condition in medication_search:
+                        medication_search = med_name
+                        break
                 
                 medications = [
                     m for m in medications 
@@ -233,18 +254,18 @@ def safe_allergy_check(patient_id: Union[str, Dict, None]) -> Dict:
 # Create LangChain tools with safe wrappers
 patient_history_tool = Tool(
     name="patient_medication_history",
-    description="Retrieve patient medication history, adherence data, and allergies. Use format 'medication_name' or 'patient_id:medication_name'. Returns medication details, refill status, and patient safety information.",
+    description="STEP 1 WORKFLOW: REQUIRED - Look up patient medication history for ANY refill request. Use 'medication_name' (like 'omeprazole' for acid reflux) or 'all' to find ALL patient medications. This tool finds the medication the customer is referring to WITHOUT requiring patient ID. Essential for prescription identification and refill processing.",
     func=safe_medication_history
 )
 
 adherence_tool = Tool(
     name="check_medication_adherence", 
-    description="Check patient medication adherence rates and refill patterns. Use format 'medication_name' or 'patient_id:medication_name'. Returns adherence percentage, status, and refill needs.",
+    description="STEP 5 WORKFLOW: Check patient medication adherence and refill timing. Use after identifying medication to ensure proper refill timing. Use format 'medication_name' to get adherence data and determine if refill is due.",
     func=safe_adherence_check
 )
 
 allergy_tool = Tool(
     name="patient_allergies",
-    description="Get patient allergy information for medication safety checks. Use patient_id (defaults to '12345' for demo).",
+    description="STEP 1 WORKFLOW: REQUIRED - Check patient allergies before any medication processing. Use 'default' or patient_id to get allergy information for safety verification. Always check allergies before proceeding with refills.",
     func=safe_allergy_check
 )

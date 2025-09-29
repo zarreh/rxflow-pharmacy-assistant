@@ -10,6 +10,8 @@ MEDICATIONS_DB = {
         "requires_pa": False,
         "drug_class": "ACE inhibitor",
         "indication": "Hypertension, heart failure",
+        "common_side_effects": ["persistent dry cough", "dizziness", "fatigue", "headache", "nausea"],
+        "serious_side_effects": ["angioedema (swelling of face/lips/tongue)", "kidney problems", "high potassium levels", "severe low blood pressure"],
         "common_interactions": ["ibuprofen", "potassium supplements", "lithium"],
         "contraindications": ["pregnancy", "angioedema history"],
         "typical_supply_days": [30, 90]
@@ -34,6 +36,8 @@ MEDICATIONS_DB = {
         "requires_pa": False,
         "drug_class": "antidiabetic (biguanide)",
         "indication": "Type 2 diabetes mellitus",
+        "common_side_effects": ["gastrointestinal upset", "nausea", "diarrhea", "metallic taste", "vitamin B12 deficiency"],
+        "serious_side_effects": ["lactic acidosis (rare but serious)", "kidney problems", "liver problems"],
         "common_interactions": ["alcohol", "contrast dye", "furosemide"],
         "contraindications": ["kidney disease", "metabolic acidosis"],
         "typical_supply_days": [30, 90]
@@ -70,6 +74,8 @@ MEDICATIONS_DB = {
         "requires_pa": False,
         "drug_class": "proton pump inhibitor",
         "indication": "GERD, peptic ulcer disease",
+        "common_side_effects": ["headache", "nausea", "diarrhea", "stomach pain", "constipation"],
+        "serious_side_effects": ["low magnesium levels", "vitamin B12 deficiency", "increased infection risk", "bone fractures with long-term use"],
         "common_interactions": ["clopidogrel", "warfarin", "digoxin"],
         "contraindications": ["hypersensitivity to PPIs"],
         "typical_supply_days": [30, 90]
