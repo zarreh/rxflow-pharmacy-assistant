@@ -10,7 +10,7 @@ from geopy.distance import geodesic
 
 def calculate_distance(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Calculate distance between two coordinates in miles"""
-    return geodesic((lat1, lon1), (lat2, lon2)).miles
+    return float(geodesic((lat1, lon1), (lat2, lon2)).miles)
 
 
 def format_currency(amount: float) -> str:

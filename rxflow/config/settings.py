@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     # LLM Configuration
     default_llm_provider: str = Field(default="openai", alias="DEFAULT_LLM_PROVIDER")
-    
+
     # Ollama Configuration (alternative)
     ollama_base_url: str = Field(
         default="http://localhost:11434", alias="OLLAMA_BASE_URL"
