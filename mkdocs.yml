@@ -1,7 +1,7 @@
 site_name: RxFlow Pharmacy Assistant
 site_description: AI-powered prescription refill assistance system with comprehensive pharmacy workflow management
 site_author: RxFlow Development Team
-site_url: https://rxflow-docs.zarreh.ai
+site_url: https://docs-rxflow.zarreh.ai
 
 # Repository
 repo_name: zarreh/rxflow-pharmacy-assistant
