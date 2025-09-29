@@ -72,8 +72,32 @@ class MockPharmacyLocator:
 
     def find_nearby_pharmacies(self, query: str = "default") -> Dict[str, Any]:
         """
-        Find pharmacies near patient location
-        Query format: "lat,lng" or "address" or "default" for demo location
+        Find pharmacies near patient location with distance and details.
+        
+        Searches the pharmacy network to locate nearby pharmacies based on
+        location query, returning sorted results by distance.
+        
+        Args:
+            query (str): Location query in formats:
+                - "default" - Uses demo location (default)
+                - "lat,lng" - Geographic coordinates
+                - "address" - Full address string
+                - "radius:10" - Set custom search radius
+                - "insurance:BlueCross" - Filter by insurance
+                
+        Returns:
+            Dict[str, Any]: Pharmacy search results containing:
+                - pharmacies (List[Dict]): List of nearby pharmacy records with:
+                    - pharmacy_id (str): Unique pharmacy identifier
+                    - name (str): Pharmacy chain and location name
+                    - address (str): Full street address
+                    - phone (str): Contact phone number
+                    - distance_miles (float): Distance from query location
+                    - hours (str): Operating hours string
+                    - accepts_insurance (List[str]): Accepted insurance plans
+                - location (str): Original location query
+                - total_found (int): Number of pharmacies located
+                - search_radius_miles (float): Search radius used
         """
         try:
             logger.info(f"[AI USAGE] Finding nearby pharmacies with query: {query}")
@@ -140,7 +164,29 @@ class MockPharmacyLocator:
             }
 
     def get_pharmacy_details(self, pharmacy_id: str) -> Dict[str, Any]:
-        """Get detailed information for a specific pharmacy"""
+        """
+        Get comprehensive details for a specific pharmacy location.
+        
+        Retrieves complete pharmacy information including contact details,
+        hours, services, and current inventory status.
+        
+        Args:
+            pharmacy_id (str): Unique pharmacy identifier 
+                Examples: "cvs_main", "walgreens_downtown", "walmart_plaza"
+                
+        Returns:
+            Dict[str, Any]: Complete pharmacy information containing:
+                - pharmacy_id (str): Unique pharmacy identifier
+                - name (str): Pharmacy name and location
+                - address (str): Full street address
+                - phone (str): Contact phone number
+                - hours (str): Operating hours formatted string
+                - accepts_insurance (List[str]): List of accepted insurance plans
+                - services (List[str]): Available services (flu shots, consultations)
+                - current_wait_time (str): Estimated wait time
+                - medications_in_stock (int): Count of medications available
+                - success (bool): Whether pharmacy was found successfully
+        """
         try:
             logger.info(f"[AI USAGE] Getting details for pharmacy: {pharmacy_id}")
 
@@ -389,8 +435,29 @@ class PharmacyInventoryTool:
 
     def check_inventory(self, query: str) -> Dict[str, Any]:
         """
-        Check if medication is in stock at pharmacy
-        Query format: "pharmacy_id:medication" or just "medication" (checks all pharmacies)
+        Check medication availability and stock levels at pharmacies.
+        
+        Queries pharmacy inventory systems to determine medication availability,
+        supporting both specific pharmacy checks and network-wide searches.
+        
+        Args:
+            query (str): Inventory query in formats:
+                - "pharmacy_id:medication" - Check specific pharmacy
+                - "medication" - Check all pharmacies in network
+                Examples: "cvs_main:omeprazole", "lisinopril"
+                
+        Returns:
+            Dict[str, Any]: Inventory results containing:
+                - medication (str): Standardized medication name searched
+                - results (List[Dict]): List of pharmacy inventory records with:
+                    - pharmacy_id (str): Pharmacy identifier
+                    - pharmacy_name (str): Human-readable pharmacy name
+                    - in_stock (bool): Whether medication is available
+                    - quantity (int): Units in stock (0 if unavailable)
+                    - price (float): Cost per unit if available
+                    - last_updated (str): Timestamp of inventory check
+                - total_pharmacies_checked (int): Number of locations queried
+                - pharmacies_with_stock (int): Count with medication available
         """
         try:
             # Parse query
@@ -468,8 +535,28 @@ class PharmacyInventoryTool:
 
     def get_wait_times(self, pharmacy_ids: str = "all") -> Dict[str, Any]:
         """
-        Get current wait times for pharmacies
-        pharmacy_ids: comma-separated list or "all"
+        Get current wait times and service capacity for pharmacies.
+        
+        Retrieves real-time wait time estimates for specified pharmacies
+        to help patients plan their visits and minimize waiting time.
+        
+        Args:
+            pharmacy_ids (str): Pharmacy selection in formats:
+                - "all" - Get wait times for all pharmacies (default)
+                - "cvs_main,walgreens_downtown" - Comma-separated list
+                - "cvs_main" - Single pharmacy identifier
+                
+        Returns:
+            Dict[str, Any]: Wait time information containing:
+                - wait_times (List[Dict]): List of pharmacy wait data with:
+                    - pharmacy_id (str): Pharmacy identifier
+                    - pharmacy_name (str): Human-readable name
+                    - current_wait_minutes (int): Estimated wait in minutes
+                    - queue_length (int): Number of customers waiting
+                    - busy_level (str): "Low", "Moderate", "High"
+                    - last_updated (str): Timestamp of wait time data
+                - pharmacies_checked (int): Number of locations queried
+                - average_wait_time (float): Average wait across all pharmacies
         """
         try:
             logger.info(f"[AI USAGE] Getting wait times for pharmacies: {pharmacy_ids}")

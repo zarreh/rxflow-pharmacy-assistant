@@ -1,4 +1,74 @@
-"""Escalation tools for scenarios requiring doctor or pharmacist consultation."""
+"""
+Escalation and Safety Management Tools for RxFlow Pharmacy Assistant
+
+This module provides critical safety escalation capabilities that identify scenarios
+requiring professional pharmacist or physician intervention. It implements comprehensive
+safety checks to ensure patient protection and regulatory compliance in automated
+prescription refill processes.
+
+The escalation system serves as a crucial safety net that prevents automated processing
+of complex or potentially dangerous medication scenarios, ensuring human oversight
+where clinical judgment is required.
+
+Key Safety Triggers:
+    - Controlled substances (DEA Schedule II-V medications)
+    - High-risk medications requiring monitoring
+    - Drug interaction warnings and contraindications
+    - Prescription changes or dosage modifications  
+    - Insurance prior authorization requirements
+    - Patient safety flags and clinical alerts
+    - Medication adherence concerns
+
+Escalation Categories:
+    - IMMEDIATE: Life-threatening situations requiring emergency response
+    - URGENT: Safety concerns requiring same-day pharmacist consultation
+    - ROUTINE: Non-urgent issues requiring professional review
+    - MONITORING: Situations requiring ongoing clinical oversight
+
+Safety Features:
+    - Comprehensive controlled substance detection
+    - Drug interaction severity assessment
+    - Patient-specific risk factor analysis
+    - Clinical guideline compliance checking
+    - Regulatory requirement validation
+    - Documentation and audit trail maintenance
+
+Example:
+    ```python
+    # Initialize escalation tool
+    escalation = EscalationTool()
+    
+    # Check if medication requires escalation
+    result = escalation.check_escalation_needed("lorazepam")
+    
+    if result["escalation_required"]:
+        priority = result["escalation_priority"]
+        reasons = result["reasons"]
+        print(f"🚨 ESCALATION REQUIRED: {priority}")
+        print(f"Reasons: {', '.join(reasons)}")
+    ```
+
+Classes:
+    EscalationTool: Main escalation analysis and decision engine
+
+Functions:  
+    safe_escalation_check: Safety wrapper for escalation analysis
+
+Regulatory Compliance:
+    This module supports compliance with DEA regulations, FDA safety guidelines,
+    and pharmacy practice standards by ensuring appropriate professional oversight
+    for high-risk medication scenarios.
+
+Integration:
+    - LangChain Tool integration for conversational workflows
+    - Patient database integration for personalized risk assessment
+    - Medication database integration for drug-specific safety rules
+    - Clinical decision support system compatibility
+
+Note:
+    This is a safety-critical component that should be thoroughly tested
+    and validated before production deployment in healthcare environments.
+"""
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
@@ -12,7 +82,89 @@ logger = get_logger(__name__)
 
 
 class EscalationTool:
-    """Handles escalation scenarios for medication refill requests"""
+    """
+    Comprehensive escalation analysis and safety management system.
+    
+    This class implements a sophisticated decision engine that analyzes medication
+    refill requests to identify scenarios requiring professional pharmacist or
+    physician intervention. It serves as a critical safety component that prevents
+    automated processing of potentially dangerous or complex medication scenarios.
+    
+    The system evaluates multiple risk factors including controlled substance status,
+    drug interactions, patient-specific safety concerns, and regulatory requirements
+    to make intelligent escalation decisions that prioritize patient safety.
+    
+    Attributes:
+        patient_data: Patient database for personalized risk assessment
+        drug_data: Medication database with safety classifications and rules
+    
+    Core Safety Analysis:
+        - Controlled Substance Detection: Identifies DEA Schedule II-V medications
+        - Drug Interaction Assessment: Evaluates interaction severity and clinical significance  
+        - Patient Risk Profiling: Analyzes patient-specific safety factors and history
+        - Regulatory Compliance: Ensures adherence to FDA and DEA requirements
+        - Clinical Guidelines: Validates against pharmacy practice standards
+    
+    Escalation Decision Matrix:
+        The tool uses a sophisticated decision matrix considering:
+        
+        IMMEDIATE Escalation (Emergency Response Required):
+            - Life-threatening drug interactions
+            - Critical allergic reaction potential  
+            - Overdose risk with current medications
+            - Emergency prescription modifications
+        
+        URGENT Escalation (Same-Day Professional Review):
+            - Controlled substances (Schedule II-III)
+            - Major drug interactions requiring monitoring
+            - Significant dosage changes
+            - Prior authorization denials
+        
+        ROUTINE Escalation (Professional Review Recommended):
+            - Schedule IV-V controlled substances
+            - Moderate drug interactions
+            - Insurance formulary issues
+            - First-time medication requests
+        
+        NO ESCALATION (Safe for Automated Processing):
+            - Standard maintenance medications
+            - No significant interactions or contraindications
+            - Patient has good adherence history
+            - All safety checks passed
+    
+    Example Decision Process:
+        ```python
+        # Initialize escalation analysis system
+        escalation = EscalationTool()
+        
+        # Analyze prescription refill request
+        analysis = escalation.check_escalation_needed("12345:lorazepam")
+        
+        # Process escalation decision
+        if analysis["escalation_required"]:
+            priority = analysis["escalation_priority"]  # IMMEDIATE/URGENT/ROUTINE
+            reasons = analysis["reasons"]
+            contact_info = analysis["escalation_contact"]
+            
+            print(f"🚨 ESCALATION: {priority}")
+            print(f"Reasons: {', '.join(reasons)}")
+            print(f"Contact: {contact_info}")
+            
+            # Prevent automated processing
+            return redirect_to_pharmacist(analysis)
+        else:
+            # Safe to continue automated workflow
+            print("✅ Safe to proceed with automated refill")
+            continue_refill_process()
+        ```
+    
+    Safety Guarantees:
+        - Never allows automated processing of controlled substances
+        - Always escalates when patient safety data is missing
+        - Implements fail-safe behavior for unknown medications
+        - Maintains comprehensive audit logs for regulatory compliance
+        - Provides clear escalation reasons for professional review
+    """
 
     def __init__(self) -> None:
         self.patient_data = MOCK_PATIENTS
@@ -20,8 +172,29 @@ class EscalationTool:
 
     def check_escalation_needed(self, query: str) -> Dict[str, Any]:
         """
-        Check if a medication refill request needs escalation to doctor or pharmacist
-        Query format: "patient_id:medication_name" or just "medication_name"
+        Check if medication refill request requires professional escalation.
+        
+        Analyzes medication type, patient history, and safety factors to determine
+        if the refill request needs pharmacist or physician intervention.
+        
+        Args:
+            query (str): Escalation query in formats:
+                - "patient_id:medication_name" - Specific patient and medication
+                - "medication_name" - Uses default patient (12345) for demo
+                Examples: "12345:lorazepam", "omeprazole"
+                
+        Returns:
+            Dict[str, Any]: Escalation analysis containing:
+                - escalation_required (bool): Whether escalation is needed
+                - escalation_priority (str): "IMMEDIATE", "URGENT", "ROUTINE", or "NONE"
+                - reasons (List[str]): Specific escalation triggers identified
+                - medication (str): Medication name analyzed
+                - patient_id (str): Patient identifier used
+                - controlled_substance (bool): Whether medication is controlled
+                - schedule (str): DEA schedule if controlled (II, III, IV, V)
+                - escalation_contact (str): Recommended professional contact
+                - safety_notes (List[str]): Important safety considerations
+                - next_steps (str): Recommended actions for resolution
         """
         try:
             # Parse query

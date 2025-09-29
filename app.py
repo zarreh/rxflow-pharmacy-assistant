@@ -1,7 +1,87 @@
 """
-RxFlow Pharmacy Assistant - Streamlit Frontend
-Enhanced UI with conversation history, state display, tool logs, and cost tracking
-Step 8: Update Streamlit UI
+RxFlow Pharmacy Assistant - Streamlit Frontend Application
+
+This is the main user interface for the RxFlow Pharmacy Assistant, providing an
+intuitive web-based interface for prescription refill management. The application
+implements a comprehensive conversational AI system that guides patients through
+safe and efficient prescription refill processes.
+
+Key Features:
+    - Interactive conversational AI interface for prescription refills
+    - Real-time conversation history and state management
+    - Comprehensive tool execution logging and monitoring
+    - Cost tracking and pharmacy comparison capabilities
+    - Patient safety validation with escalation management
+    - Insurance verification and prior authorization support
+    - Multi-pharmacy integration with location services
+
+User Experience Design:
+    - Clean, medical-professional interface design
+    - Step-by-step workflow guidance with clear instructions
+    - Real-time feedback and status updates
+    - Comprehensive error handling with user-friendly messages
+    - Responsive design for desktop and mobile access
+    - Accessibility features for inclusive user experience
+
+Safety Features:
+    - Mandatory safety checks at each workflow step
+    - Automatic escalation for controlled substances
+    - Interactive confirmations for critical decisions
+    - Comprehensive audit logging for regulatory compliance
+    - Patient data privacy protection and secure handling
+
+Architecture:
+    - Streamlit-based responsive web interface
+    - LangChain conversation management with OpenAI GPT-4
+    - 19 specialized pharmacy tools for comprehensive operations
+    - Session-based state management with persistence
+    - Real-time logging and monitoring capabilities
+
+Workflow States:
+    The application manages users through defined workflow states:
+    - INITIAL: Starting conversation and patient identification
+    - MEDICATION_SEARCH: Finding and verifying medications
+    - ESCALATED: Professional consultation required
+    - COST_ANALYSIS: Price comparison and insurance verification
+    - PHARMACY_SELECTION: Location and service comparison
+    - ORDER_PROCESSING: Prescription submission and tracking
+    - COMPLETED: Successful refill completion
+    - ERROR: Error handling and recovery
+
+Example Usage:
+    ```bash
+    # Run the Streamlit application
+    streamlit run app.py
+    
+    # Navigate to http://localhost:8501
+    # Start conversation: "I need to refill my blood pressure medication"
+    # Follow step-by-step guidance through the refill process
+    ```
+
+Technical Components:
+    - ConversationManager: Core AI conversation orchestration
+    - WorkflowState: State machine for process management
+    - Session Management: User session persistence and security
+    - Tool Integration: 19 specialized pharmacy operation tools
+    - Logging System: Comprehensive audit and debugging capabilities
+
+Security Considerations:
+    - Session-based user identification without storing PII
+    - Secure API key management for external services
+    - Input validation and sanitization
+    - Audit logging for regulatory compliance
+    - Error handling that doesn't expose system internals
+
+Deployment:
+    - Docker containerization support
+    - Environment-based configuration management
+    - Health check endpoints for monitoring
+    - Scalable architecture for multi-user deployment
+
+Note:
+    This application uses mock data for demonstration purposes.
+    Production deployment requires integration with certified pharmacy
+    systems and compliance with healthcare regulations.
 """
 
 import asyncio
@@ -142,7 +222,60 @@ st.markdown(
 
 
 def initialize_session_state() -> None:
-    """Initialize Streamlit session state variables"""
+    """
+    Initialize Streamlit session state variables for pharmacy assistant application.
+    
+    This function sets up the core session state variables required for the RxFlow
+    application, including conversation management, user identification, workflow
+    state tracking, and UI component states. It ensures proper initialization
+    on first page load and maintains state consistency across user interactions.
+    
+    Session State Variables Initialized:
+        - messages: List of conversation messages between user and AI
+        - conversation_manager: ConversationManager instance for AI orchestration
+        - patient_id: Mock patient identifier for demo purposes (default: "12345")
+        - session_id: Unique UUID for conversation session tracking
+        - current_state: Current workflow state (starts at GREETING)
+        - tool_results: Results from pharmacy tool executions
+        - cost_savings: Calculated savings and cost information
+        - selected_pharmacy: User's chosen pharmacy for refill
+        - demo_data: Mock patient and pharmacy data for demonstration
+    
+    Design Patterns:
+        - Lazy initialization: Only creates objects when not already present
+        - UUID-based session identification for uniqueness
+        - Default value pattern for required state variables
+        - State isolation for concurrent user sessions
+    
+    Example State Structure:
+        ```python
+        st.session_state = {
+            "messages": [
+                {"role": "user", "content": "I need a refill"},
+                {"role": "assistant", "content": "I can help with that..."}
+            ],
+            "session_id": "550e8400-e29b-41d4-a716-446655440000",
+            "current_state": WorkflowState.MEDICATION_SEARCH,
+            "patient_id": "12345",
+            "cost_savings": {"total_saved": 25.50, "best_option": "Generic"}
+        }
+        ```
+    
+    Performance Considerations:
+        - ConversationManager initialization is expensive; only done once per session
+        - UUID generation is lightweight and provides good uniqueness guarantees
+        - State variables use efficient Python objects (lists, dicts, enums)
+    
+    Thread Safety:
+        Streamlit manages session state per user session, providing natural
+        isolation between concurrent users without requiring additional
+        synchronization mechanisms.
+    
+    Note:
+        This function should be called at the beginning of the main application
+        flow to ensure all required session state is properly initialized
+        before any UI components attempt to access it.
+    """
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -175,7 +308,27 @@ def initialize_session_state() -> None:
 
 
 def load_demo_data() -> Dict[str, Any]:
-    """Load demo data for testing"""
+    """
+    Load demonstration data from JSON files for testing and development.
+    
+    Reads mock patient, pharmacy, insurance, and drug data from the data/
+    directory to populate the application with realistic test data.
+    
+    Returns:
+        Dict[str, Any]: Demo data dictionary containing:
+            - patients (Dict): Mock patient records with medication histories
+            - pharmacies (Dict): Mock pharmacy locations and details
+            - insurance (Dict): Mock insurance plans and formularies
+            - drugs (Dict): Mock medication database with pricing
+            Empty dictionaries returned if files are not found
+            
+    Side Effects:
+        - Reads from data/mock_patients.json
+        - Reads from data/mock_pharmacies.json  
+        - Reads from data/mock_insurance.json
+        - Reads from data/mock_drugs.json
+        - Displays error messages in Streamlit if files missing
+    """
     demo_data = {}
 
     try:
@@ -203,7 +356,22 @@ def load_demo_data() -> Dict[str, Any]:
 
 
 def render_sidebar() -> None:
-    """Render the sidebar with configuration options"""
+    """
+    Render sidebar with application configuration and session management.
+    
+    Creates the left sidebar containing demo data display, session controls,
+    debug information toggles, and conversation management options.
+    
+    Returns:
+        None: Renders UI components directly to Streamlit sidebar
+        
+    Side Effects:
+        - Displays demo data in expandable sections
+        - Renders session management controls (reset, export)
+        - Shows debug information toggles
+        - Updates session state based on user interactions
+        - Calls helper functions for log display and data export
+    """
     st.sidebar.title("🔧 Configuration")
 
     # Session Management
@@ -296,7 +464,22 @@ def render_sidebar() -> None:
 
 
 def reset_conversation() -> None:
-    """Reset conversation state"""
+    """
+    Reset conversation state and clear all session data.
+    
+    Clears the conversation history, resets workflow state, and reinitializes
+    the conversation manager for a fresh start.
+    
+    Returns:
+        None: Modifies session state in place
+        
+    Side Effects:
+        - Clears st.session_state.messages list
+        - Resets current_state to WorkflowState.GREETING
+        - Generates new session_id UUID
+        - Clears conversation manager session data
+        - Displays success message to user
+    """
     st.session_state.messages = []
     st.session_state.session_id = str(uuid.uuid4())
     st.session_state.current_state = WorkflowState.GREETING
@@ -348,7 +531,27 @@ def export_session_data() -> None:
 
 
 def render_chat_message(message: Dict[str, str]) -> None:
-    """Render a single chat message"""
+    """
+    Render a single chat message with appropriate styling.
+    
+    Displays user or assistant messages with distinct visual styling,
+    icons, and formatting for optimal readability.
+    
+    Args:
+        message (Dict[str, str]): Message dictionary containing:
+            - role (str): "user" or "assistant"
+            - content (str): Message text content
+            - timestamp (str, optional): ISO format timestamp
+            
+    Returns:
+        None: Renders message directly to Streamlit interface
+        
+    Side Effects:
+        - Displays message with role-appropriate styling
+        - Shows user messages with blue background and user icon
+        - Shows assistant messages with white background and bot icon
+        - Applies custom CSS classes for consistent formatting
+    """
     role = message["role"]
     content = message["content"]
     timestamp = message.get("timestamp", "")
@@ -484,8 +687,22 @@ def render_state_visualization() -> None:
                 st.text(f"{key}: {str(value)[:50]}...")
 
 
-def render_quick_actions():
-    """Render quick action buttons"""
+def render_quick_actions() -> None:
+    """
+    Render quick action buttons for common pharmacy requests.
+    
+    Displays predefined action buttons that allow users to quickly
+    initiate common pharmacy workflows without typing.
+    
+    Returns:
+        None: Renders button interface directly to Streamlit
+        
+    Side Effects:
+        - Displays quick action buttons in organized layout
+        - Processes button clicks and adds messages to conversation
+        - Triggers conversation processing for selected actions
+        - Updates session state with new user interactions
+    """
     st.markdown("### ⚡ Quick Actions")
 
     demo_data = load_demo_data()
@@ -519,8 +736,26 @@ def render_quick_actions():
         add_quick_message("I have no refills remaining for my prescription")
 
 
-def add_quick_message(content: str):
-    """Add a quick message to the conversation"""
+def add_quick_message(content: str) -> None:
+    """
+    Add predefined message to conversation and process response.
+    
+    Handles quick action button clicks by adding the predefined message
+    to the conversation and processing it through the AI system.
+    
+    Args:
+        content (str): Predefined message content to add
+            Examples: "I need to refill my medication", "Show me pharmacy locations"
+            
+    Returns:
+        None: Updates conversation state and triggers rerun
+        
+    Side Effects:
+        - Adds user message to session state messages
+        - Triggers conversation processing through AI system
+        - Forces Streamlit rerun to display updated conversation
+        - Updates workflow state based on AI response
+    """
     timestamp = datetime.now().strftime("%H:%M")
     st.session_state.messages.append(
         {"role": "user", "content": content, "timestamp": timestamp}
@@ -628,7 +863,80 @@ def process_user_input(user_input: str) -> Dict[str, Any]:
 
 
 def main() -> None:
-    """Main application function"""
+    """
+    Main application entry point for RxFlow Pharmacy Assistant Streamlit interface.
+    
+    This function orchestrates the entire user interface, initializing session state,
+    rendering the main application components, and coordinating the conversational
+    AI workflow for prescription refill assistance. It provides the primary user
+    experience for the pharmacy assistant system.
+    
+    Application Flow:
+        1. Initialize session state variables and conversation manager
+        2. Render main header with branding and application title  
+        3. Setup sidebar with controls, demo data, and session management
+        4. Create main chat interface with conversation history
+        5. Implement tabbed interface for state, tools, and cost information
+        6. Provide quick action buttons for common user interactions
+        7. Handle user input processing and conversation management
+    
+    UI Components Rendered:
+        - Main Header: Application branding and title with gradient styling
+        - Sidebar: Session controls, demo data, logs, and export functionality  
+        - Chat Interface: Conversational AI interaction with message history
+        - State Visualization: Current workflow state and progress tracking
+        - Tool Logs: Real-time display of pharmacy tool execution results
+        - Cost Savings: Financial analysis and savings opportunities
+        - Quick Actions: Predefined message buttons for common requests
+    
+    Key Features:
+        - Real-time conversation with AI pharmacy assistant
+        - Step-by-step workflow guidance with visual state tracking
+        - Comprehensive tool execution monitoring and logging
+        - Cost analysis with savings calculations and pharmacy comparisons
+        - Session management with conversation history persistence
+        - Export functionality for session data and audit trails
+    
+    User Experience Design:
+        - Responsive two-column layout optimizing screen real estate
+        - Professional medical interface with intuitive navigation
+        - Real-time feedback and status updates during processing
+        - Clear visual indicators for workflow progress and state
+        - Accessible design patterns following web accessibility guidelines
+    
+    Error Handling:
+        - Graceful degradation when AI services are unavailable
+        - User-friendly error messages without exposing system details
+        - Automatic session recovery and state restoration
+        - Comprehensive logging for debugging and audit purposes
+    
+    Performance Considerations:
+        - Lazy loading of expensive components (ConversationManager)
+        - Efficient state management using Streamlit's session state
+        - Optimized rendering with conditional component updates
+        - Minimal API calls through intelligent caching strategies
+    
+    Example User Journey:
+        1. User loads application and sees welcome interface
+        2. Clicks "I need to refill my medication" quick action
+        3. AI responds with step-by-step guidance for medication identification
+        4. User confirms medication details through interactive prompts
+        5. System provides cost analysis and pharmacy options
+        6. User selects preferred pharmacy and completes refill process
+        7. Session data is available for export and audit purposes
+    
+    Integration Points:
+        - ConversationManager: Core AI conversation orchestration
+        - WorkflowState: State machine for process management  
+        - Pharmacy Tools: 19 specialized tools for comprehensive operations
+        - Logging System: Audit trails and debugging information
+        - Demo Data: Mock patient and pharmacy information
+    
+    Note:
+        This function serves as the single entry point for the Streamlit
+        application and should be called when the module is executed directly.
+        It handles all UI initialization and user interaction coordination.
+    """
 
     # Initialize session state
     initialize_session_state()
