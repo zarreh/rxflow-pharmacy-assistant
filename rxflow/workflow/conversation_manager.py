@@ -4,33 +4,58 @@ Interactive Step-by-Step Workflow Implementation
 """
 
 import logging
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 from langchain.agents import AgentExecutor, create_openai_tools_agent
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
-from langchain_openai import ChatOpenAI
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_openai import ChatOpenAI
 from pydantic import SecretStr
 
 from rxflow.config.settings import get_settings
-from rxflow.workflow.workflow_types import WorkflowState
-from rxflow.utils.logger import get_logger
+from rxflow.tools.cost_tools import (
+    brand_generic_tool,
+    goodrx_tool,
+    insurance_tool,
+    prior_auth_tool,
+)
+from rxflow.tools.escalation_tools import escalation_check_tool
+from rxflow.tools.order_tools import (
+    order_cancellation_tool,
+    order_submission_tool,
+    order_tracking_tool,
+)
 
 # Import essential tools
-from rxflow.tools.patient_history_tool import patient_history_tool, allergy_tool, adherence_tool
-from rxflow.tools.rxnorm_tool import rxnorm_tool, dosage_verification_tool, interaction_tool
-from rxflow.tools.pharmacy_tools import pharmacy_location_tool, pharmacy_inventory_tool, pharmacy_wait_times_tool, pharmacy_details_tool, find_cheapest_pharmacy_tool
-from rxflow.tools.cost_tools import goodrx_tool, insurance_tool, brand_generic_tool, prior_auth_tool
-from rxflow.tools.order_tools import order_submission_tool, order_tracking_tool, order_cancellation_tool
-from rxflow.tools.escalation_tools import escalation_check_tool
+from rxflow.tools.patient_history_tool import (
+    adherence_tool,
+    allergy_tool,
+    patient_history_tool,
+)
+from rxflow.tools.pharmacy_tools import (
+    find_cheapest_pharmacy_tool,
+    pharmacy_details_tool,
+    pharmacy_inventory_tool,
+    pharmacy_location_tool,
+    pharmacy_wait_times_tool,
+)
+from rxflow.tools.rxnorm_tool import (
+    dosage_verification_tool,
+    interaction_tool,
+    rxnorm_tool,
+)
+from rxflow.utils.logger import get_logger
+from rxflow.workflow.workflow_types import WorkflowState
 
 logger = get_logger(__name__)
+
 
 @dataclass
 class ConversationResponse:
     """Response object for conversation interactions"""
+
     message: str
     session_id: str
     current_state: WorkflowState
@@ -38,54 +63,67 @@ class ConversationResponse:
     next_steps: Optional[str] = None
     error: Optional[str] = None
 
+
 class ConversationManager:
     """Enhanced conversation manager with interactive step-by-step workflow"""
-    
-    def __init__(self):
+
+    def __init__(self) -> None:
         logger.info("[INIT] Initializing Enhanced Conversation Manager v2.0")
         self.settings = get_settings()
         self.sessions: Dict[str, Dict[str, Any]] = {}
-        
+
         # Initialize LLM
-        api_key = SecretStr(self.settings.openai_api_key) if self.settings.openai_api_key else None
-        self.llm = ChatOpenAI(
-            model="gpt-4o-mini",
-            temperature=0.1,
-            api_key=api_key
+        api_key = (
+            SecretStr(self.settings.openai_api_key)
+            if self.settings.openai_api_key
+            else None
         )
-        
+        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1, api_key=api_key)
+
         # Register tools and setup agent
         self._register_tools()
         self._setup_agent()
-        
+
         logger.info("[INIT] Conversation Manager initialized successfully")
 
-    def _register_tools(self):
+    def _register_tools(self) -> None:
         """Register all essential RxFlow tools"""
         logger.info("[TOOLS] Registering tools for LangChain agent")
-        
+
         self.tools = [
             # Patient Tools
-            patient_history_tool, allergy_tool, adherence_tool,
+            patient_history_tool,
+            allergy_tool,
+            adherence_tool,
             # Medication Tools
-            rxnorm_tool, dosage_verification_tool, interaction_tool,
+            rxnorm_tool,
+            dosage_verification_tool,
+            interaction_tool,
             # Pharmacy Tools
-            pharmacy_location_tool, pharmacy_inventory_tool, pharmacy_wait_times_tool,
-            pharmacy_details_tool, find_cheapest_pharmacy_tool,
+            pharmacy_location_tool,
+            pharmacy_inventory_tool,
+            pharmacy_wait_times_tool,
+            pharmacy_details_tool,
+            find_cheapest_pharmacy_tool,
             # Cost Tools
-            goodrx_tool, insurance_tool, brand_generic_tool, prior_auth_tool,
+            goodrx_tool,
+            insurance_tool,
+            brand_generic_tool,
+            prior_auth_tool,
             # Order Tools
-            order_submission_tool, order_tracking_tool, order_cancellation_tool,
+            order_submission_tool,
+            order_tracking_tool,
+            order_cancellation_tool,
             # Escalation Tool
-            escalation_check_tool
+            escalation_check_tool,
         ]
-        
+
         logger.info(f"[TOOLS] Registered {len(self.tools)} tools successfully")
 
-    def _setup_agent(self):
+    def _setup_agent(self) -> None:
         """Setup LangChain agent with interactive step-by-step workflow"""
         logger.info("[AGENT] Setting up LangChain agent")
-        
+
         system_prompt = """You are RxFlow, an intelligent AI pharmacy assistant helping patients with prescription refills.
 
 🎯 CRITICAL: INTERACTIVE STEP-BY-STEP CONVERSATION REQUIRED
@@ -141,12 +179,14 @@ SAFETY PROTOCOLS:
 
 Remember: Be interactive, ask for confirmation at each step, wait for responses before proceeding."""
 
-        prompt = ChatPromptTemplate.from_messages([
-            ("system", system_prompt),
-            MessagesPlaceholder(variable_name="chat_history"),
-            ("user", "{input}"),
-            MessagesPlaceholder(variable_name="agent_scratchpad"),
-        ])
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                ("system", system_prompt),
+                MessagesPlaceholder(variable_name="chat_history"),
+                ("user", "{input}"),
+                MessagesPlaceholder(variable_name="agent_scratchpad"),
+            ]
+        )
 
         # Create agent
         agent = create_openai_tools_agent(self.llm, self.tools, prompt)
@@ -156,15 +196,15 @@ Remember: Be interactive, ask for confirmation at each step, wait for responses 
             verbose=True,
             handle_parsing_errors=True,
             max_iterations=15,
-            early_stopping_method="generate"
+            early_stopping_method="generate",
         )
-        
+
         logger.info("[AGENT] LangChain agent configured successfully")
 
     def create_session(self, session_id: str) -> Dict[str, Any]:
         """Create a new conversation session"""
         logger.info(f"[SESSION] Creating new session: {session_id}")
-        
+
         session_data = {
             "session_id": session_id,
             "state": WorkflowState.GREETING,
@@ -172,9 +212,9 @@ Remember: Be interactive, ask for confirmation at each step, wait for responses 
             "context": {},
             "created_at": datetime.now().isoformat(),
             "escalated": False,
-            "escalation_reason": None
+            "escalation_reason": None,
         }
-        
+
         self.sessions[session_id] = session_data
         return session_data
 
@@ -182,10 +222,12 @@ Remember: Be interactive, ask for confirmation at each step, wait for responses 
         """Retrieve session data"""
         return self.sessions.get(session_id)
 
-    async def process_message(self, session_id: str, message: str) -> ConversationResponse:
+    async def process_message(
+        self, session_id: str, message: str
+    ) -> ConversationResponse:
         """Process user message with interactive step-by-step workflow"""
         logger.info(f"[PROCESS] Processing message for session {session_id}")
-        
+
         # Get or create session
         session = self.get_session(session_id)
         if not session:
@@ -201,28 +243,41 @@ Remember: Be interactive, ask for confirmation at each step, wait for responses 
                     chat_history.append(AIMessage(content=msg["content"]))
 
             # Execute agent with current message
-            logger.info(f"[AGENT] Executing agent with {len(chat_history)} history messages")
-            
-            result = await self.agent_executor.ainvoke({
-                "input": message,
-                "chat_history": chat_history
-            })
+            logger.info(
+                f"[AGENT] Executing agent with {len(chat_history)} history messages"
+            )
+
+            result = await self.agent_executor.ainvoke(
+                {"input": message, "chat_history": chat_history}
+            )
 
             # Extract response
             response_text = result["output"]
 
             # Update session with new messages
-            session["messages"].extend([
-                {"role": "user", "content": message, "timestamp": datetime.now().isoformat()},
-                {"role": "assistant", "content": response_text, "timestamp": datetime.now().isoformat()}
-            ])
+            session["messages"].extend(
+                [
+                    {
+                        "role": "user",
+                        "content": message,
+                        "timestamp": datetime.now().isoformat(),
+                    },
+                    {
+                        "role": "assistant",
+                        "content": response_text,
+                        "timestamp": datetime.now().isoformat(),
+                    },
+                ]
+            )
 
             # Check if escalation occurred
             escalated = "escalat" in response_text.lower()
             if escalated:
                 session["escalated"] = True
                 session["state"] = WorkflowState.ESCALATED
-                logger.info(f"[ESCALATION] Session {session_id} escalated to pharmacist")
+                logger.info(
+                    f"[ESCALATION] Session {session_id} escalated to pharmacist"
+                )
 
             # Create response
             return ConversationResponse(
@@ -230,7 +285,7 @@ Remember: Be interactive, ask for confirmation at each step, wait for responses 
                 session_id=session_id,
                 current_state=session["state"],
                 tool_results=[],
-                next_steps="Await pharmacist consultation" if escalated else None
+                next_steps="Await pharmacist consultation" if escalated else None,
             )
 
         except Exception as e:
@@ -239,7 +294,7 @@ Remember: Be interactive, ask for confirmation at each step, wait for responses 
                 message="I apologize, but I'm experiencing technical difficulties. Please try again or speak with a pharmacist directly.",
                 session_id=session_id,
                 current_state=WorkflowState.ERROR,
-                error=str(e)
+                error=str(e),
             )
 
     def get_conversation_history(self, session_id: str) -> List[Dict[str, Any]]:

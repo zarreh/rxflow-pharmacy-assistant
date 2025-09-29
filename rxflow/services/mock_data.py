@@ -10,11 +10,22 @@ MEDICATIONS_DB = {
         "requires_pa": False,
         "drug_class": "ACE inhibitor",
         "indication": "Hypertension, heart failure",
-        "common_side_effects": ["persistent dry cough", "dizziness", "fatigue", "headache", "nausea"],
-        "serious_side_effects": ["angioedema (swelling of face/lips/tongue)", "kidney problems", "high potassium levels", "severe low blood pressure"],
+        "common_side_effects": [
+            "persistent dry cough",
+            "dizziness",
+            "fatigue",
+            "headache",
+            "nausea",
+        ],
+        "serious_side_effects": [
+            "angioedema (swelling of face/lips/tongue)",
+            "kidney problems",
+            "high potassium levels",
+            "severe low blood pressure",
+        ],
         "common_interactions": ["ibuprofen", "potassium supplements", "lithium"],
         "contraindications": ["pregnancy", "angioedema history"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "eliquis": {
         "rxcui": "1364430",
@@ -26,7 +37,7 @@ MEDICATIONS_DB = {
         "indication": "Atrial fibrillation, DVT/PE prevention",
         "common_interactions": ["aspirin", "warfarin", "rifampin"],
         "contraindications": ["active bleeding", "severe liver disease"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "metformin": {
         "rxcui": "6809",
@@ -36,11 +47,21 @@ MEDICATIONS_DB = {
         "requires_pa": False,
         "drug_class": "antidiabetic (biguanide)",
         "indication": "Type 2 diabetes mellitus",
-        "common_side_effects": ["gastrointestinal upset", "nausea", "diarrhea", "metallic taste", "vitamin B12 deficiency"],
-        "serious_side_effects": ["lactic acidosis (rare but serious)", "kidney problems", "liver problems"],
+        "common_side_effects": [
+            "gastrointestinal upset",
+            "nausea",
+            "diarrhea",
+            "metallic taste",
+            "vitamin B12 deficiency",
+        ],
+        "serious_side_effects": [
+            "lactic acidosis (rare but serious)",
+            "kidney problems",
+            "liver problems",
+        ],
         "common_interactions": ["alcohol", "contrast dye", "furosemide"],
         "contraindications": ["kidney disease", "metabolic acidosis"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "atorvastatin": {
         "rxcui": "83367",
@@ -52,7 +73,7 @@ MEDICATIONS_DB = {
         "indication": "Hyperlipidemia, cardiovascular disease prevention",
         "common_interactions": ["grapefruit juice", "gemfibrozil", "cyclosporine"],
         "contraindications": ["active liver disease", "pregnancy"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "levothyroxine": {
         "rxcui": "10582",
@@ -64,21 +85,32 @@ MEDICATIONS_DB = {
         "indication": "Hypothyroidism",
         "common_interactions": ["calcium", "iron", "coffee"],
         "contraindications": ["untreated thyrotoxicosis"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "omeprazole": {
         "rxcui": "7646",
-        "generic_name": "omeprazole", 
+        "generic_name": "omeprazole",
         "brand_names": ["Prilosec"],
         "common_dosages": ["20mg", "40mg"],
         "requires_pa": False,
         "drug_class": "proton pump inhibitor",
         "indication": "GERD, peptic ulcer disease",
-        "common_side_effects": ["headache", "nausea", "diarrhea", "stomach pain", "constipation"],
-        "serious_side_effects": ["low magnesium levels", "vitamin B12 deficiency", "increased infection risk", "bone fractures with long-term use"],
+        "common_side_effects": [
+            "headache",
+            "nausea",
+            "diarrhea",
+            "stomach pain",
+            "constipation",
+        ],
+        "serious_side_effects": [
+            "low magnesium levels",
+            "vitamin B12 deficiency",
+            "increased infection risk",
+            "bone fractures with long-term use",
+        ],
         "common_interactions": ["clopidogrel", "warfarin", "digoxin"],
         "contraindications": ["hypersensitivity to PPIs"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "methocarbamol": {
         "rxcui": "6878",
@@ -90,10 +122,10 @@ MEDICATIONS_DB = {
         "indication": "Muscle spasms, musculoskeletal pain",
         "common_interactions": ["alcohol", "CNS depressants", "pyridostigmine"],
         "contraindications": ["myasthenia gravis", "hypersensitivity"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "meloxicam": {
-        "rxcui": "77492", 
+        "rxcui": "77492",
         "generic_name": "meloxicam",
         "brand_names": ["Mobic"],
         "common_dosages": ["7.5mg", "15mg"],
@@ -101,8 +133,12 @@ MEDICATIONS_DB = {
         "drug_class": "NSAID (COX-2 selective)",
         "indication": "Osteoarthritis, rheumatoid arthritis, pain",
         "common_interactions": ["warfarin", "ACE inhibitors", "lithium"],
-        "contraindications": ["active bleeding", "severe heart failure", "pregnancy (3rd trimester)"],
-        "typical_supply_days": [30, 90]
+        "contraindications": [
+            "active bleeding",
+            "severe heart failure",
+            "pregnancy (3rd trimester)",
+        ],
+        "typical_supply_days": [30, 90],
     },
     "famotidine": {
         "rxcui": "4278",
@@ -114,7 +150,7 @@ MEDICATIONS_DB = {
         "indication": "GERD, peptic ulcers, heartburn",
         "common_interactions": ["ketoconazole", "atazanavir", "dasatinib"],
         "contraindications": ["hypersensitivity to H2 antagonists"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "amlodipine": {
         "rxcui": "17767",
@@ -126,7 +162,7 @@ MEDICATIONS_DB = {
         "indication": "Hypertension, angina",
         "common_interactions": ["grapefruit juice", "simvastatin"],
         "contraindications": ["cardiogenic shock", "severe aortic stenosis"],
-        "typical_supply_days": [30, 90]
+        "typical_supply_days": [30, 90],
     },
     "insulin": {
         "rxcui": "5856",
@@ -138,7 +174,7 @@ MEDICATIONS_DB = {
         "indication": "Diabetes mellitus",
         "common_interactions": ["ACE inhibitors", "beta blockers"],
         "contraindications": ["hypoglycemia"],
-        "typical_supply_days": [30]
+        "typical_supply_days": [30],
     },
     "lorazepam": {
         "rxcui": "6470",
@@ -149,12 +185,15 @@ MEDICATIONS_DB = {
         "drug_class": "benzodiazepine",
         "indication": "Anxiety disorders, insomnia, seizures",
         "common_interactions": ["alcohol", "opioids", "CNS depressants"],
-        "contraindications": ["severe respiratory depression", "acute narrow-angle glaucoma"],
+        "contraindications": [
+            "severe respiratory depression",
+            "acute narrow-angle glaucoma",
+        ],
         "controlled_substance": True,
         "schedule": "IV",
         "requires_doctor_consultation": True,
-        "typical_supply_days": [30]
-    }
+        "typical_supply_days": [30],
+    },
 }
 
 # Comprehensive pharmacy network with detailed information
@@ -168,7 +207,15 @@ PHARMACY_INVENTORY = {
         "hours": "Mon-Fri: 8AM-10PM, Sat-Sun: 9AM-7PM",
         "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Medicare"],
         "services": ["prescription_refills", "vaccinations", "health_screenings"],
-        "in_stock": ["lisinopril", "metformin", "atorvastatin", "omeprazole", "amlodipine", "levothyroxine", "meloxicam"],
+        "in_stock": [
+            "lisinopril",
+            "metformin",
+            "atorvastatin",
+            "omeprazole",
+            "amlodipine",
+            "levothyroxine",
+            "meloxicam",
+        ],
         "out_of_stock": ["eliquis", "insulin"],
         "prices": {
             "lisinopril_10mg_30": 15.99,
@@ -179,21 +226,35 @@ PHARMACY_INVENTORY = {
             "omeprazole_20mg_30": 18.99,
             "amlodipine_5mg_30": 9.99,
             "levothyroxine_100mcg_30": 14.99,
-            "meloxicam_15mg_30": 22.99
+            "meloxicam_15mg_30": 22.99,
         },
         "drive_through": True,
-        "parking_available": True
+        "parking_available": True,
     },
     "walmart_plaza": {
         "name": "Walmart Pharmacy - Plaza",
         "address": "456 Plaza Drive, City, ST 12345",
-        "phone": "(555) 234-5678", 
+        "phone": "(555) 234-5678",
         "distance_miles": 3.2,
         "wait_time_min": 15,
         "hours": "Mon-Sun: 7AM-11PM",
-        "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Medicare", "Medicaid"],
+        "accepts_insurance": [
+            "BlueCross Shield",
+            "Aetna",
+            "UnitedHealth",
+            "Medicare",
+            "Medicaid",
+        ],
         "services": ["prescription_refills", "vaccinations", "$4_generics"],
-        "in_stock": ["lisinopril", "metformin", "eliquis", "atorvastatin", "levothyroxine", "omeprazole", "meloxicam"],
+        "in_stock": [
+            "lisinopril",
+            "metformin",
+            "eliquis",
+            "atorvastatin",
+            "levothyroxine",
+            "omeprazole",
+            "meloxicam",
+        ],
         "out_of_stock": ["insulin"],
         "prices": {
             "lisinopril_10mg_30": 4.00,
@@ -204,11 +265,11 @@ PHARMACY_INVENTORY = {
             "atorvastatin_20mg_30": 4.00,
             "omeprazole_20mg_30": 4.00,
             "levothyroxine_100mcg_30": 4.00,
-            "meloxicam_15mg_30": 18.99
+            "meloxicam_15mg_30": 18.99,
         },
         "drive_through": True,
         "parking_available": True,
-        "special_programs": ["$4_generic_program", "free_antibiotics"]
+        "special_programs": ["$4_generic_program", "free_antibiotics"],
     },
     "walgreens_downtown": {
         "name": "Walgreens - Downtown",
@@ -219,7 +280,14 @@ PHARMACY_INVENTORY = {
         "hours": "24/7",
         "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Cigna"],
         "services": ["prescription_refills", "vaccinations", "24hour_service"],
-        "in_stock": ["lisinopril", "metformin", "atorvastatin", "omeprazole", "amlodipine", "insulin"],
+        "in_stock": [
+            "lisinopril",
+            "metformin",
+            "atorvastatin",
+            "omeprazole",
+            "amlodipine",
+            "insulin",
+        ],
         "out_of_stock": ["eliquis", "meloxicam"],
         "prices": {
             "lisinopril_10mg_30": 13.99,
@@ -227,11 +295,11 @@ PHARMACY_INVENTORY = {
             "atorvastatin_20mg_30": 11.99,
             "omeprazole_20mg_30": 16.99,
             "amlodipine_5mg_30": 8.99,
-            "insulin_100units_30": 295.00
+            "insulin_100units_30": 295.00,
         },
         "drive_through": True,
         "parking_available": False,
-        "special_programs": ["24_hour_service", "delivery_available"]
+        "special_programs": ["24_hour_service", "delivery_available"],
     },
     "costco_warehouse": {
         "name": "Costco Pharmacy",
@@ -242,7 +310,14 @@ PHARMACY_INVENTORY = {
         "hours": "Mon-Fri: 10AM-8:30PM, Sat: 9:30AM-6PM, Sun: 10AM-6PM",
         "accepts_insurance": ["BlueCross Shield", "Aetna", "UnitedHealth", "Medicare"],
         "services": ["prescription_refills", "vaccinations", "member_discounts"],
-        "in_stock": ["lisinopril", "metformin", "eliquis", "atorvastatin", "omeprazole", "insulin"],
+        "in_stock": [
+            "lisinopril",
+            "metformin",
+            "eliquis",
+            "atorvastatin",
+            "omeprazole",
+            "insulin",
+        ],
         "out_of_stock": ["amlodipine"],
         "prices": {
             "lisinopril_10mg_30": 3.20,
@@ -250,12 +325,12 @@ PHARMACY_INVENTORY = {
             "eliquis_5mg_30": 465.00,
             "atorvastatin_20mg_30": 3.60,
             "omeprazole_20mg_30": 3.80,
-            "insulin_100units_30": 275.00
+            "insulin_100units_30": 275.00,
         },
         "drive_through": False,
         "parking_available": True,
         "membership_required": True,
-        "special_programs": ["member_only_pricing", "bulk_discounts"]
+        "special_programs": ["member_only_pricing", "bulk_discounts"],
     },
     "rite_aid_north": {
         "name": "Rite Aid - North Side",
@@ -266,25 +341,31 @@ PHARMACY_INVENTORY = {
         "hours": "Mon-Sat: 8AM-10PM, Sun: 9AM-8PM",
         "accepts_insurance": ["BlueCross Shield", "Aetna", "Medicare"],
         "services": ["prescription_refills", "vaccinations", "wellness_rewards"],
-        "in_stock": ["lisinopril", "atorvastatin", "omeprazole", "amlodipine", "levothyroxine"],
+        "in_stock": [
+            "lisinopril",
+            "atorvastatin",
+            "omeprazole",
+            "amlodipine",
+            "levothyroxine",
+        ],
         "out_of_stock": ["metformin", "eliquis", "insulin"],
         "prices": {
             "lisinopril_10mg_30": 14.50,
             "atorvastatin_20mg_30": 13.50,
             "omeprazole_20mg_30": 17.50,
             "amlodipine_5mg_30": 10.50,
-            "levothyroxine_100mcg_30": 15.50
+            "levothyroxine_100mcg_30": 15.50,
         },
         "drive_through": True,
         "parking_available": True,
-        "special_programs": ["wellness_rewards", "senior_discounts"]
-    }
+        "special_programs": ["wellness_rewards", "senior_discounts"],
+    },
 }
 
 # Mock patient data
 MOCK_PATIENTS = {
     "12345": {  # Mock patient ID for demo
-        "name": "John Smith", 
+        "name": "John Smith",
         "dob": "1975-03-15",
         "insurance": "BCBS_TX_001",
         "medications": [
@@ -299,18 +380,18 @@ MOCK_PATIENTS = {
                 "quantity": 30,
                 "directions": "Take 1 tablet daily",
                 "prescription_expired": True,
-                "last_prescription_date": "2024-01-05"
+                "last_prescription_date": "2024-01-05",
             },
             {
                 "name": "metformin",
                 "dosage": "500mg",
                 "strength": "500mg tablets",
-                "start_date": "2022-06-10", 
+                "start_date": "2022-06-10",
                 "refills_remaining": 0,
                 "last_filled": "2023-12-10",
                 "adherence_rate": 0.88,
                 "quantity": 60,
-                "directions": "Take 1 tablet twice daily with meals"
+                "directions": "Take 1 tablet twice daily with meals",
             },
             {
                 "name": "methocarbamol",
@@ -321,7 +402,7 @@ MOCK_PATIENTS = {
                 "last_filled": "2024-08-15",
                 "adherence_rate": 0.89,
                 "quantity": 60,
-                "directions": "Take 1 tablet 3-4 times daily as needed for muscle spasms"
+                "directions": "Take 1 tablet 3-4 times daily as needed for muscle spasms",
             },
             {
                 "name": "meloxicam",
@@ -332,7 +413,7 @@ MOCK_PATIENTS = {
                 "last_filled": "2024-07-20",
                 "adherence_rate": 0.93,
                 "quantity": 30,
-                "directions": "Take 1 tablet daily with food"
+                "directions": "Take 1 tablet daily with food",
             },
             {
                 "name": "omeprazole",
@@ -343,7 +424,7 @@ MOCK_PATIENTS = {
                 "last_filled": "2024-08-01",
                 "adherence_rate": 0.96,
                 "quantity": 30,
-                "directions": "Take 1 capsule daily before breakfast"
+                "directions": "Take 1 capsule daily before breakfast",
             },
             {
                 "name": "famotidine",
@@ -354,7 +435,7 @@ MOCK_PATIENTS = {
                 "last_filled": "2024-07-10",
                 "adherence_rate": 0.91,
                 "quantity": 60,
-                "directions": "Take 1 tablet twice daily as needed for heartburn"
+                "directions": "Take 1 tablet twice daily as needed for heartburn",
             },
             {
                 "name": "lorazepam",
@@ -368,11 +449,16 @@ MOCK_PATIENTS = {
                 "directions": "Take 1 tablet as needed for anxiety, maximum 3 per day",
                 "controlled_substance": True,
                 "schedule": "IV",
-                "requires_doctor_consultation": True
-            }
+                "requires_doctor_consultation": True,
+            },
         ],
         "allergies": ["penicillin", "sulfa drugs"],
-        "conditions": ["hypertension", "type 2 diabetes", "muscle spasms", "gastroesophageal reflux disease"]
+        "conditions": [
+            "hypertension",
+            "type 2 diabetes",
+            "muscle spasms",
+            "gastroesophageal reflux disease",
+        ],
     },
     "67890": {  # Additional test patient
         "name": "Jane Smith",
@@ -388,12 +474,12 @@ MOCK_PATIENTS = {
                 "last_filled": "2024-01-01",
                 "adherence_rate": 0.89,
                 "quantity": 60,
-                "directions": "Take 1 tablet twice daily"
+                "directions": "Take 1 tablet twice daily",
             }
         ],
         "allergies": ["aspirin"],
-        "conditions": ["atrial fibrillation"]
-    }
+        "conditions": ["atrial fibrillation"],
+    },
 }
 
 # Comprehensive insurance formulary data
@@ -403,149 +489,159 @@ INSURANCE_FORMULARIES = {
         "type": "commercial",
         "formulary": {
             "lisinopril": {
-                "tier": 1, 
-                "copay": 10, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 10,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "metformin": {
-                "tier": 1, 
-                "copay": 10, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 10,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "atorvastatin": {
-                "tier": 2, 
-                "copay": 25, 
-                "pa_required": False, 
+                "tier": 2,
+                "copay": 25,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "eliquis": {
-                "tier": 3, 
-                "copay": 75, 
-                "pa_required": True, 
+                "tier": 3,
+                "copay": 75,
+                "pa_required": True,
                 "covered": True,
                 "quantity_limits": "60 tablets per 30 days",
                 "step_therapy": True,
-                "pa_criteria": ["Documented atrial fibrillation", "Failed warfarin therapy", "Contraindication to warfarin"]
+                "pa_criteria": [
+                    "Documented atrial fibrillation",
+                    "Failed warfarin therapy",
+                    "Contraindication to warfarin",
+                ],
             },
             "insulin": {
-                "tier": 2, 
-                "copay": 35, 
-                "pa_required": False, 
+                "tier": 2,
+                "copay": 35,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": "10mL per 30 days",
-                "step_therapy": False
+                "step_therapy": False,
             },
             "levothyroxine": {
-                "tier": 1, 
-                "copay": 10, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 10,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "omeprazole": {
-                "tier": 2, 
-                "copay": 25, 
-                "pa_required": False, 
+                "tier": 2,
+                "copay": 25,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "amlodipine": {
-                "tier": 1, 
-                "copay": 10, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 10,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
-            }
+                "step_therapy": False,
+            },
         },
         "deductible": 500,
-        "out_of_pocket_max": 3000
+        "out_of_pocket_max": 3000,
     },
     "Aetna": {
         "plan_name": "Aetna Better Health",
-        "type": "commercial", 
+        "type": "commercial",
         "formulary": {
             "lisinopril": {
-                "tier": 1, 
-                "copay": 5, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 5,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "metformin": {
-                "tier": 1, 
-                "copay": 5, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 5,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "eliquis": {
-                "tier": 3, 
-                "copay": 60, 
-                "pa_required": True, 
+                "tier": 3,
+                "copay": 60,
+                "pa_required": True,
                 "covered": True,
                 "quantity_limits": "60 tablets per 30 days",
                 "step_therapy": True,
-                "pa_criteria": ["Documented atrial fibrillation or VTE", "Age >= 65 or CHADS2 score >= 2"]
+                "pa_criteria": [
+                    "Documented atrial fibrillation or VTE",
+                    "Age >= 65 or CHADS2 score >= 2",
+                ],
             },
             "atorvastatin": {
-                "tier": 2, 
-                "copay": 20, 
-                "pa_required": False, 
+                "tier": 2,
+                "copay": 20,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
-            }
+                "step_therapy": False,
+            },
         },
         "deductible": 750,
-        "out_of_pocket_max": 4000
+        "out_of_pocket_max": 4000,
     },
     "Medicare": {
         "plan_name": "Medicare Part D Standard",
         "type": "medicare",
         "formulary": {
             "lisinopril": {
-                "tier": 1, 
-                "copay": 3, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 3,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "metformin": {
-                "tier": 1, 
-                "copay": 3, 
-                "pa_required": False, 
+                "tier": 1,
+                "copay": 3,
+                "pa_required": False,
                 "covered": True,
                 "quantity_limits": None,
-                "step_therapy": False
+                "step_therapy": False,
             },
             "eliquis": {
-                "tier": 4, 
-                "copay": 150, 
-                "pa_required": True, 
+                "tier": 4,
+                "copay": 150,
+                "pa_required": True,
                 "covered": True,
                 "quantity_limits": "60 tablets per 30 days",
                 "step_therapy": True,
-                "pa_criteria": ["Medicare coverage criteria", "Failed warfarin or contraindicated"]
-            }
+                "pa_criteria": [
+                    "Medicare coverage criteria",
+                    "Failed warfarin or contraindicated",
+                ],
+            },
         },
         "deductible": 545,
         "coverage_gap": 5030,
-        "out_of_pocket_max": 8000
-    }
+        "out_of_pocket_max": 8000,
+    },
 }
 
 # Prior authorization criteria database
@@ -554,23 +650,23 @@ PRIOR_AUTH_CRITERIA = {
         "required": True,
         "criteria": [
             "Documented atrial fibrillation with CHA2DS2-VASc score ≥2",
-            "History of DVT/PE with contraindication to warfarin", 
+            "History of DVT/PE with contraindication to warfarin",
             "Failed therapy with warfarin due to INR instability",
-            "Documented bleeding event on warfarin"
+            "Documented bleeding event on warfarin",
         ],
         "required_documentation": [
             "Diagnosis codes for atrial fibrillation or VTE",
             "CHA2DS2-VASc score calculation",
             "Lab results showing contraindication to warfarin (if applicable)",
-            "Previous medication trial history with dates and outcomes"
+            "Previous medication trial history with dates and outcomes",
         ],
         "processing_time_days": "3-5 business days",
         "approval_rate": 0.85,
         "common_denial_reasons": [
             "Insufficient documentation of indication",
             "No trial of preferred alternative documented",
-            "Duplicate therapy with other anticoagulants"
-        ]
+            "Duplicate therapy with other anticoagulants",
+        ],
     },
     "insulin": {
         "required": True,
@@ -578,44 +674,48 @@ PRIOR_AUTH_CRITERIA = {
             "Diagnosis of diabetes mellitus (Type 1 or Type 2)",
             "A1C > 7.0% despite oral antidiabetic therapy",
             "Contraindication to or failure of metformin",
-            "Specialist endocrinologist recommendation"
+            "Specialist endocrinologist recommendation",
         ],
         "required_documentation": [
             "Recent A1C results within 3 months",
             "Documentation of oral medication trials",
             "Endocrinologist consultation note",
-            "Blood glucose logs"
+            "Blood glucose logs",
         ],
         "processing_time_days": "2-4 business days",
         "approval_rate": 0.92,
         "common_denial_reasons": [
             "A1C not above threshold",
-            "Insufficient trial of oral medications"
-        ]
-    }
+            "Insufficient trial of oral medications",
+        ],
+    },
 }
 
 # GoodRx-style discount pricing data
 GOODRX_DISCOUNTS = {
     "discount_programs": {
         "goodrx": {"name": "GoodRx", "average_savings": 0.20, "max_savings": 0.80},
-        "singlecare": {"name": "SingleCare", "average_savings": 0.18, "max_savings": 0.75},
-        "rxsaver": {"name": "RxSaver", "average_savings": 0.15, "max_savings": 0.70}
+        "singlecare": {
+            "name": "SingleCare",
+            "average_savings": 0.18,
+            "max_savings": 0.75,
+        },
+        "rxsaver": {"name": "RxSaver", "average_savings": 0.15, "max_savings": 0.70},
     },
     "manufacturer_coupons": {
         "eliquis": {
             "available": True,
             "max_savings": 60,
             "eligibility": "Commercial insurance only",
-            "website": "eliquis.com/copay-card"
+            "website": "eliquis.com/copay-card",
         },
         "insulin": {
-            "available": True, 
+            "available": True,
             "max_savings": 35,
             "eligibility": "All patients",
-            "website": "manufacturer-insulin-savings.com"
-        }
-    }
+            "website": "manufacturer-insulin-savings.com",
+        },
+    },
 }
 
 # Drug interaction database
@@ -625,63 +725,63 @@ DRUG_INTERACTIONS = {
             "interacting_drug": "ibuprofen",
             "severity": "moderate",
             "effect": "NSAIDs may reduce the antihypertensive effect of ACE inhibitors and increase risk of kidney problems",
-            "management": "Monitor blood pressure and kidney function. Consider acetaminophen for pain relief."
+            "management": "Monitor blood pressure and kidney function. Consider acetaminophen for pain relief.",
         },
         {
             "interacting_drug": "potassium supplements",
-            "severity": "major", 
+            "severity": "major",
             "effect": "May cause dangerously high potassium levels (hyperkalemia)",
-            "management": "Monitor potassium levels closely. May need dose adjustment or alternative supplement."
+            "management": "Monitor potassium levels closely. May need dose adjustment or alternative supplement.",
         },
         {
             "interacting_drug": "lithium",
             "severity": "moderate",
             "effect": "ACE inhibitors may increase lithium levels, leading to toxicity",
-            "management": "Monitor lithium levels and watch for signs of lithium toxicity"
-        }
+            "management": "Monitor lithium levels and watch for signs of lithium toxicity",
+        },
     ],
     "metformin": [
         {
             "interacting_drug": "alcohol",
             "severity": "moderate",
             "effect": "Increased risk of lactic acidosis, especially with excessive alcohol consumption",
-            "management": "Limit alcohol intake and avoid binge drinking"
+            "management": "Limit alcohol intake and avoid binge drinking",
         },
         {
             "interacting_drug": "contrast dye",
             "severity": "major",
             "effect": "Risk of lactic acidosis due to kidney dysfunction from contrast",
-            "management": "Discontinue metformin before contrast procedures, resume after 48 hours if kidney function normal"
-        }
+            "management": "Discontinue metformin before contrast procedures, resume after 48 hours if kidney function normal",
+        },
     ],
     "eliquis": [
         {
             "interacting_drug": "aspirin",
             "severity": "major",
             "effect": "Significantly increased risk of bleeding",
-            "management": "Use combination only if clearly indicated. Monitor for bleeding signs."
+            "management": "Use combination only if clearly indicated. Monitor for bleeding signs.",
         },
         {
-            "interacting_drug": "warfarin", 
+            "interacting_drug": "warfarin",
             "severity": "contraindicated",
             "effect": "Excessive anticoagulation and severe bleeding risk",
-            "management": "Do not use together. Transition carefully between anticoagulants."
+            "management": "Do not use together. Transition carefully between anticoagulants.",
         },
         {
             "interacting_drug": "rifampin",
             "severity": "major",
             "effect": "Rifampin significantly reduces apixaban levels, decreasing effectiveness",
-            "management": "Avoid combination or use alternative anticoagulant"
-        }
+            "management": "Avoid combination or use alternative anticoagulant",
+        },
     ],
     "atorvastatin": [
         {
             "interacting_drug": "grapefruit juice",
             "severity": "moderate",
             "effect": "Grapefruit juice increases statin levels, increasing risk of muscle problems",
-            "management": "Avoid grapefruit juice or use alternative statin"
+            "management": "Avoid grapefruit juice or use alternative statin",
         }
-    ]
+    ],
 }
 
 # Mock order tracking system
@@ -691,6 +791,6 @@ ORDER_TRACKING = {
         "new_prescription": 30,
         "refill": 15,
         "transfer": 45,
-        "compound": 120
-    }
+        "compound": 120,
+    },
 }

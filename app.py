@@ -9,14 +9,14 @@ import json
 import os
 import uuid
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import streamlit as st
 
 # Import configuration and utilities
 from rxflow.config.settings import get_settings
-from rxflow.utils.logger import get_logger, setup_logging, get_all_session_logs
-from pathlib import Path
+from rxflow.utils.logger import get_all_session_logs, get_logger, setup_logging
 
 # Import advanced conversation manager (Step 6)
 from rxflow.workflow.conversation_manager import ConversationManager
@@ -141,8 +141,8 @@ st.markdown(
 )
 
 
-def initialize_session_state():
-    """Initialize enhanced session state variables for Step 8"""
+def initialize_session_state() -> None:
+    """Initialize Streamlit session state variables"""
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
@@ -202,13 +202,13 @@ def load_demo_data() -> Dict[str, Any]:
     return demo_data
 
 
-def render_sidebar():
-    """Render enhanced sidebar with session management and debug controls"""
+def render_sidebar() -> None:
+    """Render the sidebar with configuration options"""
     st.sidebar.title("🔧 Configuration")
 
     # Session Management
     st.sidebar.markdown("### 🎯 Session Management")
-    
+
     # Session info
     session_duration = datetime.now() - st.session_state.session_start_time
     st.sidebar.text(f"Session ID: {st.session_state.session_id[:8]}...")
@@ -252,47 +252,50 @@ def render_sidebar():
     settings = get_settings()
     st.sidebar.text(f"LLM: {settings.ollama_model}")
     st.sidebar.text(f"Mock Data: {settings.use_mock_data}")
-    
+
     # Debug controls
     st.session_state.show_debug_info = st.sidebar.checkbox(
-        "🐛 Show Debug Info", 
-        value=st.session_state.show_debug_info
+        "🐛 Show Debug Info", value=st.session_state.show_debug_info
     )
 
     # Session Logs Section
     st.sidebar.markdown("### 📋 Session Logs")
-    
+
     # Show current session log status - simplified logging
     st.sidebar.info("📝 Session logging active")
     # Note: Detailed session log files are not available in simplified version
-    
+
     # Show all available logs
     all_logs = get_all_session_logs()
     if all_logs:
         st.sidebar.markdown("**Available Logs:**")
-        log_options = [f"{session_id[:8]} - {path.name}" for session_id, path in all_logs.items()]
-        selected_log = st.sidebar.selectbox("Select log to view:", ["None"] + log_options)
-        
+        log_options = [
+            f"{session_id[:8]} - {path.name}" for session_id, path in all_logs.items()
+        ]
+        selected_log = st.sidebar.selectbox(
+            "Select log to view:", ["None"] + log_options
+        )
+
         if selected_log != "None" and st.sidebar.button("📄 View Selected Log"):
             # Extract session ID and find corresponding path
             selected_session_id = selected_log.split(" - ")[0]
             if selected_session_id in all_logs:
                 show_session_log(str(all_logs[selected_session_id]))
-    
+
     # Action buttons
     st.sidebar.markdown("### 🎬 Actions")
-    
+
     col1, col2 = st.sidebar.columns(2)
     with col1:
         if st.button("🗑️ Clear Chat", use_container_width=True):
             reset_conversation()
-    
+
     with col2:
         if st.button("📊 Export Data", use_container_width=True):
             export_session_data()
 
 
-def reset_conversation():
+def reset_conversation() -> None:
     """Reset conversation state"""
     st.session_state.messages = []
     st.session_state.session_id = str(uuid.uuid4())
@@ -306,21 +309,21 @@ def reset_conversation():
     st.rerun()
 
 
-def show_session_log(log_file_path: str):
-    """Display session log content in a modal or expander"""
+def show_session_log(log_file_path: str) -> None:
+    """Show session log contents in an expander"""
     try:
-        with open(log_file_path, 'r', encoding='utf-8') as f:
+        with open(log_file_path, "r", encoding="utf-8") as f:
             log_content = f.read()
-        
+
         # Show in an expander in the main area
         with st.expander(f"📋 Session Log: {Path(log_file_path).name}", expanded=True):
             st.code(log_content, language="text")
-        
+
     except Exception as e:
         st.error(f"Error reading log file: {e}")
 
 
-def export_session_data():
+def export_session_data() -> None:
     """Export session data for analysis"""
     export_data = {
         "session_id": st.session_state.session_id,
@@ -331,21 +334,21 @@ def export_session_data():
         "conversation_context": st.session_state.conversation_context,
         "tool_logs": st.session_state.tool_logs,
         "cost_savings": st.session_state.cost_savings,
-        "export_timestamp": datetime.now().isoformat()
+        "export_timestamp": datetime.now().isoformat(),
     }
-    
+
     # Create downloadable JSON
     json_str = json.dumps(export_data, indent=2, default=str)
     st.sidebar.download_button(
         label="📥 Download Session JSON",
         data=json_str,
         file_name=f"rxflow_session_{st.session_state.session_id[:8]}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-        mime="application/json"
+        mime="application/json",
     )
 
 
-def render_chat_message(message: Dict[str, str]):
-    """Render a chat message with enhanced metadata"""
+def render_chat_message(message: Dict[str, str]) -> None:
+    """Render a single chat message"""
     role = message["role"]
     content = message["content"]
     timestamp = message.get("timestamp", "")
@@ -369,7 +372,7 @@ def render_chat_message(message: Dict[str, str]):
             metadata += f" • 🔧 {tools_used} tools used"
         if state and st.session_state.show_debug_info:
             metadata += f" • 🎯 State: {state}"
-            
+
         st.markdown(
             f"""
         <div class="chat-message assistant-message">
@@ -381,39 +384,45 @@ def render_chat_message(message: Dict[str, str]):
         )
 
 
-def render_tool_logs():
-    """Render tool usage logs"""
+def render_tool_logs() -> None:
+    """Display recent tool usage logs"""
     if not st.session_state.tool_logs:
         st.info("No tool usage logged yet.")
         return
-    
+
     st.markdown("### 🔧 Tool Usage Log")
-    
+
     # Show recent tools first
-    recent_logs = sorted(st.session_state.tool_logs, key=lambda x: x["timestamp"], reverse=True)
-    
+    recent_logs = sorted(
+        st.session_state.tool_logs, key=lambda x: x["timestamp"], reverse=True
+    )
+
     for log in recent_logs[:10]:  # Show last 10 tool calls
         timestamp = datetime.fromisoformat(log["timestamp"]).strftime("%H:%M:%S")
         success_icon = "✅" if log["success"] else "❌"
-        
+
         with st.expander(f"{success_icon} {log['tool']} - {timestamp}"):
-            st.text(f"Input: {log['input'][:100]}..." if len(log['input']) > 100 else f"Input: {log['input']}")
+            st.text(
+                f"Input: {log['input'][:100]}..."
+                if len(log["input"]) > 100
+                else f"Input: {log['input']}"
+            )
             st.text(f"Execution time: {log['execution_time']:.2f}s")
             st.text(f"Success: {log['success']}")
 
 
-def render_cost_savings():
-    """Render cost savings information"""
+def render_cost_savings() -> None:
+    """Display potential cost savings information"""
     savings = st.session_state.cost_savings
-    
+
     if savings["total_saved"] > 0:
         st.markdown("### 💰 Cost Savings")
         st.metric(
             label="Total Savings",
             value=f"${savings['total_saved']:.2f}",
-            delta=f"+${savings['total_saved']:.2f}"
+            delta=f"+${savings['total_saved']:.2f}",
         )
-        
+
         if savings["comparisons"]:
             st.markdown("**Recent Comparisons:**")
             for comparison in savings["comparisons"][-3:]:  # Show last 3
@@ -430,29 +439,33 @@ def render_cost_savings():
         st.info("No cost comparisons yet.")
 
 
-def render_state_visualization():
-    """Render current conversation state"""
+def render_state_visualization() -> None:
+    """Render workflow state visualization"""
     st.markdown("### 🎯 Conversation State")
-    
+
     # State indicator for simplified workflow
     state_colors = {
         WorkflowState.GREETING: "�",
-        WorkflowState.PROCESSING: "", 
+        WorkflowState.PROCESSING: "",
         WorkflowState.ESCALATED: "🔴",
         WorkflowState.COMPLETED: "✅",
-        WorkflowState.ERROR: "❌"
+        WorkflowState.ERROR: "❌",
     }
-    
+
     current_state = st.session_state.current_state
     state_icon = state_colors.get(current_state, "⚪")
-    
-    st.markdown(f"**Current State:** {state_icon} {current_state.value.replace('_', ' ').title()}")
-    
+
+    st.markdown(
+        f"**Current State:** {state_icon} {current_state.value.replace('_', ' ').title()}"
+    )
+
     # Progress indicator for simplified workflow
     state_order = [
-        WorkflowState.GREETING, WorkflowState.PROCESSING, WorkflowState.COMPLETED
+        WorkflowState.GREETING,
+        WorkflowState.PROCESSING,
+        WorkflowState.COMPLETED,
     ]
-    
+
     if current_state in state_order:
         progress = (state_order.index(current_state) + 1) / len(state_order)
         st.progress(progress)
@@ -461,7 +474,7 @@ def render_state_visualization():
         st.info("🏥 Case escalated to pharmacist")
     elif current_state == WorkflowState.ERROR:
         st.error("❌ Error occurred")
-    
+
     # Context information
     context = st.session_state.conversation_context
     if context and st.session_state.show_debug_info:
@@ -474,32 +487,34 @@ def render_state_visualization():
 def render_quick_actions():
     """Render quick action buttons"""
     st.markdown("### ⚡ Quick Actions")
-    
+
     demo_data = load_demo_data()
-    
+
     # Common refill requests
     col1, col2 = st.columns(2)
-    
+
     with col1:
         if st.button("💊 Refill Lisinopril", use_container_width=True):
             add_quick_message("I need to refill my lisinopril 10mg")
-        
+
         if st.button("💊 Refill Metformin", use_container_width=True):
             add_quick_message("I need to refill my metformin 500mg")
-    
+
     with col2:
         if st.button("🏥 Find Pharmacy", use_container_width=True):
             add_quick_message("Where is the nearest pharmacy?")
-        
+
         if st.button("💰 Check Prices", use_container_width=True):
             add_quick_message("What are the prices for my medications?")
-    
+
     # Scenario buttons
     st.markdown("**Test Scenarios:**")
-    
+
     if st.button("⚠️ Prior Authorization", use_container_width=True):
-        add_quick_message("I need to refill my Eliquis but my insurance requires prior authorization")
-    
+        add_quick_message(
+            "I need to refill my Eliquis but my insurance requires prior authorization"
+        )
+
     if st.button("🚫 No Refills Left", use_container_width=True):
         add_quick_message("I have no refills remaining for my prescription")
 
@@ -520,16 +535,15 @@ async def process_user_input_async(user_input: str) -> Dict[str, Any]:
         conversation_manager = st.session_state.conversation_manager
         session_id = st.session_state.session_id
         patient_id = st.session_state.patient_id
-        
+
         # Process message through conversation manager
         result = await conversation_manager.process_message(
-            session_id=session_id,
-            message=user_input
+            session_id=session_id, message=user_input
         )
-        
+
         # Update session state with conversation info
         st.session_state.current_state = result.current_state
-        
+
         # Get the conversation context from the session
         conversation_context = conversation_manager.get_session(session_id)
         if conversation_context:
@@ -537,39 +551,47 @@ async def process_user_input_async(user_input: str) -> Dict[str, Any]:
         else:
             logger.warning(f"No conversation context found for session {session_id}")
             st.session_state.conversation_context = {}
-        
+
         # Add tool logs from this interaction
-        if hasattr(result, 'tool_calls') and result.tool_calls:
+        if hasattr(result, "tool_calls") and result.tool_calls:
             for tool_call in result.tool_calls:
-                st.session_state.tool_logs.append({
-                    "timestamp": datetime.now().isoformat(),
-                    "tool": tool_call.get("tool", "unknown"),
-                    "input": tool_call.get("input", ""),
-                    "success": tool_call.get("success", False),
-                    "execution_time": tool_call.get("execution_time", 0)
-                })
-        
+                st.session_state.tool_logs.append(
+                    {
+                        "timestamp": datetime.now().isoformat(),
+                        "tool": tool_call.get("tool", "unknown"),
+                        "input": tool_call.get("input", ""),
+                        "success": tool_call.get("success", False),
+                        "execution_time": tool_call.get("execution_time", 0),
+                    }
+                )
+
         # Update cost savings if available
-        if hasattr(result, 'cost_analysis') and result.cost_analysis:
+        if hasattr(result, "cost_analysis") and result.cost_analysis:
             cost_data = result.cost_analysis
             if "savings_amount" in cost_data:
-                st.session_state.cost_savings["total_saved"] += cost_data["savings_amount"]
-                st.session_state.cost_savings["comparisons"].append({
-                    "timestamp": datetime.now().isoformat(),
-                    "medication": cost_data.get("medication", ""),
-                    "original_price": cost_data.get("original_price", 0),
-                    "best_price": cost_data.get("best_price", 0),
-                    "savings": cost_data.get("savings_amount", 0),
-                    "source": cost_data.get("best_source", "")
-                })
-        
+                st.session_state.cost_savings["total_saved"] += cost_data[
+                    "savings_amount"
+                ]
+                st.session_state.cost_savings["comparisons"].append(
+                    {
+                        "timestamp": datetime.now().isoformat(),
+                        "medication": cost_data.get("medication", ""),
+                        "original_price": cost_data.get("original_price", 0),
+                        "best_price": cost_data.get("best_price", 0),
+                        "savings": cost_data.get("savings_amount", 0),
+                        "source": cost_data.get("best_source", ""),
+                    }
+                )
+
         return {
             "response": result.message,
             "state": result.current_state.value,
-            "tools_used": len(result.tool_calls) if hasattr(result, 'tool_calls') else 0,
-            "success": True
+            "tools_used": len(result.tool_calls)
+            if hasattr(result, "tool_calls")
+            else 0,
+            "success": True,
         }
-            
+
     except Exception as e:
         logger.error(f"Error in conversation manager: {e}")
         return {
@@ -577,11 +599,8 @@ async def process_user_input_async(user_input: str) -> Dict[str, Any]:
             "state": "error",
             "tools_used": 0,
             "success": False,
-            "error": str(e)
+            "error": str(e),
         }
-
-
-
 
 
 def process_user_input(user_input: str) -> Dict[str, Any]:
@@ -604,11 +623,11 @@ def process_user_input(user_input: str) -> Dict[str, Any]:
             "state": "error",
             "tools_used": 0,
             "success": False,
-            "error": str(e)
+            "error": str(e),
         }
 
 
-def main():
+def main() -> None:
     """Main application function"""
 
     # Initialize session state
@@ -665,7 +684,11 @@ def main():
         if user_input:
             # Add user message
             timestamp = datetime.now().strftime("%H:%M")
-            user_message = {"role": "user", "content": user_input, "timestamp": timestamp}
+            user_message = {
+                "role": "user",
+                "content": user_input,
+                "timestamp": timestamp,
+            }
             st.session_state.messages.append(user_message)
 
             # Process and get response
@@ -675,11 +698,11 @@ def main():
 
                 # Add assistant response with metadata
                 assistant_message = {
-                    "role": "assistant", 
-                    "content": result["response"], 
+                    "role": "assistant",
+                    "content": result["response"],
                     "timestamp": timestamp,
                     "tools_used": result["tools_used"],
-                    "state": result["state"]
+                    "state": result["state"],
                 }
                 st.session_state.messages.append(assistant_message)
 
@@ -687,23 +710,25 @@ def main():
 
             except Exception as e:
                 logger.error(f"Error processing user input: {e}")
-                st.error("Sorry, I encountered an error processing your request. Please try again.")
+                st.error(
+                    "Sorry, I encountered an error processing your request. Please try again."
+                )
 
     with col2:
         # Tabbed interface for enhanced features
         tab1, tab2, tab3 = st.tabs(["🎯 State", "🔧 Tools", "💰 Savings"])
-        
+
         with tab1:
             render_state_visualization()
-        
+
         with tab2:
             render_tool_logs()
-        
+
         with tab3:
             render_cost_savings()
-        
+
         st.markdown("---")
-        
+
         # Quick actions at the bottom
         render_quick_actions()
 
