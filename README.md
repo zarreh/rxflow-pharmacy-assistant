@@ -50,7 +50,7 @@ An enterprise-grade pharmacy refill assistant showcasing advanced AI conversatio
 - **Testing**: Comprehensive integration and unit test suites
 - **Deployment**: Docker, Kubernetes, cloud platform ready
 
-## 🏗️ System Architecture
+## 🏗️ System Architecture & Workflow
 
 ### Enhanced Production Architecture
 ```
@@ -87,6 +87,283 @@ RxFlow Enhanced Enterprise Architecture v2.0
 │  + Escalation  │ + Multi-store │ + Enhanced Safety │
 │    Scenarios   │   Inventory   │   Validation      │
 └─────────────────────────────────────────────────────┘
+```
+
+### 🔄 Complete System Workflow
+
+The following diagram illustrates how RxFlow processes prescription refill requests from initial user input through completion or escalation:
+
+```mermaid
+graph TD
+    %% User Input & Session Management
+    A[👤 User Input<br/>"Refill my medication"] --> B[🎯 Session Manager<br/>Initialize/Retrieve Session]
+    B --> C[🤖 Conversation Manager<br/>Process Message]
+    
+    %% Core Processing Flow
+    C --> D{🔍 Message Analysis<br/>LangChain Agent}
+    D --> E[📋 State Machine<br/>Current State Check]
+    
+    %% State-Based Processing
+    E --> F{📊 Current State?}
+    F -->|START| G[🆔 Identify Medication<br/>Patient History Tool]
+    F -->|IDENTIFY_MEDICATION| H[💊 Clarify Medication<br/>RxNorm Tool]
+    F -->|CONFIRM_DOSAGE| I[⚖️ Dosage Verification<br/>Safety Checks]
+    F -->|CHECK_AUTHORIZATION| J[🔐 Insurance Check<br/>Prior Auth Tool]
+    F -->|SELECT_PHARMACY| K[🏥 Pharmacy Selection<br/>Location & Inventory]
+    F -->|CONFIRM_ORDER| L[📝 Order Processing<br/>Submit Refill]
+    
+    %% Tool Execution Layer
+    G --> G1[🔧 Tool: Patient History]
+    H --> H1[🔧 Tool: RxNorm Lookup]
+    I --> I1[🔧 Tool: Dosage Validation]
+    J --> J1[🔧 Tool: Insurance Check]
+    K --> K1[🔧 Tool: Pharmacy Search]
+    L --> L1[🔧 Tool: Order Submission]
+    
+    %% Safety & Escalation Checks
+    G1 --> S{🛡️ Safety Check<br/>Escalation Detection}
+    H1 --> S
+    I1 --> S
+    J1 --> S
+    
+    S -->|❌ Escalation Needed| T[🚨 Escalation Router]
+    S -->|✅ Safe to Continue| U[➡️ Next State Transition]
+    
+    %% Escalation Paths
+    T --> T1{🏥 Escalation Type?}
+    T1 -->|🔴 Doctor Required| V[👨‍⚕️ Doctor Escalation<br/>• No refills<br/>• Controlled substances<br/>• Expired prescriptions]
+    T1 -->|🔵 Pharmacist Consultation| W[👩‍⚕️ Pharmacist Escalation<br/>• Unknown medications<br/>• Verification needed]
+    T1 -->|🏥 Pharmacy Issue| X[🏪 Pharmacy Fallback<br/>CVS → Walmart → Walgreens]
+    
+    %% Success Path Continuation
+    U --> Y{📍 State Complete?}
+    Y -->|No| Z[🔄 Continue Workflow<br/>Return to State Machine]
+    Y -->|Yes| AA[✅ Success Response<br/>Update Session State]
+    
+    %% Pharmacy Fallback Logic
+    K1 --> PF{🏪 Medication Available?}
+    PF -->|❌ Out of Stock| PF1[🔄 Try Next Pharmacy<br/>Intelligent Fallback]
+    PF1 --> PF2[🏪 Walmart → Walgreens<br/>→ Costco → Rite Aid]
+    PF2 --> PF3{📦 Found Alternative?}
+    PF3 -->|✅ Available| K1
+    PF3 -->|❌ All Out of Stock| W
+    PF -->|✅ In Stock| K1
+    
+    %% Response Generation
+    AA --> BB[📝 Format Response<br/>User-Friendly Message]
+    V --> BB
+    W --> BB
+    X --> BB
+    Z --> BB
+    
+    %% Final Output
+    BB --> CC[📱 Streamlit UI<br/>Display Response]
+    CC --> DD[💾 Session Update<br/>Save State & History]
+    
+    %% Continuous Loop
+    DD --> E1[⏳ Wait for Next Input]
+    E1 --> A
+    
+    %% Tool Categories (Styling)
+    style G1 fill:#e1f5fe
+    style H1 fill:#e1f5fe
+    style I1 fill:#e1f5fe
+    style J1 fill:#e1f5fe
+    style K1 fill:#e1f5fe
+    style L1 fill:#e1f5fe
+    
+    style V fill:#ffebee
+    style W fill:#fff3e0
+    style X fill:#f3e5f5
+    
+    style S fill:#e8f5e8
+    style T fill:#fff9c4
+```
+
+### 🔧 Tool Integration Matrix
+
+| **Workflow State** | **Primary Tools** | **Safety Checks** | **Escalation Triggers** |
+|-------------------|-------------------|-------------------|-------------------------|
+| **IDENTIFY_MEDICATION** | Patient History Tool | Medication exists in history | Unknown medication → Pharmacist |
+| **CLARIFY_MEDICATION** | RxNorm Tool | Valid medication name | Controlled substance → Doctor |
+| **CONFIRM_DOSAGE** | Dosage Verification Tool | Safe dosage range | Safety concerns → Doctor |
+| **CHECK_AUTHORIZATION** | Insurance & Prior Auth Tools | Coverage validation | PA required → Automated request |
+| **SELECT_PHARMACY** | Pharmacy Location & Inventory | Availability check | Out of stock → Fallback system |
+| **CONFIRM_ORDER** | Order Submission Tool | Final safety validation | Order failure → Error handling |
+
+### 🌳 Interactive Decision Tree
+
+The system uses an intelligent decision tree to route requests through the optimal workflow path:
+
+```mermaid
+graph TD
+    Start([👤 User Input<br/>Medication Request]) --> Parse{🔍 Parse Request}
+    
+    Parse -->|Clear medication name| GetHistory[📋 Get Patient History]
+    Parse -->|Unclear request| Clarify[❓ Ask for Clarification]
+    
+    GetHistory --> CheckMed{💊 Medication Found?}
+    CheckMed -->|✅ Found| SafetyCheck{🛡️ Safety Analysis}
+    CheckMed -->|❌ Not Found| UnknownMed[🔍 Unknown Medication]
+    
+    SafetyCheck -->|🟢 Safe| CheckRefills{💊 Refills Available?}
+    SafetyCheck -->|🔴 Controlled Substance| DoctorEsc[👨‍⚕️ Doctor Escalation]
+    SafetyCheck -->|⚠️ Safety Concerns| DoctorEsc
+    
+    CheckRefills -->|✅ Has Refills| Insurance{💳 Insurance Check}
+    CheckRefills -->|❌ No Refills| ExpiredRx[📅 Expired Prescription]
+    
+    Insurance -->|✅ Covered| FindPharmacy[🏥 Find Pharmacy]
+    Insurance -->|❌ Not Covered| PriorAuth[📋 Prior Authorization]
+    Insurance -->|💰 High Cost| GenericOpt[💊 Generic Option]
+    
+    FindPharmacy --> CheckStock{📦 In Stock?}
+    CheckStock -->|✅ Available| PriceComp[💰 Price Comparison]
+    CheckStock -->|❌ Out of Stock| Fallback[🔄 Pharmacy Fallback]
+    
+    Fallback --> TryNext[🏪 Try Next Pharmacy]
+    TryNext --> CheckStock2{📦 Alternative Stock?}
+    CheckStock2 -->|✅ Found| PriceComp
+    CheckStock2 -->|❌ All Out| PharmacistEsc[👩‍⚕️ Pharmacist Consult]
+    
+    PriceComp --> OrderReady[✅ Order Ready]
+    OrderReady --> Confirm{✋ User Confirmation}
+    Confirm -->|✅ Approved| SubmitOrder[📝 Submit Order]
+    Confirm -->|❌ Declined| ModifyOrder[🔄 Modify Selection]
+    
+    SubmitOrder --> Success[🎉 Order Completed]
+    
+    %% Escalation Paths
+    UnknownMed --> PharmacistEsc
+    DoctorEsc --> DoctorContact[📞 Contact Doctor]
+    ExpiredRx --> DoctorContact
+    PharmacistEsc --> PharmacistContact[📞 Contact Pharmacist]
+    PriorAuth --> InsuranceProcess[📋 PA Processing]
+    
+    %% Styling
+    style DoctorEsc fill:#ffebee
+    style PharmacistEsc fill:#fff3e0
+    style Success fill:#e8f5e8
+    style Fallback fill:#f3e5f5
+    
+    %% User Choice Points
+    style Confirm fill:#fff9c4
+    style GenericOpt fill:#fff9c4
+```
+
+### 🔧 State Machine Transitions
+
+The RxFlow state machine manages complex workflow transitions with intelligent decision-making:
+
+```mermaid
+stateDiagram-v2
+    [*] --> START
+    START --> IDENTIFY_MEDICATION : medication_request
+    START --> ERROR : invalid_input
+    
+    IDENTIFY_MEDICATION --> CLARIFY_MEDICATION : ambiguous_medication
+    IDENTIFY_MEDICATION --> CONFIRM_DOSAGE : medication_identified
+    IDENTIFY_MEDICATION --> ESCALATE_UNKNOWN : unknown_medication
+    
+    CLARIFY_MEDICATION --> CONFIRM_DOSAGE : medication_clarified
+    CLARIFY_MEDICATION --> ERROR : clarification_failed
+    
+    CONFIRM_DOSAGE --> CHECK_AUTHORIZATION : dosage_confirmed
+    CONFIRM_DOSAGE --> ESCALATE_SAFETY : safety_concern
+    
+    CHECK_AUTHORIZATION --> SELECT_PHARMACY : authorized
+    CHECK_AUTHORIZATION --> ESCALATE_PA : prior_auth_required
+    CHECK_AUTHORIZATION --> ESCALATE_REFILLS : no_refills
+    
+    SELECT_PHARMACY --> CONFIRM_ORDER : pharmacy_selected
+    SELECT_PHARMACY --> ESCALATE_INVENTORY : no_pharmacy_available
+    
+    CONFIRM_ORDER --> COMPLETE : order_confirmed
+    CONFIRM_ORDER --> SELECT_PHARMACY : change_pharmacy
+    CONFIRM_ORDER --> ERROR : order_failed
+    
+    ESCALATE_PA --> SELECT_PHARMACY : pa_approved
+    ESCALATE_PA --> ERROR : pa_denied
+    
+    ESCALATE_UNKNOWN --> [*] : pharmacist_contacted
+    ESCALATE_SAFETY --> [*] : doctor_contacted
+    ESCALATE_REFILLS --> [*] : doctor_contacted
+    ESCALATE_INVENTORY --> SELECT_PHARMACY : fallback_found
+    
+    ERROR --> START : restart_conversation
+    ERROR --> IDENTIFY_MEDICATION : retry_medication
+    
+    COMPLETE --> [*]
+    
+    state ESCALATE_SAFETY {
+        [*] --> doctor_required
+        doctor_required --> controlled_substance
+        controlled_substance --> safety_issues
+    }
+    
+    state ESCALATE_UNKNOWN {
+        [*] --> pharmacist_required
+        pharmacist_required --> unknown_medication
+        unknown_medication --> verification_needed
+    }
+```
+
+### 🚀 Advanced Workflow Patterns
+
+#### 1. **Happy Path Workflow Sequence**
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as Streamlit UI
+    participant CM as Conversation Manager
+    participant SM as State Machine
+    participant Tools as Healthcare Tools
+    participant API as Mock APIs
+    
+    User->>UI: "I need to refill my omeprazole"
+    UI->>CM: Process message with session context
+    CM->>SM: Check current state (START)
+    SM->>Tools: Execute Patient History Tool
+    Tools->>API: Lookup patient medication history
+    API-->>Tools: Return patient data + medications
+    Tools-->>SM: Medication found (omeprazole 20mg)
+    SM->>SM: Transition to CONFIRM_DOSAGE
+    SM->>Tools: Execute Safety Verification
+    Tools->>Tools: Check dosage, interactions, allergies
+    Tools-->>SM: Safety checks passed
+    SM->>SM: Transition to SELECT_PHARMACY
+    SM->>Tools: Execute Pharmacy Location Tool
+    Tools->>API: Find nearby pharmacies with inventory
+    API-->>Tools: Return pharmacy options
+    Tools-->>SM: Pharmacy selection ready
+    SM-->>CM: Workflow state updated
+    CM-->>UI: "Found your omeprazole 20mg. CVS Main St has it for $12.99, ready in 15 minutes."
+    UI-->>User: Display response with pharmacy options
+```
+
+#### 2. **Escalation Workflow Sequence**
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as Streamlit UI
+    participant CM as Conversation Manager
+    participant SM as State Machine
+    participant ET as Escalation Tools
+    participant ES as Escalation System
+    
+    User->>UI: "I need to refill my lorazepam"
+    UI->>CM: Process escalation-triggering message
+    CM->>SM: Check medication (lorazepam)
+    SM->>ET: Execute Escalation Detection
+    ET->>ET: Check if controlled substance
+    ET-->>SM: Controlled substance detected (Schedule IV)
+    SM->>SM: Transition to ESCALATE state
+    SM->>ES: Route to Doctor Escalation
+    ES->>ES: Generate escalation response
+    ES-->>SM: Doctor consultation required
+    SM-->>CM: Escalation workflow complete
+    CM-->>UI: "Lorazepam is a controlled substance requiring doctor consultation..."
+    UI-->>User: Display escalation guidance
 ```
 
 ### Enhanced Project Structure

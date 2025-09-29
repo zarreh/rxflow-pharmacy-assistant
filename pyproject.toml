@@ -38,6 +38,11 @@ bandit = "^1.8.6"
 langchain-openai = "^0.3.33"
 langchain-anthropic = "^0.3.20"
 langchain-google-genai = "^2.1.12"
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.20"
+mkdocstrings = "^0.30.1"
+mkdocstrings-python = "^1.18.2"
+pymdown-extensions = "^10.16.1"
 
 [build-system]
 requires = ["poetry-core"]
