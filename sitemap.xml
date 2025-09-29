@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://docs.zarreh.ai/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/COMPREHENSIVE_DOCUMENTATION/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/COMPREHENSIVE_DOCUMENTATION/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/about/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/about/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/api/conversation-manager/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/api/conversation-manager/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/api/patient-tools/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/api/patient-tools/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/api/pharmacy-tools/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/api/pharmacy-tools/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/deployment/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/deployment/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/developer-guide/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/developer-guide/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/getting-started/installation/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/getting-started/installation/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/getting-started/quickstart/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/getting-started/quickstart/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
     <url>
-         <loc>https://docs.zarreh.ai/user-guide/</loc>
+         <loc>https://rxflow-docs.zarreh.ai/user-guide/</loc>
          <lastmod>2025-09-29</lastmod>
     </url>
 </urlset>
