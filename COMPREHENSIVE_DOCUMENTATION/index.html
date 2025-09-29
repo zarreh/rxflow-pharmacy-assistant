@@ -1,0 +1,3322 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="AI-powered prescription refill assistance system with comprehensive pharmacy workflow management">
+      
+      
+        <meta name="author" content="RxFlow Development Team">
+      
+      
+        <link rel="canonical" href="https://docs.zarreh.ai/COMPREHENSIVE_DOCUMENTATION/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>RxFlow Pharmacy Assistant - Complete Documentation - RxFlow Pharmacy Assistant</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rxflow-pharmacy-assistant-complete-documentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RxFlow Pharmacy Assistant" class="md-header__button md-logo" aria-label="RxFlow Pharmacy Assistant" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RxFlow Pharmacy Assistant
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RxFlow Pharmacy Assistant - Complete Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zarreh/rxflow-pharmacy-assistant" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zarreh/rxflow-pharmacy-assistant
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../getting-started/installation/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../user-guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  User Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../developer-guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Developer Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/conversation-manager/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../deployment/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Deployment
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RxFlow Pharmacy Assistant" class="md-nav__button md-logo" aria-label="RxFlow Pharmacy Assistant" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RxFlow Pharmacy Assistant
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zarreh/rxflow-pharmacy-assistant" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    zarreh/rxflow-pharmacy-assistant
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../user-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/conversation-manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Conversation Manager
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/patient-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Patient Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/pharmacy-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pharmacy Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Deployment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    About
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Overview
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Started
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-5-step-interactive-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      The 5-Step Interactive Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The 5-Step Interactive Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-medication-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Medication Identification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-dosage-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Dosage Verification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-cost-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Cost Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-pharmacy-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Pharmacy Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-order-submission" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Order Submission
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sample-conversation-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample Conversation Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supported-medications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Medications
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Reference
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-tools-available" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Tools Available
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Tools Available">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-patient-history-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Patient History Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-medication-verification-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Medication Verification Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cost-optimization-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cost Optimization Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-pharmacy-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Pharmacy Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-order-management-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Order Management Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-safety-and-compliance-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Safety and Compliance Tools
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-response-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool Response Formats
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#integration-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#langchain-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      LangChain Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#developer-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developer Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Developer Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation &amp; Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-conversation-manager-rxflowworkflowconversation_managerpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Conversation Manager (rxflow/workflow/conversation_manager.py)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tool-system-rxflowtools" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Tool System (rxflow/tools/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-mock-data-services-rxflowservicesmock_datapy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Mock Data Services (rxflow/services/mock_data.py)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development Workflow
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development Workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adding-new-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adding New Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-conversation-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying Conversation Flow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Strategy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-quality-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Quality Standards
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Quality Standards">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation-standards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Standards
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Production Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Production Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Docker Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-deployment-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cloud Deployment Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring and Logging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring and Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Application Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logging Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-key-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Key Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-privacy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Privacy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caching Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Database Optimization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enhanced-workflow-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enhanced Workflow System
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enhanced Workflow System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#core-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Principles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Principles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tool-mandatory-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Tool-Mandatory Approach
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-interactive-step-by-step-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Interactive Step-by-Step Process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cost-optimization-focus" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cost Optimization Focus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-comprehensive-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Comprehensive Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#workflow-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow State Machine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-by-step-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step-by-Step Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-Step Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-medication-identification_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Medication Identification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-dosage-verification_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Dosage Verification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-cost-optimization_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Cost Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-pharmacy-selection_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Pharmacy Selection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-order-submission_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Order Submission
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enhanced-system-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enhanced System Prompts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enhanced System Prompts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tool-first-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool-First Enforcement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-conversation-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interactive Conversation Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-conversation-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Conversation Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#benefits-achieved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Benefits Achieved
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interactive-conversation-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interactive Conversation Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interactive Conversation Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#technical-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-components_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Components
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-enhanced-conversation-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Enhanced Conversation Manager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-interactive-system-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Interactive System Prompts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Interactive System Prompts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-interactive-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Interactive Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enhanced-prompts-for-each-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enhanced Prompts for Each Step
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-conversation-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Conversation Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Conversation Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-condition-based-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Condition-Based Request
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-cost-conscious-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Cost-Conscious Flow
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-state-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. State Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. State Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#session-state-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Session State Tracking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#history-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      History Management
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-challenges-solved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Challenges Solved
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#technical-fixes-and-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Fixes and Improvements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Fixes and Improvements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#major-issues-resolved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Major Issues Resolved
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Major Issues Resolved">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-order-submission-tool-format-mismatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Order Submission Tool Format Mismatch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-pharmacy-id-mapping-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Pharmacy ID Mapping Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-patient-history-lookup-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Patient History Lookup Improvements
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-interactive-vs-batch-response-issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Interactive vs Batch Response Issue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-optimizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance Optimizations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Performance Optimizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tool-response-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Tool Response Caching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-efficient-data-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Efficient Data Loading
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-streamlined-tool-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Streamlined Tool Registration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-quality-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Quality Improvements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Quality Improvements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-comprehensive-error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Comprehensive Error Handling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enhanced-logging-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Enhanced Logging System
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-input-validation-and-sanitization" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Input Validation and Sanitization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-framework-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Framework Enhancements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Framework Enhancements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-comprehensive-test-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Comprehensive Test Coverage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-integration-test-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Integration Test Suite
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Enhancements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Enhancements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-api-key-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. API Key Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-input-sanitization" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Input Sanitization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-retrospective" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Retrospective
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Retrospective">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-evolution-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Evolution Timeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Project Evolution Timeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-foundation-initial-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1: Foundation (Initial Setup)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-enhanced-workflow-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2: Enhanced Workflow Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-interactive-conversation-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3: Interactive Conversation Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-technical-refinement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4: Technical Refinement
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-lessons-learned" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Lessons Learned
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Lessons Learned">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ai-system-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. AI System Design Principles
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-langchain-integration-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. LangChain Integration Insights
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-data-architecture-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Data Architecture Decisions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-debt-and-future-improvements" class="md-nav__link">
+    <span class="md-ellipsis">
+      Technical Debt and Future Improvements
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Debt and Future Improvements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-current-technical-debt" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Current Technical Debt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-scalability-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Scalability Considerations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-user-experience-enhancements" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. User Experience Enhancements
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#success-metrics-achieved" class="md-nav__link">
+    <span class="md-ellipsis">
+      Success Metrics Achieved
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Success Metrics Achieved">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-functional-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Functional Requirements ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-technical-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Technical Requirements ✅
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-user-experience-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. User Experience Goals ✅
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommendations-for-future-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recommendations for Future Development
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Recommendations for Future Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-production-readiness" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Production Readiness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-advanced-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Advanced Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-business-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Business Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conclusion">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#final-architecture-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Final Architecture Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="rxflow-pharmacy-assistant-complete-documentation">RxFlow Pharmacy Assistant - Complete Documentation<a class="headerlink" href="#rxflow-pharmacy-assistant-complete-documentation" title="Permanent link">&para;</a></h1>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#project-overview">Project Overview</a></li>
+<li><a href="#user-guide">User Guide</a> </li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#developer-guide">Developer Guide</a></li>
+<li><a href="#deployment-guide">Deployment Guide</a></li>
+<li><a href="#enhanced-workflow-system">Enhanced Workflow System</a></li>
+<li><a href="#interactive-conversation-implementation">Interactive Conversation Implementation</a></li>
+<li><a href="#technical-fixes-and-improvements">Technical Fixes and Improvements</a></li>
+<li><a href="#project-retrospective">Project Retrospective</a></li>
+</ol>
+<hr />
+<h2 id="project-overview">Project Overview<a class="headerlink" href="#project-overview" title="Permanent link">&para;</a></h2>
+<p>RxFlow Pharmacy Assistant is an AI-powered conversational system designed to streamline prescription refill processes. Built using LangChain, Streamlit, and OpenAI's GPT models, it provides an intelligent, step-by-step interaction for medication management.</p>
+<h3 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Intelligent Medication Identification</strong>: Recognizes medications by condition or name</li>
+<li><strong>Interactive Step-by-Step Workflow</strong>: Guides users through a systematic 5-step process</li>
+<li><strong>Cost Optimization</strong>: Compares brand vs generic prices and finds cheapest pharmacies</li>
+<li><strong>Pharmacy Integration</strong>: Real-time inventory and pricing from multiple pharmacy chains</li>
+<li><strong>Order Management</strong>: Complete order submission and tracking system</li>
+<li><strong>Drug Safety</strong>: Interaction checking and dosage verification</li>
+</ul>
+<h3 id="system-architecture">System Architecture<a class="headerlink" href="#system-architecture" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Frontend</strong>: Streamlit web interface</li>
+<li><strong>Backend</strong>: LangChain agent system with 19 specialized tools</li>
+<li><strong>AI Model</strong>: OpenAI GPT-4o-mini for conversation management</li>
+<li><strong>Data Sources</strong>: Mock pharmacy, patient, and insurance data for demonstration</li>
+</ul>
+<hr />
+<h2 id="user-guide">User Guide<a class="headerlink" href="#user-guide" title="Permanent link">&para;</a></h2>
+<h3 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Access the Application</strong></li>
+<li>Open your browser to <code>http://localhost:8501</code></li>
+<li>
+<p>The interface will display a chat-like conversation</p>
+</li>
+<li>
+<p><strong>Requesting a Refill</strong></p>
+</li>
+<li>Simply describe your need: "I need my acid reflux medicine"</li>
+<li>The system will guide you through each step</li>
+</ol>
+<h3 id="the-5-step-interactive-workflow">The 5-Step Interactive Workflow<a class="headerlink" href="#the-5-step-interactive-workflow" title="Permanent link">&para;</a></h3>
+<h4 id="step-1-medication-identification">Step 1: Medication Identification<a class="headerlink" href="#step-1-medication-identification" title="Permanent link">&para;</a></h4>
+<ul>
+<li>System looks up your medication history based on condition or name</li>
+<li>Confirms the specific medication and dosage</li>
+</ul>
+<h4 id="step-2-dosage-verification">Step 2: Dosage Verification<a class="headerlink" href="#step-2-dosage-verification" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Validates the prescribed dosage is appropriate</li>
+<li>Checks for any dosage-related safety concerns</li>
+</ul>
+<h4 id="step-3-cost-optimization">Step 3: Cost Optimization<a class="headerlink" href="#step-3-cost-optimization" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Compares brand name vs generic pricing</li>
+<li>Recommends most cost-effective option</li>
+</ul>
+<h4 id="step-4-pharmacy-selection">Step 4: Pharmacy Selection<a class="headerlink" href="#step-4-pharmacy-selection" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Searches all nearby pharmacies for best prices</li>
+<li>Considers promotions, discounts, and availability</li>
+<li>Provides top 3 options with detailed comparison</li>
+</ul>
+<h4 id="step-5-order-submission">Step 5: Order Submission<a class="headerlink" href="#step-5-order-submission" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Confirms all order details</li>
+<li>Submits prescription refill request</li>
+<li>Provides order confirmation and pickup information</li>
+</ul>
+<h3 id="sample-conversation-flow">Sample Conversation Flow<a class="headerlink" href="#sample-conversation-flow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>User: &quot;I need my acid reflux medicine&quot;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>AI: &quot;I found your medication for acid reflux: omeprazole 20mg capsules. Is this the medication you want to refill?&quot;
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>User: &quot;Yes&quot;
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>AI: &quot;The dosage of omeprazole 20mg is valid. Would you like to proceed to check the cost options?&quot;
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>User: &quot;Yes&quot;  
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>AI: &quot;Generic (omeprazole): $2.36, Brand (Prilosec): $65.00. You can save $62.64 (96.4%). Would you prefer generic?&quot;
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>User: &quot;Generic please&quot;
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>AI: &quot;The cheapest option is Walmart Pharmacy #98765 at $9.60. Would you like to proceed with placing the order?&quot;
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>User: &quot;Yes&quot;
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>AI: &quot;Order RX132531 submitted successfully! Pickup time: 7:07 PM today at Walmart Pharmacy.&quot;
+</code></pre></div>
+<h3 id="supported-medications">Supported Medications<a class="headerlink" href="#supported-medications" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Acid reflux: omeprazole, famotidine</li>
+<li>Blood pressure: lisinopril, amlodipine</li>
+<li>Diabetes: metformin, insulin</li>
+<li>Pain management: meloxicam, methocarbamol</li>
+<li>Anxiety: lorazepam (controlled substance)</li>
+<li>And many more...</li>
+</ul>
+<hr />
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h2>
+<h3 id="core-tools-available">Core Tools Available<a class="headerlink" href="#core-tools-available" title="Permanent link">&para;</a></h3>
+<h4 id="1-patient-history-tools">1. Patient History Tools<a class="headerlink" href="#1-patient-history-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>patient_medication_history(condition_or_medication)</code>: Lookup patient's prescription history</li>
+<li><code>check_prescription_status(medication)</code>: Verify refill eligibility and remaining refills</li>
+</ul>
+<h4 id="2-medication-verification-tools">2. Medication Verification Tools<a class="headerlink" href="#2-medication-verification-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>verify_medication_dosage(medication:dosage)</code>: Validate dosage appropriateness</li>
+<li><code>check_drug_interactions(medication)</code>: Screen for dangerous drug interactions</li>
+<li><code>get_medication_alternatives(medication)</code>: Find therapeutic alternatives</li>
+</ul>
+<h4 id="3-cost-optimization-tools">3. Cost Optimization Tools<a class="headerlink" href="#3-cost-optimization-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>compare_brand_generic_prices(medication)</code>: Compare brand vs generic pricing</li>
+<li><code>get_goodrx_prices(medication:dosage:quantity)</code>: Get discount pricing information</li>
+<li><code>check_insurance_coverage(medication)</code>: Verify insurance formulary coverage</li>
+</ul>
+<h4 id="4-pharmacy-tools">4. Pharmacy Tools<a class="headerlink" href="#4-pharmacy-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>find_cheapest_pharmacy(medication)</code>: Search all pharmacies for best pricing</li>
+<li><code>check_pharmacy_inventory(pharmacy_id:medication)</code>: Verify medication availability</li>
+<li><code>get_pharmacy_wait_times()</code>: Get current wait times at nearby pharmacies</li>
+</ul>
+<h4 id="5-order-management-tools">5. Order Management Tools<a class="headerlink" href="#5-order-management-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>submit_refill_order(medication:dosage:quantity:pharmacy_id:patient_id)</code>: Submit prescription order</li>
+<li><code>track_prescription_order(order_id)</code>: Check order status and pickup readiness</li>
+<li><code>cancel_prescription_order(order_id)</code>: Cancel pending orders</li>
+</ul>
+<h4 id="6-safety-and-compliance-tools">6. Safety and Compliance Tools<a class="headerlink" href="#6-safety-and-compliance-tools" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>escalate_to_pharmacist(issue)</code>: Route complex issues to human pharmacist</li>
+<li><code>check_controlled_substance_eligibility(medication)</code>: Verify controlled substance protocols</li>
+</ul>
+<h3 id="tool-response-formats">Tool Response Formats<a class="headerlink" href="#tool-response-formats" title="Permanent link">&para;</a></h3>
+<p>All tools return standardized JSON responses:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">/</span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">...</span><span class="p">},</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;error&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error message if applicable&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">&quot;source&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data_source_identifier&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="integration-examples">Integration Examples<a class="headerlink" href="#integration-examples" title="Permanent link">&para;</a></h3>
+<h4 id="python-integration">Python Integration<a class="headerlink" href="#python-integration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rxflow.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">patient_history_tool</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Look up patient medication history</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">patient_history_tool</span><span class="o">.</span><span class="n">lookup_history</span><span class="p">(</span><span class="s2">&quot;acid reflux&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">medications</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;medications&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h4 id="langchain-integration">LangChain Integration<a class="headerlink" href="#langchain-integration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rxflow.tools.order_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">order_submission_tool</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Use as LangChain tool</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">agent</span> <span class="o">=</span> <span class="n">initialize_agent</span><span class="p">(</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">tools</span><span class="o">=</span><span class="p">[</span><span class="n">order_submission_tool</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">agent</span><span class="o">=</span><span class="n">AgentType</span><span class="o">.</span><span class="n">STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="developer-guide">Developer Guide<a class="headerlink" href="#developer-guide" title="Permanent link">&para;</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Python 3.8+</li>
+<li>Poetry for dependency management</li>
+<li>OpenAI API key</li>
+<li>Git for version control</li>
+</ul>
+<h3 id="installation-setup">Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Clone the repository</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/zarreh/rxflow-pharmacy-assistant.git
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">cd</span><span class="w"> </span>rxflow-pharmacy-assistant
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Install dependencies</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>poetry<span class="w"> </span>install
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Environment setup</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># Edit .env with your OpenAI API key</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Run the application</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>run
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># or</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>poetry<span class="w"> </span>run<span class="w"> </span>streamlit<span class="w"> </span>run<span class="w"> </span>app.py
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="project-structure">Project Structure<a class="headerlink" href="#project-structure" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>rxflow-pharmacy-assistant/
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── rxflow/                    # Main package
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>│   ├── config/               # Configuration management
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│   ├── tools/                # LangChain tools (19 total)
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│   ├── workflow/             # Conversation management
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│   ├── services/             # Data services and mock data
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>│   └── utils/                # Utilities and logging
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>├── data/                     # Mock data files (JSON)
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>├── docs/                     # Documentation
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>├── tests/                    # Test files
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>├── app.py                    # Streamlit main application
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>└── pyproject.toml           # Poetry configuration
+</code></pre></div>
+<h3 id="key-components">Key Components<a class="headerlink" href="#key-components" title="Permanent link">&para;</a></h3>
+<h4 id="1-conversation-manager-rxflowworkflowconversation_managerpy">1. Conversation Manager (<code>rxflow/workflow/conversation_manager.py</code>)<a class="headerlink" href="#1-conversation-manager-rxflowworkflowconversation_managerpy" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Orchestrates the interactive 5-step workflow</li>
+<li>Manages LangChain agent execution</li>
+<li>Handles session state and conversation history</li>
+</ul>
+<h4 id="2-tool-system-rxflowtools">2. Tool System (<code>rxflow/tools/</code>)<a class="headerlink" href="#2-tool-system-rxflowtools" title="Permanent link">&para;</a></h4>
+<ul>
+<li>19 specialized tools for different aspects of pharmacy operations</li>
+<li>Each tool implements specific business logic</li>
+<li>Structured input/output for reliable AI integration</li>
+</ul>
+<h4 id="3-mock-data-services-rxflowservicesmock_datapy">3. Mock Data Services (<code>rxflow/services/mock_data.py</code>)<a class="headerlink" href="#3-mock-data-services-rxflowservicesmock_datapy" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Comprehensive test data for development</li>
+<li>Patient records, pharmacy inventory, insurance data</li>
+<li>Realistic scenarios for testing workflows</li>
+</ul>
+<h3 id="development-workflow">Development Workflow<a class="headerlink" href="#development-workflow" title="Permanent link">&para;</a></h3>
+<h4 id="adding-new-tools">Adding New Tools<a class="headerlink" href="#adding-new-tools" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Create tool file in <code>rxflow/tools/</code></li>
+<li>Implement tool class with required methods</li>
+<li>Register tool in conversation manager</li>
+<li>Add comprehensive logging</li>
+<li>Create test cases</li>
+</ol>
+<h4 id="modifying-conversation-flow">Modifying Conversation Flow<a class="headerlink" href="#modifying-conversation-flow" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Update prompts in <code>conversation_manager.py</code></li>
+<li>Modify workflow state transitions</li>
+<li>Test interactive scenarios</li>
+<li>Update documentation</li>
+</ol>
+<h4 id="testing-strategy">Testing Strategy<a class="headerlink" href="#testing-strategy" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Unit tests for individual tools</li>
+<li>Integration tests for complete workflows</li>
+<li>Manual testing via Streamlit interface</li>
+<li>Mock data validation</li>
+</ul>
+<h3 id="code-quality-standards">Code Quality Standards<a class="headerlink" href="#code-quality-standards" title="Permanent link">&para;</a></h3>
+<h4 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">rxflow.utils.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Usage</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[AI USAGE] Tool called with parameter: </span><span class="si">{</span><span class="n">param</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ERROR] Operation failed: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">tool_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_param</span><span class="p">):</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="c1"># Tool logic</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tool failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+</code></pre></div>
+<h4 id="documentation-standards">Documentation Standards<a class="headerlink" href="#documentation-standards" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Comprehensive docstrings for all functions</li>
+<li>Type hints for parameters and returns</li>
+<li>Clear parameter descriptions</li>
+<li>Usage examples</li>
+</ul>
+<hr />
+<h2 id="deployment-guide">Deployment Guide<a class="headerlink" href="#deployment-guide" title="Permanent link">&para;</a></h2>
+<h3 id="production-deployment">Production Deployment<a class="headerlink" href="#production-deployment" title="Permanent link">&para;</a></h3>
+<h4 id="docker-deployment">Docker Deployment<a class="headerlink" href="#docker-deployment" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>.
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>poetry
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="k">RUN</span><span class="w"> </span>poetry<span class="w"> </span>config<span class="w"> </span>virtualenvs.create<span class="w"> </span>false
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="k">RUN</span><span class="w"> </span>poetry<span class="w"> </span>install<span class="w"> </span>--no-dev
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="k">EXPOSE</span><span class="w"> </span><span class="s">8501</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;streamlit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;app.py&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--server.address&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h4 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Required</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nv">OPENAI_API_KEY</span><span class="o">=</span>your_openai_api_key
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Optional</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nv">STREAMLIT_SERVER_PORT</span><span class="o">=</span><span class="m">8501</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nv">LOG_LEVEL</span><span class="o">=</span>INFO
+</code></pre></div>
+<h4 id="cloud-deployment-options">Cloud Deployment Options<a class="headerlink" href="#cloud-deployment-options" title="Permanent link">&para;</a></h4>
+<p><strong>AWS ECS/Fargate</strong>
+- Container-based deployment
+- Auto-scaling capabilities
+- Load balancer integration</p>
+<p><strong>Google Cloud Run</strong>
+- Serverless container platform
+- Automatic HTTPS
+- Pay-per-use pricing</p>
+<p><strong>Azure Container Instances</strong>
+- Simple container deployment
+- Integrated monitoring
+- Custom domain support</p>
+<h3 id="monitoring-and-logging">Monitoring and Logging<a class="headerlink" href="#monitoring-and-logging" title="Permanent link">&para;</a></h3>
+<h4 id="application-metrics">Application Metrics<a class="headerlink" href="#application-metrics" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Conversation completion rates</li>
+<li>Tool usage statistics</li>
+<li>Error rates and types</li>
+<li>Response times</li>
+</ul>
+<h4 id="logging-configuration">Logging Configuration<a class="headerlink" href="#logging-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Production logging setup</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">LOGGING_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>            <span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;logging.FileHandler&#39;</span><span class="p">,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>            <span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="s1">&#39;rxflow.log&#39;</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>            <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;INFO&#39;</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>        <span class="p">}</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>    <span class="p">},</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="s1">&#39;root&#39;</span><span class="p">:</span> <span class="p">{</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>        <span class="s1">&#39;level&#39;</span><span class="p">:</span> <span class="s1">&#39;INFO&#39;</span><span class="p">,</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>        <span class="s1">&#39;handlers&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;file&#39;</span><span class="p">]</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>    <span class="p">}</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="security-considerations">Security Considerations<a class="headerlink" href="#security-considerations" title="Permanent link">&para;</a></h3>
+<h4 id="api-key-management">API Key Management<a class="headerlink" href="#api-key-management" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Use environment variables for secrets</li>
+<li>Implement key rotation policies</li>
+<li>Monitor API usage and costs</li>
+</ul>
+<h4 id="data-privacy">Data Privacy<a class="headerlink" href="#data-privacy" title="Permanent link">&para;</a></h4>
+<ul>
+<li>No real patient data in logs</li>
+<li>Sanitize sensitive information</li>
+<li>Implement session isolation</li>
+</ul>
+<h4 id="input-validation">Input Validation<a class="headerlink" href="#input-validation" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Validate all user inputs</li>
+<li>Sanitize medication names</li>
+<li>Rate limiting for API calls</li>
+</ul>
+<h3 id="performance-optimization">Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permanent link">&para;</a></h3>
+<h4 id="caching-strategy">Caching Strategy<a class="headerlink" href="#caching-strategy" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Tool result caching</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">expensive_tool_operation</span><span class="p">(</span><span class="n">param</span><span class="p">):</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="c1"># Cached operation</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="k">pass</span>
+</code></pre></div>
+<h4 id="database-optimization">Database Optimization<a class="headerlink" href="#database-optimization" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Index frequently queried fields</li>
+<li>Implement connection pooling</li>
+<li>Use read replicas for scaling</li>
+</ul>
+<hr />
+<h2 id="enhanced-workflow-system">Enhanced Workflow System<a class="headerlink" href="#enhanced-workflow-system" title="Permanent link">&para;</a></h2>
+<h3 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h3>
+<p>The Enhanced Workflow System represents a major evolution in the RxFlow assistant, implementing a systematic, tool-first approach that ensures reliable, step-by-step medication refill processing.</p>
+<h3 id="core-principles">Core Principles<a class="headerlink" href="#core-principles" title="Permanent link">&para;</a></h3>
+<h4 id="1-tool-mandatory-approach">1. Tool-Mandatory Approach<a class="headerlink" href="#1-tool-mandatory-approach" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Every workflow step MUST use designated tools</li>
+<li>AI cannot rely on internal knowledge without tool validation</li>
+<li>Systematic verification at each stage</li>
+</ul>
+<h4 id="2-interactive-step-by-step-process">2. Interactive Step-by-Step Process<a class="headerlink" href="#2-interactive-step-by-step-process" title="Permanent link">&para;</a></h4>
+<ul>
+<li>One step at a time with user confirmation</li>
+<li>No "all-at-once" responses</li>
+<li>Clear progress indication</li>
+</ul>
+<h4 id="3-cost-optimization-focus">3. Cost Optimization Focus<a class="headerlink" href="#3-cost-optimization-focus" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Brand vs generic comparison mandatory</li>
+<li>Pharmacy price comparison with promotions</li>
+<li>Smart recommendation based on savings</li>
+</ul>
+<h4 id="4-comprehensive-validation">4. Comprehensive Validation<a class="headerlink" href="#4-comprehensive-validation" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Dosage verification for all medications</li>
+<li>Drug interaction checking</li>
+<li>Inventory availability confirmation</li>
+</ul>
+<h3 id="workflow-state-machine">Workflow State Machine<a class="headerlink" href="#workflow-state-machine" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowState</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">GREETING</span> <span class="o">=</span> <span class="s2">&quot;greeting&quot;</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">MEDICATION_IDENTIFICATION</span> <span class="o">=</span> <span class="s2">&quot;medication_identification&quot;</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">DOSAGE_VERIFICATION</span> <span class="o">=</span> <span class="s2">&quot;dosage_verification&quot;</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">COST_OPTIMIZATION</span> <span class="o">=</span> <span class="s2">&quot;cost_optimization&quot;</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">PHARMACY_SELECTION</span> <span class="o">=</span> <span class="s2">&quot;pharmacy_selection&quot;</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">ORDER_SUBMISSION</span> <span class="o">=</span> <span class="s2">&quot;order_submission&quot;</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="n">COMPLETED</span> <span class="o">=</span> <span class="s2">&quot;completed&quot;</span>
+</code></pre></div>
+<h3 id="step-by-step-implementation">Step-by-Step Implementation<a class="headerlink" href="#step-by-step-implementation" title="Permanent link">&para;</a></h3>
+<h4 id="step-1-medication-identification_1">Step 1: Medication Identification<a class="headerlink" href="#step-1-medication-identification_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># System Prompt Enhancement</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="s2">&quot;STEP 1 WORKFLOW: Use patient_medication_history tool to identify the specific medication...&quot;</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Tool Usage</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="n">patient_medication_history</span><span class="p">(</span><span class="s2">&quot;acid reflux&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1"># Returns: omeprazole 20mg with full details</span>
+</code></pre></div>
+<h4 id="step-2-dosage-verification_1">Step 2: Dosage Verification<a class="headerlink" href="#step-2-dosage-verification_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># System Prompt</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="s2">&quot;STEP 2 WORKFLOW: Use verify_medication_dosage tool to confirm dosage appropriateness...&quot;</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Tool Usage  </span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">verify_medication_dosage</span><span class="p">(</span><span class="s2">&quot;omeprazole:20mg&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># Returns: validation with available dosages</span>
+</code></pre></div>
+<h4 id="step-3-cost-optimization_1">Step 3: Cost Optimization<a class="headerlink" href="#step-3-cost-optimization_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># System Prompt</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="s2">&quot;STEP 3 WORKFLOW: Use compare_brand_generic_prices tool to show cost savings...&quot;</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Tool Usage</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">compare_brand_generic_prices</span><span class="p">(</span><span class="s2">&quot;omeprazole&quot;</span><span class="p">)</span> 
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1"># Returns: Brand: $65.00, Generic: $2.36, Savings: 96.4%</span>
+</code></pre></div>
+<h4 id="step-4-pharmacy-selection_1">Step 4: Pharmacy Selection<a class="headerlink" href="#step-4-pharmacy-selection_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># System Prompt</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="s2">&quot;STEP 4 WORKFLOW: Use find_cheapest_pharmacy tool to identify best pricing options...&quot;</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Tool Usage</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">find_cheapest_pharmacy</span><span class="p">(</span><span class="s2">&quot;omeprazole&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># Returns: Top 3 pharmacies with prices, promotions, wait times</span>
+</code></pre></div>
+<h4 id="step-5-order-submission_1">Step 5: Order Submission<a class="headerlink" href="#step-5-order-submission_1" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># System Prompt</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="s2">&quot;STEP 5 WORKFLOW: Use submit_refill_order tool to place the order...&quot;</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># Tool Usage (StructuredTool)</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">submit_refill_order</span><span class="p">(</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">medication</span><span class="o">=</span><span class="s2">&quot;omeprazole&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">dosage</span><span class="o">=</span><span class="s2">&quot;20mg&quot;</span><span class="p">,</span> 
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>    <span class="n">quantity</span><span class="o">=</span><span class="s2">&quot;30&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="n">pharmacy_id</span><span class="o">=</span><span class="s2">&quot;WALMART_98765&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>    <span class="n">patient_id</span><span class="o">=</span><span class="s2">&quot;12345&quot;</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="p">)</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="c1"># Returns: Order confirmation with pickup details</span>
+</code></pre></div>
+<h3 id="enhanced-system-prompts">Enhanced System Prompts<a class="headerlink" href="#enhanced-system-prompts" title="Permanent link">&para;</a></h3>
+<h4 id="tool-first-enforcement">Tool-First Enforcement<a class="headerlink" href="#tool-first-enforcement" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>You are a pharmacy refill assistant that MUST use tools for all operations.
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>CRITICAL: You cannot provide medication information without using the appropriate tools first.
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Never rely on your training data for medication, dosage, or pharmacy information.
+</code></pre></div>
+<h4 id="interactive-conversation-rules">Interactive Conversation Rules<a class="headerlink" href="#interactive-conversation-rules" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>CONVERSATION RULES:
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>1. Process ONE step at a time
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>2. Wait for user confirmation before proceeding
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>3. Use the designated tool for each workflow step
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>4. Provide clear step indicators (Step 1 of 5, etc.)
+</code></pre></div>
+<h4 id="example-conversation-flow">Example Conversation Flow<a class="headerlink" href="#example-conversation-flow" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>AI: [Step 1/5] Let me look up your acid reflux medication...
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>   *Uses patient_medication_history tool*
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>   &quot;I found omeprazole 20mg. Is this correct?&quot;
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>User: &quot;Yes&quot;
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>AI: [Step 2/5] Verifying the dosage is appropriate...
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>   *Uses verify_medication_dosage tool*
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>   &quot;The dosage is valid. Ready for cost comparison?&quot;
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>User: &quot;Yes&quot;
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a>AI: [Step 3/5] Comparing brand vs generic prices...
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>   *Uses compare_brand_generic_prices tool*
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>   &quot;Generic saves $62.64 (96.4%). Choose generic?&quot;
+</code></pre></div>
+<h3 id="benefits-achieved">Benefits Achieved<a class="headerlink" href="#benefits-achieved" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Reliability</strong>: Every decision backed by tool validation</li>
+<li><strong>Transparency</strong>: Clear step-by-step process visible to users  </li>
+<li><strong>Cost Savings</strong>: Systematic comparison ensures best pricing</li>
+<li><strong>User Control</strong>: Confirmation required at each step</li>
+<li><strong>Scalability</strong>: Consistent workflow regardless of complexity</li>
+</ol>
+<hr />
+<h2 id="interactive-conversation-implementation">Interactive Conversation Implementation<a class="headerlink" href="#interactive-conversation-implementation" title="Permanent link">&para;</a></h2>
+<h3 id="technical-architecture">Technical Architecture<a class="headerlink" href="#technical-architecture" title="Permanent link">&para;</a></h3>
+<p>The interactive conversation system was redesigned to provide a natural, step-by-step user experience while maintaining the systematic workflow requirements.</p>
+<h3 id="key-components_1">Key Components<a class="headerlink" href="#key-components_1" title="Permanent link">&para;</a></h3>
+<h4 id="1-enhanced-conversation-manager">1. Enhanced Conversation Manager<a class="headerlink" href="#1-enhanced-conversation-manager" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">EnhancedConversationManager</span><span class="p">:</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">agent_executor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_agent_executor</span><span class="p">()</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session_states</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Track conversation state</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">process_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>        <span class="c1"># Process one step at a time</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a>        <span class="c1"># Maintain conversation history</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>        <span class="c1"># Ensure tool usage at each step</span>
+</code></pre></div>
+<h4 id="2-interactive-system-prompts">2. Interactive System Prompts<a class="headerlink" href="#2-interactive-system-prompts" title="Permanent link">&para;</a></h4>
+<h5 id="core-interactive-rules">Core Interactive Rules<a class="headerlink" href="#core-interactive-rules" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>INTERACTIVE CONVERSATION GUIDELINES:
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>1. PROCESS ONE STEP AT A TIME
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>   - Complete current step fully before moving to next
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>   - Wait for user confirmation to proceed
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>   - Provide clear step indicators
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>2. TOOL USAGE REQUIREMENTS
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>   - MUST use designated tools for each workflow step
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>   - Cannot provide medication info without tool validation
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>   - Use tools proactively, not reactively
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>3. CONVERSATION FLOW
+<a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>   - Step 1: Identify medication using patient_medication_history
+<a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>   - Step 2: Verify dosage using verify_medication_dosage  
+<a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a>   - Step 3: Compare costs using compare_brand_generic_prices
+<a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a>   - Step 4: Find pharmacy using find_cheapest_pharmacy
+<a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>   - Step 5: Submit order using submit_refill_order
+</code></pre></div>
+<h5 id="enhanced-prompts-for-each-step">Enhanced Prompts for Each Step<a class="headerlink" href="#enhanced-prompts-for-each-step" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">STEP_PROMPTS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="s2">&quot;medication_identification&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="s2">    STEP 1 WORKFLOW: Use patient_medication_history tool to identify </span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="s2">    the specific medication the patient needs. Ask for confirmation </span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="s2">    before proceeding to dosage verification.</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>    <span class="s2">&quot;dosage_verification&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="s2">    STEP 2 WORKFLOW: Use verify_medication_dosage tool to confirm </span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="s2">    the dosage is appropriate. Ask if ready for cost comparison.</span>
+<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>
+<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>    <span class="s2">&quot;cost_optimization&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a><span class="s2">    STEP 3 WORKFLOW: Use compare_brand_generic_prices tool to show </span>
+<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="s2">    cost savings. Get user preference before pharmacy search.</span>
+<a id="__codelineno-26-16" name="__codelineno-26-16" href="#__codelineno-26-16"></a><span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-17" name="__codelineno-26-17" href="#__codelineno-26-17"></a>
+<a id="__codelineno-26-18" name="__codelineno-26-18" href="#__codelineno-26-18"></a>    <span class="s2">&quot;pharmacy_selection&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;  </span>
+<a id="__codelineno-26-19" name="__codelineno-26-19" href="#__codelineno-26-19"></a><span class="s2">    STEP 4 WORKFLOW: Use find_cheapest_pharmacy tool to identify </span>
+<a id="__codelineno-26-20" name="__codelineno-26-20" href="#__codelineno-26-20"></a><span class="s2">    best options. Present top choices and get selection.</span>
+<a id="__codelineno-26-21" name="__codelineno-26-21" href="#__codelineno-26-21"></a><span class="s2">    &quot;&quot;&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-22" name="__codelineno-26-22" href="#__codelineno-26-22"></a>
+<a id="__codelineno-26-23" name="__codelineno-26-23" href="#__codelineno-26-23"></a>    <span class="s2">&quot;order_submission&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-26-24" name="__codelineno-26-24" href="#__codelineno-26-24"></a><span class="s2">    STEP 5 WORKFLOW: Use submit_refill_order tool to place order.</span>
+<a id="__codelineno-26-25" name="__codelineno-26-25" href="#__codelineno-26-25"></a><span class="s2">    Confirm all details before submission.</span>
+<a id="__codelineno-26-26" name="__codelineno-26-26" href="#__codelineno-26-26"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-26-27" name="__codelineno-26-27" href="#__codelineno-26-27"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="3-conversation-examples">3. Conversation Examples<a class="headerlink" href="#3-conversation-examples" title="Permanent link">&para;</a></h4>
+<h5 id="example-1-condition-based-request">Example 1: Condition-Based Request<a class="headerlink" href="#example-1-condition-based-request" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>User: &quot;I need my acid reflux medicine&quot;
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>AI: [Step 1/5] Let me look up your acid reflux medication history...
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>    *Calls patient_medication_history(&quot;acid reflux&quot;)*
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>    I found your medication for acid reflux: omeprazole 20mg capsules. 
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>    You take 1 capsule daily before breakfast. Is this the medication 
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a>    you want to refill?
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a>User: &quot;Yes&quot;
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a>
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a>AI: [Step 2/5] Verifying the dosage is appropriate...
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a>    *Calls verify_medication_dosage(&quot;omeprazole:20mg&quot;)*
+<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a>
+<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a>    The dosage of omeprazole 20mg is valid and available. Would you 
+<a id="__codelineno-27-16" name="__codelineno-27-16" href="#__codelineno-27-16"></a>    like to proceed with checking the cost options for this medication?
+<a id="__codelineno-27-17" name="__codelineno-27-17" href="#__codelineno-27-17"></a>
+<a id="__codelineno-27-18" name="__codelineno-27-18" href="#__codelineno-27-18"></a>User: &quot;Yes&quot;  
+<a id="__codelineno-27-19" name="__codelineno-27-19" href="#__codelineno-27-19"></a>
+<a id="__codelineno-27-20" name="__codelineno-27-20" href="#__codelineno-27-20"></a>AI: [Step 3/5] Comparing brand vs generic prices...
+<a id="__codelineno-27-21" name="__codelineno-27-21" href="#__codelineno-27-21"></a>    *Calls compare_brand_generic_prices(&quot;omeprazole&quot;)*
+<a id="__codelineno-27-22" name="__codelineno-27-22" href="#__codelineno-27-22"></a>
+<a id="__codelineno-27-23" name="__codelineno-27-23" href="#__codelineno-27-23"></a>    Here are the cost options for omeprazole:
+<a id="__codelineno-27-24" name="__codelineno-27-24" href="#__codelineno-27-24"></a>    • Generic (omeprazole): $2.36
+<a id="__codelineno-27-25" name="__codelineno-27-25" href="#__codelineno-27-25"></a>    • Brand (Prilosec): $65.00
+<a id="__codelineno-27-26" name="__codelineno-27-26" href="#__codelineno-27-26"></a>
+<a id="__codelineno-27-27" name="__codelineno-27-27" href="#__codelineno-27-27"></a>    You can save $62.64 (96.4%) by choosing the generic version. 
+<a id="__codelineno-27-28" name="__codelineno-27-28" href="#__codelineno-27-28"></a>    Would you prefer the generic or the brand name medication?
+</code></pre></div>
+<h5 id="example-2-cost-conscious-flow">Example 2: Cost-Conscious Flow<a class="headerlink" href="#example-2-cost-conscious-flow" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>User: &quot;Generic please&quot;
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>AI: [Step 4/5] Finding the cheapest pharmacy options for generic omeprazole...
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    *Calls find_cheapest_pharmacy(&quot;omeprazole&quot;)*
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>    The cheapest option for your generic omeprazole is:
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>    **Walmart Pharmacy #98765**
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>    • Address: 4515 S Lamar Blvd  
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>    • Phone: (555) 123-0002
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>    • Price: $9.60
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>    • Wait Time: Approximately 30 minutes
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a>    Would you like to proceed with placing the refill order at this pharmacy?
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a>User: &quot;Yes&quot;
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a>
+<a id="__codelineno-28-18" name="__codelineno-28-18" href="#__codelineno-28-18"></a>AI: [Step 5/5] Confirming order details before submission...
+<a id="__codelineno-28-19" name="__codelineno-28-19" href="#__codelineno-28-19"></a>
+<a id="__codelineno-28-20" name="__codelineno-28-20" href="#__codelineno-28-20"></a>    • Medication: omeprazole
+<a id="__codelineno-28-21" name="__codelineno-28-21" href="#__codelineno-28-21"></a>    • Dosage: 20mg  
+<a id="__codelineno-28-22" name="__codelineno-28-22" href="#__codelineno-28-22"></a>    • Quantity: 30 capsules
+<a id="__codelineno-28-23" name="__codelineno-28-23" href="#__codelineno-28-23"></a>    • Pharmacy: Walmart Pharmacy #98765
+<a id="__codelineno-28-24" name="__codelineno-28-24" href="#__codelineno-28-24"></a>
+<a id="__codelineno-28-25" name="__codelineno-28-25" href="#__codelineno-28-25"></a>    Is everything correct? Would you like to proceed with the order?
+<a id="__codelineno-28-26" name="__codelineno-28-26" href="#__codelineno-28-26"></a>
+<a id="__codelineno-28-27" name="__codelineno-28-27" href="#__codelineno-28-27"></a>User: &quot;Yes, proceed&quot;
+<a id="__codelineno-28-28" name="__codelineno-28-28" href="#__codelineno-28-28"></a>
+<a id="__codelineno-28-29" name="__codelineno-28-29" href="#__codelineno-28-29"></a>AI: *Calls submit_refill_order(...)*
+<a id="__codelineno-28-30" name="__codelineno-28-30" href="#__codelineno-28-30"></a>
+<a id="__codelineno-28-31" name="__codelineno-28-31" href="#__codelineno-28-31"></a>    🎉 Your refill order has been successfully placed!
+<a id="__codelineno-28-32" name="__codelineno-28-32" href="#__codelineno-28-32"></a>
+<a id="__codelineno-28-33" name="__codelineno-28-33" href="#__codelineno-28-33"></a>    **Order Details:**
+<a id="__codelineno-28-34" name="__codelineno-28-34" href="#__codelineno-28-34"></a>    • Order ID: RX132531
+<a id="__codelineno-28-35" name="__codelineno-28-35" href="#__codelineno-28-35"></a>    • Estimated Pickup: 7:07 PM on September 28, 2025
+<a id="__codelineno-28-36" name="__codelineno-28-36" href="#__codelineno-28-36"></a>    • Estimated Cost: $9.60 (payment due at pickup)
+<a id="__codelineno-28-37" name="__codelineno-28-37" href="#__codelineno-28-37"></a>
+<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a>    Next steps:
+<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a>    • You will receive SMS/email confirmation
+<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a>    • Bring valid ID for pickup  
+<a id="__codelineno-28-41" name="__codelineno-28-41" href="#__codelineno-28-41"></a>    • Call pharmacy if you have questions
+</code></pre></div>
+<h4 id="4-state-management">4. State Management<a class="headerlink" href="#4-state-management" title="Permanent link">&para;</a></h4>
+<h5 id="session-state-tracking">Session State Tracking<a class="headerlink" href="#session-state-tracking" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ConversationState</span><span class="p">:</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="n">WorkflowState</span><span class="o">.</span><span class="n">GREETING</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">medication_identified</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">dosage_verified</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cost_preference</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">selected_pharmacy</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">order_submitted</span> <span class="o">=</span> <span class="kc">False</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">advance_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>        <span class="c1"># Move to next workflow step</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>        <span class="c1"># Validate prerequisites completed</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>        <span class="c1"># Update conversation context</span>
+</code></pre></div>
+<h5 id="history-management">History Management<a class="headerlink" href="#history-management" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">maintain_conversation_history</span><span class="p">(</span><span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Maintain conversation context across interactions&quot;&quot;&quot;</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="k">if</span> <span class="n">session_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_states</span><span class="p">:</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session_states</span><span class="p">[</span><span class="n">session_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConversationState</span><span class="p">()</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>    <span class="c1"># Update state based on current interaction</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>    <span class="c1"># Preserve context for tool calls</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>    <span class="c1"># Enable continuation of workflow</span>
+</code></pre></div>
+<h3 id="implementation-benefits">Implementation Benefits<a class="headerlink" href="#implementation-benefits" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Natural Flow</strong>: Feels like talking to a knowledgeable pharmacist</li>
+<li><strong>User Control</strong>: User confirms each step before proceeding  </li>
+<li><strong>Transparency</strong>: Clear step indicators show progress</li>
+<li><strong>Reliability</strong>: Tool validation ensures accuracy</li>
+<li><strong>Flexibility</strong>: Can handle interruptions and clarifications</li>
+</ol>
+<h3 id="technical-challenges-solved">Technical Challenges Solved<a class="headerlink" href="#technical-challenges-solved" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Tool Integration</strong>: Seamless LangChain agent tool usage</li>
+<li><strong>State Persistence</strong>: Maintaining conversation context</li>
+<li><strong>Error Handling</strong>: Graceful recovery from tool failures</li>
+<li><strong>User Experience</strong>: Balancing thoroughness with simplicity</li>
+</ol>
+<hr />
+<h2 id="technical-fixes-and-improvements">Technical Fixes and Improvements<a class="headerlink" href="#technical-fixes-and-improvements" title="Permanent link">&para;</a></h2>
+<h3 id="major-issues-resolved">Major Issues Resolved<a class="headerlink" href="#major-issues-resolved" title="Permanent link">&para;</a></h3>
+<h4 id="1-order-submission-tool-format-mismatch">1. Order Submission Tool Format Mismatch<a class="headerlink" href="#1-order-submission-tool-format-mismatch" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: AI was calling <code>submit_refill_order</code> with structured arguments, but the tool expected a single string input, causing "Too many arguments to single-input tool" error.</p>
+<p><strong>Solution</strong>: Implemented StructuredTool with proper Pydantic schema
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">StructuredTool</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">OrderSubmissionInput</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>    <span class="n">medication</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Name of the medication&quot;</span><span class="p">)</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>    <span class="n">dosage</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Dosage of the medication&quot;</span><span class="p">)</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>    <span class="n">quantity</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Quantity to order&quot;</span><span class="p">)</span>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>    <span class="n">pharmacy_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Pharmacy ID or name&quot;</span><span class="p">)</span>
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>    <span class="n">patient_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;12345&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Patient ID&quot;</span><span class="p">)</span>
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>
+<a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a><span class="n">order_submission_tool</span> <span class="o">=</span> <span class="n">StructuredTool</span><span class="o">.</span><span class="n">from_function</span><span class="p">(</span>
+<a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;submit_refill_order&quot;</span><span class="p">,</span>
+<a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Submit a prescription refill order...&quot;</span><span class="p">,</span>
+<a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>    <span class="n">func</span><span class="o">=</span><span class="n">structured_order_submission</span><span class="p">,</span>
+<a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a>    <span class="n">args_schema</span><span class="o">=</span><span class="n">OrderSubmissionInput</span>
+<a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Result</strong>: ✅ AI can now call tool with proper structured arguments without errors</p>
+<h4 id="2-pharmacy-id-mapping-issues">2. Pharmacy ID Mapping Issues<a class="headerlink" href="#2-pharmacy-id-mapping-issues" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: AI was passing pharmacy display names like "Walmart Pharmacy <a class="magiclink magiclink-github magiclink-issue" href="https://github.com/zarreh/rxflow-pharmacy-assistant/issues/98765" title="GitHub Issue: zarreh/rxflow-pharmacy-assistant #98765">#98765</a>" but the system expected internal IDs like "WALMART_98765".</p>
+<p><strong>Solution</strong>: Enhanced pharmacy ID mapping with dynamic JSON-based lookup
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">_map_pharmacy_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pharmacy_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Map pharmacy display names to internal IDs using JSON data&quot;&quot;&quot;</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>    <span class="c1"># Load pharmacy data dynamically</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    <span class="c1"># Create reverse mapping from names to IDs  </span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>    <span class="c1"># Support partial matching and variations</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>    <span class="c1"># Fall back to static mapping if needed</span>
+</code></pre></div></p>
+<p><strong>Result</strong>: ✅ Seamless mapping from display names to internal IDs</p>
+<h4 id="3-patient-history-lookup-improvements">3. Patient History Lookup Improvements<a class="headerlink" href="#3-patient-history-lookup-improvements" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: AI was asking users for patient IDs instead of proactively using tools to find medication history.</p>
+<p><strong>Solution</strong>: Enhanced condition-to-medication mapping and proactive tool usage
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">CONDITION_MEDICATION_MAP</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>    <span class="s2">&quot;acid reflux&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;omeprazole&quot;</span><span class="p">,</span> <span class="s2">&quot;famotidine&quot;</span><span class="p">],</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>    <span class="s2">&quot;heartburn&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;omeprazole&quot;</span><span class="p">,</span> <span class="s2">&quot;famotidine&quot;</span><span class="p">],</span> 
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>    <span class="s2">&quot;gerd&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;omeprazole&quot;</span><span class="p">,</span> <span class="s2">&quot;pantoprazole&quot;</span><span class="p">],</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>    <span class="s2">&quot;high blood pressure&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lisinopril&quot;</span><span class="p">,</span> <span class="s2">&quot;amlodipine&quot;</span><span class="p">],</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>    <span class="s2">&quot;hypertension&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lisinopril&quot;</span><span class="p">,</span> <span class="s2">&quot;amlodipine&quot;</span><span class="p">],</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>    <span class="s2">&quot;diabetes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;metformin&quot;</span><span class="p">,</span> <span class="s2">&quot;insulin&quot;</span><span class="p">],</span>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>    <span class="c1"># ... comprehensive mapping</span>
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Result</strong>: ✅ AI proactively finds patient medications without asking for IDs</p>
+<h4 id="4-interactive-vs-batch-response-issue">4. Interactive vs Batch Response Issue<a class="headerlink" href="#4-interactive-vs-batch-response-issue" title="Permanent link">&para;</a></h4>
+<p><strong>Problem</strong>: AI was providing all workflow steps at once instead of interactive step-by-step process.</p>
+<p><strong>Solution</strong>: Enhanced system prompts with strict interaction rules
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="n">INTERACTIVE_RULES</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="s2">CRITICAL INTERACTION REQUIREMENTS:</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="s2">1. Process ONLY ONE step at a time</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="s2">2. Wait for user confirmation before proceeding to next step</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="s2">3. Use clear step indicators (Step 1/5, Step 2/5, etc.)  </span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="s2">4. Ask specific questions to guide user through workflow</span>
+<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="s2">5. NEVER provide all steps in a single response</span>
+<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div></p>
+<p><strong>Result</strong>: ✅ True interactive conversation with user control at each step</p>
+<h3 id="performance-optimizations">Performance Optimizations<a class="headerlink" href="#performance-optimizations" title="Permanent link">&para;</a></h3>
+<h4 id="1-tool-response-caching">1. Tool Response Caching<a class="headerlink" href="#1-tool-response-caching" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">cached_pharmacy_lookup</span><span class="p">(</span><span class="n">medication</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>    <span class="c1"># Cache pharmacy search results</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>    <span class="c1"># Reduce API calls for common medications</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>    <span class="c1"># Improve response times</span>
+</code></pre></div>
+<h4 id="2-efficient-data-loading">2. Efficient Data Loading<a class="headerlink" href="#2-efficient-data-loading" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># Lazy loading of JSON data</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">DataLoader</span><span class="p">:</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>    <span class="n">_pharmacy_data</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_pharmacy_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pharmacy_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">_pharmacy_data</span> <span class="o">=</span> <span class="n">load_pharmacy_json</span><span class="p">()</span>
+<a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_pharmacy_data</span>
+</code></pre></div>
+<h4 id="3-streamlined-tool-registration">3. Streamlined Tool Registration<a class="headerlink" href="#3-streamlined-tool-registration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">register_tools_efficiently</span><span class="p">():</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Register all tools with optimized initialization&quot;&quot;&quot;</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>    <span class="n">tools</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>    <span class="c1"># Batch register tools to avoid repeated initialization</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>    <span class="c1"># Use factory pattern for consistent tool creation</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>    <span class="c1"># Implement error handling for tool registration failures</span>
+</code></pre></div>
+<h3 id="code-quality-improvements">Code Quality Improvements<a class="headerlink" href="#code-quality-improvements" title="Permanent link">&para;</a></h3>
+<h4 id="1-comprehensive-error-handling">1. Comprehensive Error Handling<a class="headerlink" href="#1-comprehensive-error-handling" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">safe_tool_execution</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator for safe tool execution with comprehensive error handling&quot;&quot;&quot;</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>        <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>            <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>        <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Validation failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+<a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a>        <span class="k">except</span> <span class="ne">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-38-10" name="__codelineno-38-10" href="#__codelineno-38-10"></a>            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Connection failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+<a id="__codelineno-38-11" name="__codelineno-38-11" href="#__codelineno-38-11"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-38-12" name="__codelineno-38-12" href="#__codelineno-38-12"></a>            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
+<a id="__codelineno-38-13" name="__codelineno-38-13" href="#__codelineno-38-13"></a>    <span class="k">return</span> <span class="n">wrapper</span>
+</code></pre></div>
+<h4 id="2-enhanced-logging-system">2. Enhanced Logging System<a class="headerlink" href="#2-enhanced-logging-system" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">StructuredLogger</span><span class="p">:</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">log_tool_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[TOOL] </span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2"> called with </span><span class="si">{</span><span class="n">parameters</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">log_workflow_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[WORKFLOW] Session </span><span class="si">{</span><span class="n">session_id</span><span class="si">}</span><span class="s2"> entering </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="3-input-validation-and-sanitization">3. Input Validation and Sanitization<a class="headerlink" href="#3-input-validation-and-sanitization" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">validate_medication_input</span><span class="p">(</span><span class="n">medication</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate and sanitize medication names&quot;&quot;&quot;</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>    <span class="c1"># Remove special characters</span>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>    <span class="c1"># Normalize to lowercase</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a>    <span class="c1"># Check against known medication list</span>
+<a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a>    <span class="c1"># Return sanitized version or raise validation error</span>
+</code></pre></div>
+<h3 id="testing-framework-enhancements">Testing Framework Enhancements<a class="headerlink" href="#testing-framework-enhancements" title="Permanent link">&para;</a></h3>
+<h4 id="1-comprehensive-test-coverage">1. Comprehensive Test Coverage<a class="headerlink" href="#1-comprehensive-test-coverage" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">TestOrderSubmission</span><span class="p">:</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">test_dictionary_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Test order submission with dictionary input&quot;&quot;&quot;</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">test_json_string_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Test order submission with JSON string input&quot;&quot;&quot;</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">test_colon_separated_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-41-9" name="__codelineno-41-9" href="#__codelineno-41-9"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Test order submission with colon-separated input&quot;&quot;&quot;</span>
+<a id="__codelineno-41-10" name="__codelineno-41-10" href="#__codelineno-41-10"></a>
+<a id="__codelineno-41-11" name="__codelineno-41-11" href="#__codelineno-41-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">test_pharmacy_id_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-41-12" name="__codelineno-41-12" href="#__codelineno-41-12"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Test pharmacy display name to ID mapping&quot;&quot;&quot;</span>
+</code></pre></div>
+<h4 id="2-integration-test-suite">2. Integration Test Suite<a class="headerlink" href="#2-integration-test-suite" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_complete_workflow</span><span class="p">():</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Test end-to-end workflow from medication request to order completion&quot;&quot;&quot;</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>    <span class="c1"># Simulate user requesting acid reflux medicine</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>    <span class="c1"># Verify each workflow step executes correctly</span>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>    <span class="c1"># Confirm order submission and JSON file creation</span>
+</code></pre></div>
+<h3 id="security-enhancements">Security Enhancements<a class="headerlink" href="#security-enhancements" title="Permanent link">&para;</a></h3>
+<h4 id="1-api-key-management">1. API Key Management<a class="headerlink" href="#1-api-key-management" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SecureAPIKeyHandler</span><span class="p">:</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">SecretStr</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">))</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_api_key</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">()</span>
+</code></pre></div>
+<h4 id="2-input-sanitization">2. Input Sanitization<a class="headerlink" href="#2-input-sanitization" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">sanitize_user_input</span><span class="p">(</span><span class="n">user_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Sanitize user input to prevent injection attacks&quot;&quot;&quot;</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>    <span class="c1"># Remove potentially dangerous characters</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>    <span class="c1"># Limit input length</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>    <span class="c1"># Validate against expected patterns</span>
+</code></pre></div>
+<hr />
+<h2 id="project-retrospective">Project Retrospective<a class="headerlink" href="#project-retrospective" title="Permanent link">&para;</a></h2>
+<h3 id="project-evolution-timeline">Project Evolution Timeline<a class="headerlink" href="#project-evolution-timeline" title="Permanent link">&para;</a></h3>
+<h4 id="phase-1-foundation-initial-setup">Phase 1: Foundation (Initial Setup)<a class="headerlink" href="#phase-1-foundation-initial-setup" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Goals</strong>: Basic Streamlit app with LangChain integration</li>
+<li><strong>Challenges</strong>: Tool registration and basic conversation flow</li>
+<li><strong>Achievements</strong>: Working prototype with simple medication lookup</li>
+</ul>
+<h4 id="phase-2-enhanced-workflow-implementation">Phase 2: Enhanced Workflow Implementation<a class="headerlink" href="#phase-2-enhanced-workflow-implementation" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Goals</strong>: Systematic 5-step workflow with tool-mandatory approach</li>
+<li><strong>Challenges</strong>: Balancing AI flexibility with systematic requirements</li>
+<li><strong>Achievements</strong>: Reliable tool-first approach with cost optimization</li>
+</ul>
+<h4 id="phase-3-interactive-conversation-design">Phase 3: Interactive Conversation Design<a class="headerlink" href="#phase-3-interactive-conversation-design" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Goals</strong>: Step-by-step user interaction instead of batch responses</li>
+<li><strong>Challenges</strong>: Maintaining conversation state and user control</li>
+<li><strong>Achievements</strong>: Natural conversational flow with clear step progression</li>
+</ul>
+<h4 id="phase-4-technical-refinement">Phase 4: Technical Refinement<a class="headerlink" href="#phase-4-technical-refinement" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Goals</strong>: Resolve tool compatibility and order submission issues</li>
+<li><strong>Challenges</strong>: LangChain tool format mismatches and pharmacy ID mapping</li>
+<li><strong>Achievements</strong>: Fully functional end-to-end workflow with order completion</li>
+</ul>
+<h3 id="key-lessons-learned">Key Lessons Learned<a class="headerlink" href="#key-lessons-learned" title="Permanent link">&para;</a></h3>
+<h4 id="1-ai-system-design-principles">1. AI System Design Principles<a class="headerlink" href="#1-ai-system-design-principles" title="Permanent link">&para;</a></h4>
+<p><strong>Tool-First Architecture is Critical</strong>
+- AI models are powerful but unreliable for factual information
+- Every decision must be backed by tool validation
+- System prompts must enforce tool usage, not just suggest it</p>
+<p><strong>Interactive Design Requires Careful Prompt Engineering</strong>
+- AI naturally wants to provide comprehensive responses
+- Strict rules needed to enforce step-by-step interaction
+- User confirmation gates prevent runaway automation</p>
+<p><strong>State Management is Complex but Essential</strong>
+- Conversation context must persist across interactions
+- Workflow state helps guide AI behavior
+- Session isolation prevents cross-conversation contamination</p>
+<h4 id="2-langchain-integration-insights">2. LangChain Integration Insights<a class="headerlink" href="#2-langchain-integration-insights" title="Permanent link">&para;</a></h4>
+<p><strong>StructuredTool vs Tool Choice Matters</strong>
+- StructuredTool provides better type safety and validation
+- Pydantic schemas prevent argument mismatch errors
+- Tool descriptions significantly impact AI usage patterns</p>
+<p><strong>Agent Configuration is Critical</strong>
+- Max iterations must balance thoroughness with performance
+- Agent type affects tool calling behavior
+- System prompts are more influential than tool descriptions</p>
+<h4 id="3-data-architecture-decisions">3. Data Architecture Decisions<a class="headerlink" href="#3-data-architecture-decisions" title="Permanent link">&para;</a></h4>
+<p><strong>Mock Data Quality Impacts Development</strong>
+- Realistic test data enables better development decisions
+- Comprehensive edge cases in mock data prevent production issues
+- JSON structure consistency across all data sources is essential</p>
+<p><strong>Dynamic Data Loading vs Static Imports</strong>
+- Runtime data loading enables easier testing and modification
+- Caching strategies important for performance
+- Error handling for data loading failures is critical</p>
+<h3 id="technical-debt-and-future-improvements">Technical Debt and Future Improvements<a class="headerlink" href="#technical-debt-and-future-improvements" title="Permanent link">&para;</a></h3>
+<h4 id="1-current-technical-debt">1. Current Technical Debt<a class="headerlink" href="#1-current-technical-debt" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Mock Data Dependency</strong>: System relies on static mock data instead of real APIs</li>
+<li><strong>Limited Error Recovery</strong>: Basic error handling without sophisticated retry logic  </li>
+<li><strong>Monolithic Conversation Manager</strong>: Single large file handles all conversation logic</li>
+<li><strong>Testing Coverage</strong>: Limited automated test coverage for edge cases</li>
+</ul>
+<h4 id="2-scalability-considerations">2. Scalability Considerations<a class="headerlink" href="#2-scalability-considerations" title="Permanent link">&para;</a></h4>
+<p><strong>Database Integration</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="c1"># Future: Replace mock data with real database</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">DatabasePharmacyService</span><span class="p">:</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">DatabaseConnection</span><span class="p">(</span><span class="n">connection_string</span><span class="p">)</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">find_pharmacies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">medication</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Pharmacy</span><span class="p">]:</span>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>        <span class="c1"># Real-time pharmacy inventory lookup</span>
+<a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>        <span class="c1"># Dynamic pricing integration</span>
+<a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a>        <span class="c1"># Live availability checking</span>
+</code></pre></div></p>
+<p><strong>Microservices Architecture</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="c1"># Future: Split into focused services</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="n">services</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a>    <span class="s2">&quot;patient_service&quot;</span><span class="p">:</span> <span class="n">PatientHistoryService</span><span class="p">(),</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a>    <span class="s2">&quot;pharmacy_service&quot;</span><span class="p">:</span> <span class="n">PharmacyInventoryService</span><span class="p">(),</span> 
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a>    <span class="s2">&quot;pricing_service&quot;</span><span class="p">:</span> <span class="n">CostOptimizationService</span><span class="p">(),</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a>    <span class="s2">&quot;order_service&quot;</span><span class="p">:</span> <span class="n">OrderManagementService</span><span class="p">()</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Real-time Integration</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="c1"># Future: Live pharmacy API integration</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">LivePharmacyIntegration</span><span class="p">:</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cvs_api</span> <span class="o">=</span> <span class="n">CVSPharmacyAPI</span><span class="p">()</span>
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">walgreens_api</span> <span class="o">=</span> <span class="n">WalgreensAPI</span><span class="p">()</span>
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">walmart_api</span> <span class="o">=</span> <span class="n">WalmartPharmacyAPI</span><span class="p">()</span>
+</code></pre></div></p>
+<h4 id="3-user-experience-enhancements">3. User Experience Enhancements<a class="headerlink" href="#3-user-experience-enhancements" title="Permanent link">&para;</a></h4>
+<p><strong>Multi-modal Interface</strong>
+- Voice input/output capability
+- Mobile-responsive design
+- Accessibility compliance (screen readers, etc.)</p>
+<p><strong>Personalization Features</strong>
+- Preferred pharmacy memory
+- Cost preference learning
+- Medication schedule integration</p>
+<p><strong>Advanced Features</strong>
+- Prescription image upload and OCR
+- Insurance card scanning
+- Medication adherence tracking</p>
+<h3 id="success-metrics-achieved">Success Metrics Achieved<a class="headerlink" href="#success-metrics-achieved" title="Permanent link">&para;</a></h3>
+<h4 id="1-functional-requirements">1. Functional Requirements ✅<a class="headerlink" href="#1-functional-requirements" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Complete Workflow</strong>: 5-step process from identification to order completion</li>
+<li><strong>Cost Optimization</strong>: Brand vs generic comparison with pharmacy price search</li>
+<li><strong>Interactive Design</strong>: Step-by-step user confirmation at each stage</li>
+<li><strong>Order Management</strong>: Successful order submission with confirmation details</li>
+</ul>
+<h4 id="2-technical-requirements">2. Technical Requirements ✅<a class="headerlink" href="#2-technical-requirements" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Tool Integration</strong>: 19 specialized tools working seamlessly with AI</li>
+<li><strong>Error Handling</strong>: Graceful failure recovery with informative messages</li>
+<li><strong>Data Persistence</strong>: Orders saved to JSON file for demonstration</li>
+<li><strong>Scalable Architecture</strong>: Modular design supports future enhancements</li>
+</ul>
+<h4 id="3-user-experience-goals">3. User Experience Goals ✅<a class="headerlink" href="#3-user-experience-goals" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Natural Conversation</strong>: Feels like talking to a knowledgeable pharmacist</li>
+<li><strong>Transparency</strong>: Clear step indicators and progress tracking</li>
+<li><strong>Control</strong>: User confirmation required at each decision point</li>
+<li><strong>Reliability</strong>: Consistent behavior across different medication types</li>
+</ul>
+<h3 id="recommendations-for-future-development">Recommendations for Future Development<a class="headerlink" href="#recommendations-for-future-development" title="Permanent link">&para;</a></h3>
+<h4 id="1-production-readiness">1. Production Readiness<a class="headerlink" href="#1-production-readiness" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Implement comprehensive logging and monitoring</li>
+<li>Add rate limiting and API usage controls</li>
+<li>Integrate with real pharmacy APIs and databases</li>
+<li>Implement proper authentication and authorization</li>
+</ul>
+<h4 id="2-advanced-features">2. Advanced Features<a class="headerlink" href="#2-advanced-features" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Multi-language support for diverse user base</li>
+<li>Integration with electronic health records (EHR)</li>
+<li>Prescription synchronization across multiple medications</li>
+<li>Insurance pre-authorization workflow automation</li>
+</ul>
+<h4 id="3-business-integration">3. Business Integration<a class="headerlink" href="#3-business-integration" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Pharmacy partnership API development</li>
+<li>Revenue sharing model implementation</li>
+<li>Compliance with healthcare regulations (HIPAA, etc.)</li>
+<li>Integration with existing pharmacy management systems</li>
+</ul>
+<hr />
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">&para;</a></h2>
+<p>The RxFlow Pharmacy Assistant represents a successful implementation of an AI-powered conversational system for medication management. Through iterative development and careful attention to user experience, we've created a reliable, interactive system that demonstrates the potential for AI to streamline healthcare processes.</p>
+<p>The systematic approach to workflow design, emphasis on tool validation, and commitment to interactive user experience have resulted in a system that balances AI capabilities with human control and oversight. This project serves as a strong foundation for future development in AI-powered healthcare assistance.</p>
+<h3 id="final-architecture-summary">Final Architecture Summary<a class="headerlink" href="#final-architecture-summary" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>19 Specialized Tools</strong>: Complete coverage of pharmacy workflow requirements</li>
+<li><strong>Interactive 5-Step Process</strong>: Systematic approach ensuring reliability and user control  </li>
+<li><strong>Comprehensive Cost Optimization</strong>: Brand/generic comparison with pharmacy price analysis</li>
+<li><strong>Robust Error Handling</strong>: Graceful failure recovery with informative user feedback</li>
+<li><strong>Scalable Design</strong>: Modular architecture supporting future enhancements and integrations</li>
+</ul>
+<p>The project successfully demonstrates how AI can augment human decision-making in healthcare while maintaining the necessary safeguards and validation mechanisms for safe, reliable operation.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 RxFlow Development Team
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/zarreh/rxflow-pharmacy-assistant" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/rxflow/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
