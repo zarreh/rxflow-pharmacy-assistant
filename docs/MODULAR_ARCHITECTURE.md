@@ -7,6 +7,10 @@ This document describes the modular architecture of the RxFlow Pharmacy Assistan
 ```
 rxflow_pharmacy_assistant/
 ├── app.py                          # Main Streamlit application entry point
+├── pyproject.toml                  # Poetry dependencies & project config
+├── docker-compose.yml              # Container orchestration
+├── Dockerfile                      # Production Docker configuration
+├── Makefile                        # Development commands
 ├── static/
 │   └── css/
 │       └── styles.css             # External CSS stylesheet
@@ -23,12 +27,55 @@ rxflow_pharmacy_assistant/
 │       ├── actions.py             # Action buttons and activity components
 │       ├── debug.py               # Debug information and monitoring
 │       └── data_utils.py          # Data loading and export utilities
-└── rxflow/                        # Core application logic (unchanged)
-    ├── config/
-    ├── services/
-    ├── tools/
-    ├── utils/
-    └── workflow/
+├── rxflow/                        # Core application logic
+│   ├── __init__.py
+│   ├── llm.py                     # LLM integration layer
+│   ├── config/                    # Configuration management
+│   │   ├── __init__.py
+│   │   └── settings.py
+│   ├── services/                  # Mock API services
+│   │   └── mock_data.py
+│   ├── tools/                     # 16+ specialized healthcare tools
+│   │   ├── __init__.py
+│   │   ├── cost_tools.py
+│   │   ├── escalation_tools.py
+│   │   ├── order_tools.py
+│   │   ├── patient_history_tool.py
+│   │   ├── pharmacy_tools.py
+│   │   └── rxnorm_tool.py
+│   ├── utils/                     # Logging & helper utilities
+│   │   ├── __init__.py
+│   │   ├── documentation_report_generator.py
+│   │   ├── helpers.py
+│   │   └── logger.py
+│   └── workflow/                  # AI conversation management
+│       ├── __init__.py
+│       ├── conversation_manager.py
+│       ├── state_machine.py
+│       ├── state.py
+│       └── workflow_types.py
+├── data/                          # Mock healthcare data
+│   ├── drug_policies.txt
+│   ├── mock_drugs.json
+│   ├── mock_insurance.json
+│   ├── mock_patients.json
+│   ├── mock_pharmacies.json
+│   └── submitted_orders.json
+├── docs/                          # Complete documentation suite
+│   ├── about.md
+│   ├── index.md
+│   ├── COMPREHENSIVE_DOCUMENTATION.md
+│   ├── MODULAR_ARCHITECTURE.md
+│   ├── api/                       # API documentation
+│   ├── deployment/                # Docker & production deployment guides
+│   ├── developer-guide/           # Technical implementation details
+│   ├── getting-started/           # Installation and setup
+│   └── user-guide/               # End-user documentation
+├── tests/                         # Comprehensive test suite
+│   ├── test_escalation_system.py
+│   └── test_integration.py
+├── logs/                          # Application logs
+└── site/                          # Generated documentation site
 ```
 
 ## 🏗️ Architecture Benefits

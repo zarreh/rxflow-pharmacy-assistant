@@ -27,7 +27,7 @@ RxFlow Pharmacy Assistant is an AI-powered conversational system designed to str
 
 ### System Architecture
 - **Frontend**: Streamlit web interface
-- **Backend**: LangChain agent system with 19 specialized tools
+- **Backend**: LangChain agent system with 16+ specialized tools
 - **AI Model**: OpenAI GPT-4o-mini for conversation management
 - **Data Sources**: Mock pharmacy, patient, and insurance data for demonstration
 
@@ -228,7 +228,7 @@ rxflow-pharmacy-assistant/
 - Handles session state and conversation history
 
 #### 2. Tool System (`rxflow/tools/`)
-- 19 specialized tools for different aspects of pharmacy operations
+- 16+ specialized tools for different aspects of pharmacy operations
 - Each tool implements specific business logic
 - Structured input/output for reliable AI integration
 
@@ -1093,7 +1093,7 @@ class LivePharmacyIntegration:
 - **Order Management**: Successful order submission with confirmation details
 
 #### 2. Technical Requirements ✅
-- **Tool Integration**: 19 specialized tools working seamlessly with AI
+- **Tool Integration**: 16+ specialized tools working seamlessly with AI
 - **Error Handling**: Graceful failure recovery with informative messages
 - **Data Persistence**: Orders saved to JSON file for demonstration
 - **Scalable Architecture**: Modular design supports future enhancements
@@ -1134,7 +1134,7 @@ The systematic approach to workflow design, emphasis on tool validation, and com
 
 ### Final Architecture Summary
 
-- **19 Specialized Tools**: Complete coverage of pharmacy workflow requirements
+- **16+ Specialized Tools**: Complete coverage of pharmacy workflow requirements
 - **Interactive 5-Step Process**: Systematic approach ensuring reliability and user control  
 - **Comprehensive Cost Optimization**: Brand/generic comparison with pharmacy price analysis
 - **Robust Error Handling**: Graceful failure recovery with informative user feedback

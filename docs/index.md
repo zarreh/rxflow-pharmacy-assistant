@@ -53,7 +53,7 @@ RxFlow is an intelligent pharmacy assistant that guides patients through safe an
 graph TB
     A[Patient Interface] --> B[Conversation Manager]
     B --> C[LangChain Agent]
-    C --> D[19 Specialized Tools]
+    C --> D[16+ Specialized Tools]
     
     D --> E[Patient Tools]
     D --> F[Pharmacy Tools]
@@ -163,7 +163,7 @@ Navigate to the application and try:
 ## 📊 **System Statistics**
 
 === "Core Metrics"
-    - **19 Specialized Tools** for comprehensive pharmacy operations
+    - **16+ Specialized Tools** for comprehensive pharmacy operations
     - **100% Class Documentation** coverage with professional docstrings
     - **86.8% Function Coverage** with detailed parameter documentation
     - **Multi-Network Support** for major pharmacy chains
