@@ -57,7 +57,7 @@ class LLMConfig:
         temperature: float = 0.7,
         max_tokens: Optional[int] = None,
         streaming: bool = False,
-        **kwargs,
+        **kwargs: Any,
     ):
         self.provider = provider
         self.model = model
@@ -175,7 +175,7 @@ class LLMManager:
                 LLMProvider.ANTHROPIC: AnthropicFactory(),
                 LLMProvider.GEMINI: GeminiFactory(),
             }
-            self.default_provider = None  # Will be set by settings
+            self.default_provider: Optional[LLMProvider] = None  # Will be set by settings
             self.initialized = True
 
     def get_llm(
@@ -183,7 +183,7 @@ class LLMManager:
         provider: Optional[Union[str, LLMProvider]] = None,
         model: Optional[str] = None,
         temperature: float = 0.7,
-        **kwargs,
+        **kwargs: Any,
     ) -> BaseLanguageModel:
         """
         Get an LLM instance with caching
@@ -302,7 +302,7 @@ llm_manager = LLMManager()
 
 
 # Convenience functions for easy access
-def get_llm(**kwargs) -> BaseLanguageModel:
+def get_llm(**kwargs: Any) -> BaseLanguageModel:
     """Get a standard LLM instance"""
     return llm_manager.get_llm(**kwargs)
 

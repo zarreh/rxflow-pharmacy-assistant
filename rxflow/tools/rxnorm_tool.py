@@ -66,7 +66,7 @@ Note:
 """
 
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 import requests
 from langchain.tools import Tool
@@ -80,59 +80,59 @@ logger = get_logger(__name__)
 class RxNormTool:
     """
     Comprehensive RxNorm API integration for medication verification and safety analysis.
-    
+
     This class provides authoritative medication information through direct integration
     with the National Library of Medicine's RxNorm database, the gold standard for
     medication identification and standardization in healthcare systems.
-    
+
     The tool implements a robust architecture with primary API access and intelligent
     fallback to mock data, ensuring continuous operation even during API outages.
     This design supports both development/testing scenarios and production resilience.
-    
+
     Attributes:
         BASE_URL (str): NIH RxNorm REST API endpoint
         TIMEOUT (int): API request timeout in seconds (5s for responsive UX)
         mock_db: Fallback medication database for offline operation
-    
+
     Core Capabilities:
         - Medication Search: Find medications by name with fuzzy matching
-        - Standardization: Convert brand names to generic equivalents  
+        - Standardization: Convert brand names to generic equivalents
         - Dosage Verification: Validate strength and dosing against clinical guidelines
         - Interaction Analysis: Comprehensive drug-drug interaction checking
         - NDC Lookup: National Drug Code verification and cross-reference
         - Classification: Therapeutic categorization and drug class identification
-    
+
     API Integration Features:
         - Intelligent failover from real API to mock data
         - Request timeout handling for responsive user experience
         - Error parsing and meaningful error message generation
         - Rate limiting compliance with NIH usage guidelines
         - Response caching for frequently requested medications
-    
+
     Safety Validations:
         - Medication name verification against authoritative database
         - Dosage range checking against FDA-approved strengths
         - Drug interaction severity assessment (Major, Moderate, Minor)
         - Contraindication detection with clinical significance
         - Allergy cross-reference with related medications
-    
+
     Example Usage:
         ```python
         # Initialize with automatic API configuration
         rxnorm = RxNormTool()
-        
+
         # Search for medication with comprehensive results
         search_result = rxnorm.search_medication("omeprazole")
         if search_result["success"]:
             medications = search_result["medications"]
             for med in medications:
                 print(f"RxCUI: {med['rxcui']}, Name: {med['name']}")
-        
+
         # Verify dosage safety
         dosage_result = rxnorm.verify_dosage("omeprazole", "20mg")
         if dosage_result["is_valid"]:
             print("Dosage is within approved range")
-        
+
         # Check drug interactions
         interaction_result = rxnorm.check_interactions([
             "omeprazole", "warfarin"
@@ -140,7 +140,7 @@ class RxNormTool:
         for interaction in interaction_result["interactions"]:
             print(f"⚠️  {interaction['severity']}: {interaction['description']}")
         ```
-    
+
     Error Handling:
         The tool implements comprehensive error handling that maintains conversation
         flow even when external APIs are unavailable, providing graceful degradation
@@ -156,15 +156,15 @@ class RxNormTool:
     def search_medication(self, medication_name: str) -> Dict[str, Any]:
         """
         Search for medication in RxNorm database with API fallback.
-        
+
         Performs authoritative medication lookup using NIH RxNorm API with
         intelligent fallback to mock data for development and offline scenarios.
-        
+
         Args:
             medication_name (str): Medication name to search for
                 Supports brand names, generic names, and partial matches
                 Case-insensitive with whitespace normalization
-                
+
         Returns:
             Dict[str, Any]: Comprehensive medication information containing:
                 - success (bool): Whether search completed successfully
@@ -236,8 +236,9 @@ class RxNormTool:
 
             # Check in mock database first for common medications
             if medication_name in self.mock_db:
-                med_info = self.mock_db[medication_name]
-                is_valid = dosage in med_info["common_dosages"]
+                med_info = cast(Dict[str, Any], self.mock_db[medication_name])
+                common_dosages = cast(List[str], med_info["common_dosages"])
+                is_valid = dosage in common_dosages
 
                 return {
                     "success": True,
@@ -420,7 +421,7 @@ class RxNormTool:
             interactions,
             key=lambda x: severity_levels.get(x.get("severity", "minor"), 1),
         )
-        return highest.get("severity", "none")
+        return str(highest.get("severity", "none"))
 
     def _assess_clinical_significance(self, interactions: List[Dict]) -> str:
         """Assess overall clinical significance of interactions"""

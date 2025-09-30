@@ -1,7 +1,7 @@
 """Cost comparison and insurance tools for price optimization and coverage checks."""
 
 import random
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 from langchain.tools import Tool
 
@@ -175,7 +175,7 @@ class MockGoodRxTool:
                     (brand_price - generic_lowest) / brand_price * 100, 1
                 ),
                 "recommendation": "generic"
-                if generic_lowest < brand_price * 0.8
+                if generic_lowest < float(cast(Any, brand_price)) * 0.8
                 else "brand",
                 "source": "mock",
             }
@@ -210,7 +210,7 @@ class MockInsuranceFormularyTool:
             else:
                 medication = query
                 # Use default patient's insurance
-                insurance_plan = MOCK_PATIENTS["12345"]["insurance"]
+                insurance_plan = str(MOCK_PATIENTS["12345"]["insurance"])
 
             medication = medication.strip().lower()
             insurance_plan = insurance_plan.strip()
@@ -220,7 +220,7 @@ class MockInsuranceFormularyTool:
             )
 
             # Check formulary using enhanced data structure
-            plan_data = self.formulary_data.get(insurance_plan, {})
+            plan_data = cast(Dict[str, Any], self.formulary_data.get(insurance_plan, {}))
             formulary = plan_data.get("formulary", {})
             coverage = formulary.get(medication)
 
@@ -275,7 +275,7 @@ class MockInsuranceFormularyTool:
                 medication, insurance_plan = query.split(":", 1)
             else:
                 medication = query
-                insurance_plan = MOCK_PATIENTS["12345"]["insurance"]
+                insurance_plan = str(MOCK_PATIENTS["12345"]["insurance"])
 
             medication = medication.strip().lower()
 

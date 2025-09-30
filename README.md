@@ -58,7 +58,7 @@ An enterprise-grade pharmacy refill assistant showcasing advanced AI conversatio
 ## 🏗️ Technical Architecture
 
 ### Core Technology Stack
-- **Frontend**: Streamlit with professional healthcare UI
+- **Frontend**: Streamlit with streamlined healthcare UI focused on conversation
 - **AI Engine**: LangChain agents with custom tool orchestration
 - **LLM Integration**: Multi-provider support (Ollama, OpenAI, Anthropic)
 - **State Management**: Custom state machine with conversation persistence
@@ -561,6 +561,44 @@ docker run -d -p 8080:8080 \
            atorvastatin is only $25 with your insurance - that's $255 savings. 
            Would you like to switch to generic?"
 ```
+
+## 🎨 Enhanced User Interface
+
+### **Streamlined Design Philosophy**
+RxFlow v2.0 features a clean, focused interface optimized for healthcare conversations:
+
+- **🗨️ Full-Width Chat**: Main conversation area takes full width for better readability
+- **📋 Organized Sidebar**: Patient info, medication history, and recent activity in left sidebar
+- **⚡ Sticky Input**: Text input stays at bottom for easy access during long conversations  
+- **🎯 Distraction-Free**: Removed progress bars and status indicators to focus on conversation
+- **📱 Responsive Design**: Healthcare-optimized colors and spacing for professional appearance
+
+### **Interface Layout**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ 💊 RxFlow Pharmacy Assistant                                   │
+├─────────────┬───────────────────────────────────────────────────┤
+│  📋 SIDEBAR │              🗨️ CHAT AREA                     │
+│             │                                                 │
+│ 👤 Patient  │  💬 Natural conversation interface             │
+│   John      │     with AI pharmacy assistant                 │
+│   Smith     │                                                 │
+│             │  🤖 "I found your omeprazole prescription..."    │
+│ 💊 Recent   │  👤 "Yes, please check nearby pharmacies"      │
+│   Activity  │  🤖 "CVS has it in stock for $12.99..."        │
+│             │                                                 │
+│ 🔗 Quick    │                                                 │
+│   Links     │                                                 │
+├─────────────┼───────────────────────────────────────────────────┤
+│             │ 💬 Type your message here... [Always Visible]   │
+└─────────────┴───────────────────────────────────────────────────┘
+```
+
+### **Real-Time Patient Data**
+- **Patient Context**: Always visible in sidebar with insurance, medication count, and last refill
+- **Recent Activity**: Real prescription history from actual order data  
+- **Quick Links**: Fast access to medical history and insurance information
+- **Persistent Session**: Patient information stays consistent throughout the conversation
 
 ## 🔧 Configuration Options
 

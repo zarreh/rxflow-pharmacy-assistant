@@ -1,7 +1,7 @@
 [
   {
     "order_id": "RX670311",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "omeprazole",
     "dosage": "20mg",
     "quantity": 30,
@@ -16,7 +16,7 @@
   },
   {
     "order_id": "RX332724",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "lisinopril",
     "dosage": "10mg",
     "quantity": 30,
@@ -31,7 +31,7 @@
   },
   {
     "order_id": "RX386613",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "metformin",
     "dosage": "500mg",
     "quantity": 60,
@@ -46,7 +46,7 @@
   },
   {
     "order_id": "RX025696",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "omeprazole",
     "dosage": "20mg",
     "quantity": 30,
@@ -61,7 +61,7 @@
   },
   {
     "order_id": "RX618423",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "omeprazole",
     "dosage": "20mg",
     "quantity": 30,
@@ -76,7 +76,7 @@
   },
   {
     "order_id": "RX132531",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "omeprazole",
     "dosage": "20mg",
     "quantity": 30,
@@ -91,7 +91,7 @@
   },
   {
     "order_id": "RX357492",
-    "patient_id": "12345",
+    "patient_id": "patient_001",
     "medication": "omeprazole",
     "dosage": "20mg",
     "quantity": 30,
@@ -102,6 +102,21 @@
     "status": "received",
     "order_time": "2025-09-28T18:56:02.246985",
     "estimated_pickup": "2025-09-28T19:35:02.246973",
+    "confirmation_sent": true
+  },
+  {
+    "order_id": "RX974437",
+    "patient_id": "patient_001",
+    "medication": "omeprazole",
+    "dosage": "20mg",
+    "quantity": 30,
+    "pharmacy_id": "WALMART_98765",
+    "pharmacy_name": "Walmart Pharmacy #98765",
+    "pharmacy_address": "4515 S Lamar Blvd, Austin, TX 78745",
+    "pharmacy_phone": "(555) 123-0002",
+    "status": "received",
+    "order_time": "2025-09-30T12:02:49.599777",
+    "estimated_pickup": "2025-09-30T12:27:49.599764",
     "confirmation_sent": true
   }
 ]

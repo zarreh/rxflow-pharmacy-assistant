@@ -3,9 +3,9 @@
 import random
 import string
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Union, cast
 
-from langchain.tools import Tool
+from langchain.tools import Tool, StructuredTool
 
 from ..services.mock_data import ORDER_TRACKING, PHARMACY_INVENTORY
 from ..utils.logger import get_logger
@@ -375,7 +375,7 @@ class OrderSubmissionTool:
         """Find alternative pharmacies that have the medication in stock"""
         alternatives = []
         for pharm_id, pharmacy in self.pharmacy_data.items():
-            if medication in pharmacy.get("in_stock", []):
+            if medication in cast(List[str], pharmacy.get("in_stock", [])):
                 alternatives.append(
                     {
                         "pharmacy_id": pharm_id,
@@ -386,7 +386,7 @@ class OrderSubmissionTool:
                 )
 
         # Sort by distance
-        alternatives.sort(key=lambda x: x["distance_miles"])
+        alternatives.sort(key=lambda x: float(cast(Any, x["distance_miles"])))
         return alternatives[:3]  # Return top 3 closest
 
     def _map_pharmacy_id(self, pharmacy_input: str) -> str:
@@ -425,14 +425,14 @@ class OrderSubmissionTool:
             # Try to match input to pharmacy name
             pharmacy_lower = pharmacy_input.lower().strip()
             if pharmacy_lower in name_to_id_map:
-                return name_to_id_map[pharmacy_lower]
+                return str(name_to_id_map[pharmacy_lower])
 
             # Partial matching for cases like "Walmart Pharmacy #98765" -> "WALMART_98765"
             for name, pharmacy_id in name_to_id_map.items():
                 if name in pharmacy_lower or pharmacy_lower in name:
-                    return pharmacy_id
+                    return str(pharmacy_id)
 
-            return pharmacy_input
+            return str(pharmacy_input)
 
         except Exception as e:
             logger.warning(f"Could not load pharmacy mapping: {e}")
@@ -451,12 +451,7 @@ class OrderSubmissionTool:
             return pharmacy_mappings.get(pharmacy_lower, pharmacy_input)
 
 
-# Create LangChain tools
-order_submission_tool = Tool(
-    name="submit_refill_order",
-    description='Submit a prescription refill order to a pharmacy. Use JSON format: \'{"medication": "omeprazole", "dosage": "20mg", "quantity": "30", "pharmacy_id": "WALMART_98765", "patient_id": "default"}\' OR colon format: \'medication:dosage:quantity:pharmacy_id:patient_id\'. Returns confirmation details and pickup information.',
-    func=lambda query: OrderSubmissionTool().submit_refill_order(query),
-)
+# Create LangChain tools - Old version (replaced by structured version below)
 
 
 # Safe wrappers for robust parameter handling
@@ -480,7 +475,7 @@ def safe_order_submission(query: Any) -> Dict[str, Any]:
         }
 
 
-def safe_order_tracking(query):
+def safe_order_tracking(query: Any) -> Dict[str, Any]:
     """Safe wrapper for order tracking"""
     try:
         if query is None or query == {} or query == "":
