@@ -58,8 +58,8 @@ WORKDIR /app
 # Add labels for identification
 LABEL maintainer="zarreh" \
       project="rxflow-pharmacy-assistant" \
-      version="1.0.0" \
-      description="RxFlow Pharmacy Assistant - AI-powered prescription refill system"
+      version="2.0.0" \
+      description="RxFlow Pharmacy Assistant - AI-powered prescription refill system with enhanced UI"
 
 # Copy Python packages from builder stage
 COPY --from=rxflow-builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
@@ -67,6 +67,8 @@ COPY --from=rxflow-builder /usr/local/bin /usr/local/bin
 
 # Copy application code
 COPY rxflow/ ./rxflow/
+COPY ui/ ./ui/
+COPY static/ ./static/
 COPY app.py .
 COPY data/ ./data/
 
