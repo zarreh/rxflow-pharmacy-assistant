@@ -2,7 +2,7 @@
 
 import math
 import random
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 from langchain.tools import Tool
 
@@ -73,10 +73,10 @@ class MockPharmacyLocator:
     def find_nearby_pharmacies(self, query: str = "default") -> Dict[str, Any]:
         """
         Find pharmacies near patient location with distance and details.
-        
+
         Searches the pharmacy network to locate nearby pharmacies based on
         location query, returning sorted results by distance.
-        
+
         Args:
             query (str): Location query in formats:
                 - "default" - Uses demo location (default)
@@ -84,7 +84,7 @@ class MockPharmacyLocator:
                 - "address" - Full address string
                 - "radius:10" - Set custom search radius
                 - "insurance:BlueCross" - Filter by insurance
-                
+
         Returns:
             Dict[str, Any]: Pharmacy search results containing:
                 - pharmacies (List[Dict]): List of nearby pharmacy records with:
@@ -120,12 +120,11 @@ class MockPharmacyLocator:
             filtered_pharmacies = []
             for pharm_id, pharmacy in self.extended_pharmacies.items():
                 # Check radius
-                if pharmacy["distance_miles"] <= max_radius:
+                if cast(float, pharmacy["distance_miles"]) <= max_radius:
                     # Check insurance if specified
                     if insurance_filter:
-                        if insurance_filter not in pharmacy.get(
-                            "accepts_insurance", []
-                        ):
+                        accepts_insurance = cast(List[str], pharmacy.get("accepts_insurance", []))
+                        if insurance_filter not in accepts_insurance:
                             continue
 
                     # Add inventory and pricing data if available
@@ -144,7 +143,7 @@ class MockPharmacyLocator:
                     filtered_pharmacies.append(pharmacy_info)
 
             # Sort by distance
-            filtered_pharmacies.sort(key=lambda x: x["distance_miles"])
+            filtered_pharmacies.sort(key=lambda x: cast(float, x["distance_miles"]))
 
             return {
                 "success": True,
@@ -166,14 +165,14 @@ class MockPharmacyLocator:
     def get_pharmacy_details(self, pharmacy_id: str) -> Dict[str, Any]:
         """
         Get comprehensive details for a specific pharmacy location.
-        
+
         Retrieves complete pharmacy information including contact details,
         hours, services, and current inventory status.
-        
+
         Args:
-            pharmacy_id (str): Unique pharmacy identifier 
+            pharmacy_id (str): Unique pharmacy identifier
                 Examples: "cvs_main", "walgreens_downtown", "walmart_plaza"
-                
+
         Returns:
             Dict[str, Any]: Complete pharmacy information containing:
                 - pharmacy_id (str): Unique pharmacy identifier
@@ -436,16 +435,16 @@ class PharmacyInventoryTool:
     def check_inventory(self, query: str) -> Dict[str, Any]:
         """
         Check medication availability and stock levels at pharmacies.
-        
+
         Queries pharmacy inventory systems to determine medication availability,
         supporting both specific pharmacy checks and network-wide searches.
-        
+
         Args:
             query (str): Inventory query in formats:
                 - "pharmacy_id:medication" - Check specific pharmacy
                 - "medication" - Check all pharmacies in network
                 Examples: "cvs_main:omeprazole", "lisinopril"
-                
+
         Returns:
             Dict[str, Any]: Inventory results containing:
                 - medication (str): Standardized medication name searched
@@ -473,7 +472,7 @@ class PharmacyInventoryTool:
                 # Check specific pharmacy
                 if pharmacy_id in self.inventory_data:
                     pharmacy = self.inventory_data[pharmacy_id]
-                    in_stock = medication in pharmacy.get("in_stock", [])
+                    in_stock = medication in cast(List[str], pharmacy.get("in_stock", []))
 
                     return {
                         "success": True,
@@ -499,7 +498,8 @@ class PharmacyInventoryTool:
 
                 availability = []
                 for pharm_id, pharmacy in self.inventory_data.items():
-                    in_stock = medication in pharmacy.get("in_stock", [])
+                    in_stock_list = cast(List[str], pharmacy.get("in_stock", []))
+                    in_stock = medication in in_stock_list
                     availability.append(
                         {
                             "pharmacy_id": pharm_id,
@@ -536,16 +536,16 @@ class PharmacyInventoryTool:
     def get_wait_times(self, pharmacy_ids: str = "all") -> Dict[str, Any]:
         """
         Get current wait times and service capacity for pharmacies.
-        
+
         Retrieves real-time wait time estimates for specified pharmacies
         to help patients plan their visits and minimize waiting time.
-        
+
         Args:
             pharmacy_ids (str): Pharmacy selection in formats:
                 - "all" - Get wait times for all pharmacies (default)
                 - "cvs_main,walgreens_downtown" - Comma-separated list
                 - "cvs_main" - Single pharmacy identifier
-                
+
         Returns:
             Dict[str, Any]: Wait time information containing:
                 - wait_times (List[Dict]): List of pharmacy wait data with:
@@ -571,7 +571,7 @@ class PharmacyInventoryTool:
                 if pharm_id in self.inventory_data:
                     pharmacy = self.inventory_data[pharm_id]
                     # Add some realistic variation to wait times
-                    base_wait = pharmacy.get("wait_time_min", 30)
+                    base_wait = cast(int, pharmacy.get("wait_time_min", 30))
                     current_wait = base_wait + random.randint(-10, 20)
                     current_wait = max(5, current_wait)  # Minimum 5 minutes
 
@@ -590,7 +590,7 @@ class PharmacyInventoryTool:
                     )
 
             # Sort by wait time
-            wait_times.sort(key=lambda x: x["wait_time_min"])
+            wait_times.sort(key=lambda x: cast(int, x["wait_time_min"]))
 
             return {
                 "success": True,

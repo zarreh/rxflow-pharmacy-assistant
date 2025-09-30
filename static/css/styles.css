@@ -1,0 +1,816 @@
+/* RxFlow Pharmacy Assistant - Stylesheet */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global Styles - Healthcare Theme */
+.stApp {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f9ff; /* Light healthcare blue background */
+}
+
+/* Hide Streamlit branding */
+#MainMenu {visibility: hidden;}
+.stDeployButton {display:none;}
+footer {visibility: hidden;}
+
+/* Main Header - Professional Healthcare Design */
+.main-header {
+    background: linear-gradient(135deg, #1e40af 0%, #0369a1 100%); /* Healthcare blue gradient */
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid #0ea5e9;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(30, 64, 175, 0.1);
+}
+
+.main-header h1 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #ffffff; /* White text on blue background */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.main-header .subtitle {
+    color: #e0f2fe; /* Light blue for subtitle */
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Patient Context Card */
+.patient-card {
+    background: #ffffff;
+    border: 1px solid #bfdbfe; /* Light healthcare blue border */
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.patient-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.patient-avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe); /* Healthcare blue gradient */
+    border: 2px solid #2563eb; /* Darker healthcare blue */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #1e40af; /* Deep healthcare blue */
+    font-size: 1.25rem;
+}
+
+.patient-info h3 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.patient-info p {
+    margin: 0.25rem 0 0 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.patient-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #bfdbfe; /* Healthcare blue border */
+}
+
+.detail-item {
+    text-align: center;
+}
+
+/* Sidebar Patient Card Styles */
+.sidebar-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sidebar-card .patient-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+}
+
+.sidebar-card .patient-info h4 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.sidebar-card .patient-id {
+    margin: 0.125rem 0 0 0;
+    color: #6b7280;
+    font-size: 0.75rem;
+}
+
+.sidebar-card .patient-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    grid-template-columns: none;
+}
+
+.detail-row {
+    width: 100%;
+}
+
+.sidebar-card .detail-item {
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-card .detail-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.sidebar-card .detail-value {
+    font-size: 0.75rem;
+    color: #1e40af;
+    font-weight: 600;
+}
+
+.detail-label {
+    color: #64748b; /* Healthcare gray */
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-value {
+    color: #0f172a; /* Deep healthcare dark */
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* Chat Container - Clean Design */
+.chat-wrapper {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+}
+
+/* Sticky Chat Input - Always at bottom */
+.stChatInput {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: #f0f9ff !important;
+    border-top: 1px solid #bfdbfe !important;
+    padding: 1rem !important;
+    box-shadow: 0 -2px 8px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Adjust main content to account for sticky input */
+.main .block-container {
+    padding-bottom: 80px !important;
+}
+
+/* Style the actual input field */
+.stChatInput > div {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+}
+
+.stChatInput input {
+    border-radius: 15px !important;
+    border: 2px solid #bfdbfe !important;
+    padding: 1rem 1.25rem !important;
+    font-size: 0.95rem !important;
+    min-height: 3.5rem !important;
+    line-height: 1.4 !important;
+    resize: vertical !important;
+}
+
+.stChatInput input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+    background: transparent;
+}
+
+/* Scrollbar */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f5f9; /* Light healthcare background */
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #94a3b8; /* Healthcare gray */
+    border-radius: 3px;
+}
+
+/* Chat Messages - Healthcare Style */
+.chat-message {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    align-items: flex-start;
+}
+
+.user-message {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.user-avatar {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe); /* Healthcare blue gradient */
+    color: #1e40af; /* Deep healthcare blue */
+    border: 1px solid #93c5fd;
+}
+
+.assistant-avatar {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0); /* Healthcare green gradient */
+    color: #047857; /* Deep healthcare green */
+    border: 1px solid #86efac;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8); /* Healthcare blue gradient */
+    color: white;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.assistant-message .message-content {
+    background: white;
+    color: #0f172a; /* Deep healthcare dark */
+    border: 1px solid #bfdbfe; /* Healthcare blue border */
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.message-time {
+    font-size: 0.625rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+/* Quick Actions - Healthcare Focus */
+.quick-actions-card {
+    background: white;
+    border: 1px solid #bfdbfe; /* Healthcare blue border */
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.quick-actions-header {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-button {
+    width: 100%;
+    padding: 0.875rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border: 1px solid #cbd5e1; /* Healthcare gray border */
+    border-radius: 8px;
+    color: #475569; /* Healthcare dark gray */
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.action-button:hover {
+    background: #f0f9ff; /* Light healthcare blue */
+    border-color: #2563eb; /* Healthcare blue */
+    color: #1e40af; /* Deep healthcare blue */
+    transform: translateX(2px);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+
+.action-icon {
+    width: 32px;
+    height: 32px;
+    background: #f1f5f9; /* Light healthcare background */
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.action-button:hover .action-icon {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe); /* Healthcare blue gradient */
+}
+
+/* Status Pills */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-active {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0); /* Healthcare green gradient */
+    color: #047857; /* Deep healthcare green */
+    border: 1px solid #86efac;
+}
+
+.status-pending {
+    background: linear-gradient(135deg, #fef3c7, #fde68a); /* Healthcare amber gradient */
+    color: #92400e; /* Healthcare amber dark */
+    border: 1px solid #fcd34d;
+}
+
+.status-completed {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe); /* Healthcare blue gradient */
+    color: #1e40af; /* Deep healthcare blue */
+    border: 1px solid #93c5fd;
+}
+
+/* Recent Activity */
+.activity-card {
+    background: white;
+    border: 1px solid #bfdbfe; /* Healthcare blue border */
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.activity-header {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0f172a; /* Deep healthcare dark */
+    margin-bottom: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e2e8f0; /* Light healthcare border */
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0); /* Light healthcare gradient */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.875rem;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-size: 0.875rem;
+    color: #0f172a; /* Deep healthcare dark */
+    font-weight: 500;
+}
+
+.activity-time {
+    font-size: 0.75rem;
+    color: #64748b; /* Healthcare gray */
+    margin-top: 0.125rem;
+}
+
+/* Progress Indicator */
+.progress-card {
+    background: white;
+    border: 1px solid #bfdbfe; /* Healthcare blue border */
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.progress-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e40af; /* Healthcare blue */
+}
+
+.progress-percentage {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #059669; /* Healthcare green */
+    background: #ecfdf5; /* Light green background */
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    border: 1px solid #bbf7d0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0; /* Light healthcare background */
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-bar-filled {
+    height: 100%;
+    background: linear-gradient(90deg, #2563eb, #059669); /* Blue to green healthcare gradient */
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.progress-steps.horizontal {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    margin-bottom: 1rem !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+.progress-steps.horizontal .progress-step {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    z-index: 1 !important;
+    flex: 1 !important;
+    text-align: center !important;
+}
+
+.progress-line {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.progress-line-filled {
+    background: linear-gradient(90deg, #2563eb, #059669);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.375rem;
+    z-index: 1;
+    flex: 1;
+}
+
+.progress-steps.horizontal .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    z-index: 2;
+    flex: 1;
+    position: relative;
+    min-width: 0;
+}
+
+.step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #cbd5e1; /* Healthcare gray border */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 600;
+    color: #64748b; /* Healthcare gray */
+}
+
+.circle-active {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8); /* Healthcare blue gradient */
+    border-color: #1e40af;
+    color: white;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+    animation: pulse-active 2s infinite;
+}
+
+.circle-completed {
+    background: linear-gradient(135deg, #059669, #047857); /* Healthcare green gradient */
+    border-color: #065f46;
+    color: white;
+    box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+}
+
+.circle-pending {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+}
+
+@keyframes pulse-active {
+    0% { box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3); }
+    50% { box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5); }
+    100% { box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3); }
+}
+
+.step-label {
+    font-size: 0.625rem;
+    color: #64748b; /* Healthcare gray */
+    text-align: center;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-top: 0.25rem;
+}
+
+.step-active .step-label {
+    color: #1e40af; /* Healthcare blue for active step */
+    font-weight: 600;
+}
+
+.step-completed .step-label {
+    color: #047857; /* Healthcare green for completed steps */
+}
+
+/* Ensure horizontal layout on all screen sizes */
+.progress-steps.horizontal .progress-step {
+    width: 20%; /* Equal width for 5 steps */
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.progress-steps.horizontal .step-circle {
+    margin-bottom: 0;
+}
+
+.current-state {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    background: #f8fafc; /* Light healthcare background */
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.state-label {
+    font-size: 0.75rem;
+    color: #64748b; /* Healthcare gray */
+    font-weight: 500;
+}
+
+.state-value {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #1e40af; /* Healthcare blue */
+    text-transform: capitalize;
+}
+
+/* State Indicator */
+.state-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f8fafc; /* Light healthcare background */
+    border: 1px solid #cbd5e1; /* Healthcare gray border */
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #475569; /* Healthcare dark gray */
+    margin-bottom: 1rem;
+}
+
+.state-indicator.active {
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe); /* Healthcare blue gradient */
+    border-color: #2563eb;
+    color: #1e40af; /* Deep healthcare blue */
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Simplified Sidebar */
+.sidebar-section {
+    background: white;
+    border: 1px solid #bfdbfe; /* Healthcare blue border */
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.05);
+}
+
+.sidebar-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a; /* Deep healthcare dark */
+    margin-bottom: 0.75rem;
+}
+
+/* Info Cards */
+.info-card {
+    background: white;
+    border: 1px solid #bfdbfe; /* Healthcare blue border */
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.info-card h3 {
+    margin: 0 0 1rem 0;
+    color: #0f172a; /* Deep healthcare dark */
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* Metric Cards */
+.metric-card {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9); /* Light healthcare gradient */
+    border: 1px solid #cbd5e1; /* Healthcare gray border */
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    color: #64748b; /* Healthcare gray */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0f172a; /* Deep healthcare dark */
+}
+
+.metric-delta {
+    font-size: 0.875rem;
+    color: #047857; /* Healthcare green */
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* Cost Savings */
+.cost-savings {
+    background: linear-gradient(135deg, #047857, #065f46); /* Deep healthcare green gradient */
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(4, 120, 87, 0.2);
+}
+
+.cost-savings h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.cost-savings p {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Hide technical details by default */
+.technical-info {
+    display: none;
+}
+
+/* Input styling */
+.stTextInput > div > div {
+    border-radius: 8px;
+    border: 1px solid #cbd5e1; /* Healthcare gray border */
+    background: #f8fafc; /* Light healthcare background */
+}
+
+.stTextInput > div > div:focus-within {
+    border-color: #2563eb; /* Healthcare blue */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: white;
+}
+
+/* Button styling override */
+.stButton > button {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8); /* Healthcare blue gradient */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.625rem 1.25rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e3a8a); /* Darker healthcare blue gradient */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Secondary buttons */
+[type="secondary"] .stButton > button {
+    background: white;
+    color: #475569; /* Healthcare dark gray */
+    border: 1px solid #cbd5e1; /* Healthcare gray border */
+}
+
+[type="secondary"] .stButton > button:hover {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe); /* Light healthcare blue gradient */
+    border-color: #2563eb; /* Healthcare blue */
+    color: #1e40af; /* Deep healthcare blue */
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}

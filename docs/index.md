@@ -8,8 +8,10 @@ RxFlow is an intelligent pharmacy assistant that guides patients through safe an
 
 ## ✨ Key Features
 
-### 🤖 **Conversational AI Interface**
-- Interactive step-by-step guidance through prescription refills
+### 🤖 **Streamlined Conversational Interface**
+- Clean, healthcare-focused UI optimized for natural conversation
+- Full-width chat area with distraction-free design  
+- Persistent patient context and medication history in sidebar
 - Natural language processing for patient queries
 - Context-aware conversation management with session persistence
 
@@ -64,6 +66,62 @@ graph TB
     G --> L[RxNorm API]
     H --> M[Insurance Systems]
     I --> N[Safety Protocols]
+```
+
+## 🔄 **Detailed Workflow Process**
+
+The following diagram illustrates how RxFlow processes prescription refill requests from initial user input through completion or escalation:
+
+```mermaid
+graph TD
+    A[User Input: Refill Request] --> B[Session Manager]
+    B --> C[Conversation Manager]
+    C --> D[Message Analysis]
+    D --> E[State Machine Check]
+    
+    E --> F{Current State?}
+    F -->|START| G[Identify Medication]
+    F -->|IDENTIFY| H[Clarify Medication]
+    F -->|CONFIRM_DOSAGE| I[Dosage Verification]
+    F -->|CHECK_AUTH| J[Insurance Check]
+    F -->|SELECT_PHARMACY| K[Pharmacy Selection]
+    F -->|CONFIRM_ORDER| L[Order Processing]
+    
+    G --> G1[Patient History Tool]
+    H --> H1[RxNorm Lookup Tool]
+    I --> I1[Safety Validation Tool]
+    J --> J1[Insurance Coverage Tool]
+    K --> K1[Pharmacy Search Tool]
+    L --> L1[Order Submission Tool]
+    
+    G1 --> S[Safety Check]
+    H1 --> S
+    I1 --> S
+    J1 --> S
+    
+    S -->|Escalation Needed| T[Escalation Router]
+    S -->|Safe to Continue| U[Next State]
+    
+    T --> V[Doctor Escalation]
+    T --> W[Pharmacist Escalation]
+    T --> X[Pharmacy Fallback]
+    
+    U --> Y{State Complete?}
+    Y -->|No| F
+    Y -->|Yes| AA[Success Response]
+    
+    K1 --> PF{In Stock?}
+    PF -->|No| PF1[Try Next Pharmacy]
+    PF1 --> PF2[Alternative Search]
+    PF2 --> K1
+    PF -->|Yes| K1
+    
+    AA --> BB[Format Response]
+    V --> BB
+    W --> BB
+    X --> BB
+    BB --> CC[Display to User]
+    CC --> DD[Update Session]
 ```
 
 ## 🚀 **Quick Start**

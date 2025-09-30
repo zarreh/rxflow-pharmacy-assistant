@@ -104,11 +104,16 @@ nav:
     - Installation: getting-started/installation.md
     - Quick Start: getting-started/quickstart.md
   - User Guide: user-guide/index.md
-  - Developer Guide: developer-guide/index.md
+  - Developer Guide: 
+    - Overview: developer-guide/index.md
+    - Workflow Diagrams: developer-guide/workflow-diagrams.md
   - API Reference:
     - Conversation Manager: api/conversation-manager.md
     - Patient Tools: api/patient-tools.md
     - Pharmacy Tools: api/pharmacy-tools.md
+  - Architecture:
+    - Modular Architecture: MODULAR_ARCHITECTURE.md
+    - Enhanced UI/UX: ENHANCED_UI_UX_SUMMARY.md
   - Deployment: deployment/index.md
   - About: about.md
 

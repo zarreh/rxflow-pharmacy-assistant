@@ -408,7 +408,7 @@ class RefillStateMachine:
         return self.sessions.get(session_id)
 
     def transition(
-        self, session_id: str, trigger: str, **kwargs
+        self, session_id: str, trigger: str, **kwargs: Any
     ) -> Tuple[bool, Optional[ConversationContext], Optional[str]]:
         """
         Attempt state transition

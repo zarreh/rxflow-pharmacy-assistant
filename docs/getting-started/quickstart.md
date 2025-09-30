@@ -78,26 +78,46 @@ Here's what a typical conversation looks like:
     
     **RxFlow:** "Excellent choice! Now let me find nearby pharmacies with the best prices and shortest wait times..."
 
-## 🎮 **Quick Actions**
+## 🎮 **Natural Conversation Interface**
 
-Use the **Quick Actions** sidebar for common requests:
+RxFlow uses natural language - just type what you need:
 
-### Medication Actions
-- 🔄 **"Refill Medication"** - Start a basic refill request
-- 💊 **"Check My Medications"** - View your medication history
-- ⚠️ **"Prior Authorization"** - Handle insurance issues
+### Common Requests
+- � **"I need to refill my [medication name]"** - Start any refill request
+- � **"What medications am I currently taking?"** - View medication history
+- 🏥 **"Where's the nearest pharmacy?"** - Find pharmacy locations
+- 💰 **"What's the cost of my prescription?"** - Get pricing information
+- ⚠️ **"I need prior authorization help"** - Handle insurance issues
 
-### Pharmacy Services  
-- 🏥 **"Find Pharmacy"** - Locate nearby pharmacies
-- ⏱️ **"Check Wait Times"** - See current pharmacy queues
-- 💰 **"Compare Prices"** - Get cost comparisons
+### Test Scenarios (Try these examples)
+- 🚫 **"I need a refill for metformin"** - No refills remaining → Doctor escalation
+- 💊 **"I need to refill lorazepam"** - Controlled substance → Doctor consultation  
+- 🏥 **"I need omeprazole refilled"** - Normal workflow with pharmacy selection
+- ❓ **"I need hydrocodone"** - Unknown medication → Pharmacist consultation
 
-### Test Scenarios
-- 🚫 **"No Refills Left"** - Handle prescription renewal
-- 💳 **"Insurance Denied"** - Work through coverage issues
-- ⚡ **"Emergency Refill"** - Urgent medication needs
+## 🎛️ **Streamlined Interface Overview**
 
-## 🎛️ **Interface Overview**
+### **Clean, Healthcare-Focused Design**
+RxFlow features a distraction-free interface optimized for healthcare conversations:
+
+- **Left Sidebar**: Patient information, recent prescriptions, and helpful links
+- **Main Chat**: Full-width conversation area for natural interaction
+- **Sticky Input**: Message box always visible at bottom for easy access
+- **No Distractions**: Clean design without progress bars or status indicators
+
+### **Patient Information Always Visible**
+The sidebar shows John Smith's information:
+- **Patient ID**: patient_001
+- **Insurance**: BCBS TX 001  
+- **Active Medications**: 6
+- **Last Refill**: 2 weeks ago
+- **Recent Activity**: Real prescription refill history
+
+### **Getting Help**
+Use the sidebar's Quick Links to access:
+- 📋 **Medical History**: View all current and past medications
+- 💳 **Insurance Info**: Check coverage and formulary details
+- ❓ **Help & Support**: Documentation and troubleshooting
 
 ### Main Chat Area
 - **Conversation History**: All your interactions with RxFlow
