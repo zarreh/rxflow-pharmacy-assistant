@@ -112,72 +112,97 @@ The following diagram illustrates how RxFlow processes prescription refill reque
 ```mermaid
 graph TD
     %% User Input & Session Management
-    A[👤 User Input<br/>"Refill my medication"] --> B[🎯 Session Manager<br/>Initialize/Retrieve Session]
-    B --> C[🤖 Conversation Manager<br/>Process Message]
+    A["👤 User Input
+    'Refill my medication'"] --> B["🎯 Session Manager
+    Initialize/Retrieve Session"]
+    B --> C["🤖 Conversation Manager
+    Process Message"]
     
     %% Core Processing Flow
-    C --> D{🔍 Message Analysis<br/>LangChain Agent}
-    D --> E[📋 State Machine<br/>Current State Check]
+    C --> D{"🔍 Message Analysis
+    LangChain Agent"}
+    D --> E["📋 State Machine
+    Current State Check"]
     
     %% State-Based Processing
-    E --> F{📊 Current State?}
-    F -->|START| G[🆔 Identify Medication<br/>Patient History Tool]
-    F -->|IDENTIFY_MEDICATION| H[💊 Clarify Medication<br/>RxNorm Tool]
-    F -->|CONFIRM_DOSAGE| I[⚖️ Dosage Verification<br/>Safety Checks]
-    F -->|CHECK_AUTHORIZATION| J[🔐 Insurance Check<br/>Prior Auth Tool]
-    F -->|SELECT_PHARMACY| K[🏥 Pharmacy Selection<br/>Location & Inventory]
-    F -->|CONFIRM_ORDER| L[📝 Order Processing<br/>Submit Refill]
+    E --> F{"📊 Current State?"}
+    F -->|START| G["🆔 Identify Medication
+    Patient History Tool"]
+    F -->|IDENTIFY_MEDICATION| H["💊 Clarify Medication
+    RxNorm Tool"]
+    F -->|CONFIRM_DOSAGE| I["⚖️ Dosage Verification
+    Safety Checks"]
+    F -->|CHECK_AUTHORIZATION| J["🔐 Insurance Check
+    Prior Auth Tool"]
+    F -->|SELECT_PHARMACY| K["🏥 Pharmacy Selection
+    Location & Inventory"]
+    F -->|CONFIRM_ORDER| L["📝 Order Processing
+    Submit Refill"]
     
     %% Tool Execution Layer
-    G --> G1[🔧 Tool: Patient History]
-    H --> H1[🔧 Tool: RxNorm Lookup]
-    I --> I1[🔧 Tool: Dosage Validation]
-    J --> J1[🔧 Tool: Insurance Check]
-    K --> K1[🔧 Tool: Pharmacy Search]
-    L --> L1[🔧 Tool: Order Submission]
+    G --> G1["🔧 Tool: Patient History"]
+    H --> H1["🔧 Tool: RxNorm Lookup"]
+    I --> I1["🔧 Tool: Dosage Validation"]
+    J --> J1["🔧 Tool: Insurance Check"]
+    K --> K1["🔧 Tool: Pharmacy Search"]
+    L --> L1["🔧 Tool: Order Submission"]
     
     %% Safety & Escalation Checks
-    G1 --> S{🛡️ Safety Check<br/>Escalation Detection}
+    G1 --> S{"🛡️ Safety Check
+    Escalation Detection"}
     H1 --> S
     I1 --> S
     J1 --> S
     
-    S -->|❌ Escalation Needed| T[🚨 Escalation Router]
-    S -->|✅ Safe to Continue| U[➡️ Next State Transition]
+    S -->|❌ Escalation Needed| T["🚨 Escalation Router"]
+    S -->|✅ Safe to Continue| U["➡️ Next State Transition"]
     
     %% Escalation Paths
-    T --> T1{🏥 Escalation Type?}
-    T1 -->|🔴 Doctor Required| V[👨‍⚕️ Doctor Escalation<br/>• No refills<br/>• Controlled substances<br/>• Expired prescriptions]
-    T1 -->|🔵 Pharmacist Consultation| W[👩‍⚕️ Pharmacist Escalation<br/>• Unknown medications<br/>• Verification needed]
-    T1 -->|🏥 Pharmacy Issue| X[🏪 Pharmacy Fallback<br/>CVS → Walmart → Walgreens]
+    T --> T1{"🏥 Escalation Type?"}
+    T1 -->|🔴 Doctor Required| V["👨‍⚕️ Doctor Escalation
+    • No refills
+    • Controlled substances
+    • Expired prescriptions"]
+    T1 -->|🔵 Pharmacist Consultation| W["👩‍⚕️ Pharmacist Escalation
+    • Unknown medications
+    • Verification needed"]
+    T1 -->|🏥 Pharmacy Issue| X["🏪 Pharmacy Fallback
+    CVS → Walmart → Walgreens"]
     
     %% Success Path Continuation
-    U --> Y{📍 State Complete?}
-    Y -->|No| Z[🔄 Continue Workflow<br/>Return to State Machine]
-    Y -->|Yes| AA[✅ Success Response<br/>Update Session State]
+    U --> Y{"📍 State Complete?"}
+    Y -->|No| Z["🔄 Continue Workflow
+    Return to State Machine"]
+    Y -->|Yes| AA["✅ Success Response
+    Update Session State"]
     
     %% Pharmacy Fallback Logic
-    K1 --> PF{🏪 Medication Available?}
-    PF -->|❌ Out of Stock| PF1[🔄 Try Next Pharmacy<br/>Intelligent Fallback]
-    PF1 --> PF2[🏪 Walmart → Walgreens<br/>→ Costco → Rite Aid]
-    PF2 --> PF3{📦 Found Alternative?}
+    K1 --> PF{"🏪 Medication Available?"}
+    PF -->|❌ Out of Stock| PF1["🔄 Try Next Pharmacy
+    Intelligent Fallback"]
+    PF1 --> PF2["🏪 Walmart → Walgreens
+    → Costco → Rite Aid"]
+    PF2 --> PF3{"📦 Found Alternative?"}
     PF3 -->|✅ Available| K1
     PF3 -->|❌ All Out of Stock| W
     PF -->|✅ In Stock| K1
     
     %% Response Generation
-    AA --> BB[📝 Format Response<br/>User-Friendly Message]
+    AA --> BB["📝 Format Response
+    User-Friendly Message"]
     V --> BB
     W --> BB
     X --> BB
     Z --> BB
     
     %% Final Output
-    BB --> CC[📱 Streamlit UI<br/>Display Response]
-    CC --> DD[💾 Session Update<br/>Save State & History]
+    BB --> CC["📱 Streamlit UI
+    Display Response"]
+    CC --> DD["💾 Session Update
+    Save State & History"]
     
     %% Continuous Loop
-    DD --> E1[⏳ Wait for Next Input]
+    DD --> E1["⏳ Wait for Next Input"]
     E1 --> A
     
     %% Tool Categories (Styling)
