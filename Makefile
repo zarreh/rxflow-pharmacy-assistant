@@ -1,4 +1,4 @@
-.PHONY: install run test clean format type-check docs docs-serve docs-build
+.PHONY: install run test clean format type-check docs docs-serve docs-build docker-build docker-run docker-run-detached docker-push docker-clean docker-rebuild
 
 install:
 	poetry install
@@ -30,3 +30,29 @@ docs-serve:
 docs-build:
 	pip install -r requirements-docs.txt
 	mkdocs build
+
+# Docker commands
+docker-build:
+	docker build -t zarreh/rxflow-pharmacy-assistant:2.0.0 .
+	docker tag zarreh/rxflow-pharmacy-assistant:2.0.0 zarreh/rxflow-pharmacy-assistant:latest
+
+docker-run:
+	docker-compose up
+
+docker-run-detached:
+	docker-compose up -d
+
+docker-push:
+	docker push zarreh/rxflow-pharmacy-assistant:2.0.0
+	docker push zarreh/rxflow-pharmacy-assistant:latest
+
+docker-clean:
+	docker-compose down
+	docker rmi zarreh/rxflow-pharmacy-assistant:2.0.0 zarreh/rxflow-pharmacy-assistant:latest 2>/dev/null || true
+	docker system prune -f
+
+docker-rebuild:
+	docker-compose down
+	docker build --no-cache -t zarreh/rxflow-pharmacy-assistant:2.0.0 .
+	docker tag zarreh/rxflow-pharmacy-assistant:2.0.0 zarreh/rxflow-pharmacy-assistant:latest
+	docker-compose up
