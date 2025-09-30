@@ -26,6 +26,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-docs.txt
       
-      - name: Deploy docs
+      - name: Configure Git
         run: |
-          mkdocs gh-deploy --force
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      
+      - name: Build docs
+        run: |
+          mkdocs build
+      
+      - name: Copy CNAME to built site
+        run: |
+          cp docs/CNAME site/
+      
+      - name: Deploy to gh-pages
+        run: |
+          mkdocs gh-deploy --force --remote-branch gh-pages --dirty
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
