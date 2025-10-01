@@ -93,11 +93,12 @@ sudo apt install -y nginx
 # Build and run with Docker Compose
 docker-compose -f docker-compose.dev.yml up --build
 
-# Access services:
-# - RxFlow App: http://localhost:8000
-# - Streamlit UI: http://localhost:8501
-# - PostgreSQL: localhost:5432
-# - Redis: localhost:6379
+# Current implementation:
+# - RxFlow App: http://localhost:8080 (Streamlit with integrated session management)
+# 
+# Planned enterprise features:
+# - PostgreSQL: localhost:5432 (database persistence)
+# - Redis: localhost:6379 (distributed session management)
 ```
 
 ### Environment Variables for Development

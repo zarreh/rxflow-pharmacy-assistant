@@ -62,7 +62,7 @@ An enterprise-grade pharmacy refill assistant showcasing advanced AI conversatio
 - **AI Engine**: LangChain agents with custom tool orchestration
 - **LLM Integration**: Multi-provider support (Ollama, OpenAI, Anthropic)
 - **State Management**: Custom state machine with conversation persistence
-- **Data Layer**: Redis for sessions, mock healthcare APIs for demonstration
+- **Data Layer**: Streamlit session state management, mock healthcare APIs for demonstration
 - **Testing**: Comprehensive integration and unit test suites
 - **Deployment**: Docker, Kubernetes, cloud platform ready
 
