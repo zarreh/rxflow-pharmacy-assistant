@@ -1,4 +1,4 @@
-.PHONY: install run test clean format type-check docs docs-serve docs-build docker-build docker-run docker-run-detached docker-push docker-clean docker-rebuild deploy-local deploy-server
+.PHONY: install run test clean format type-check docs docs-serve docs-build docker-build docker-run docker-run-detached docker-push docker-clean docker-rebuild deploy-local deploy-server logs logs-tail logs-all status
 
 install:
 	poetry install
@@ -79,3 +79,27 @@ deploy-server:
 	@echo "🏥 Step 4: Checking deployment status..."
 	docker ps | grep rxflow || echo "❌ Container not running!"
 	@echo "✅ Server deployment complete!"
+
+# Logging and monitoring commands
+logs:
+	@echo "📋 Showing latest application logs..."
+	docker logs rxflow-pharmacy-assistant --tail 50 --follow
+
+logs-tail:
+	@echo "📋 Showing last 20 lines of logs..."
+	docker logs rxflow-pharmacy-assistant --tail 20
+
+logs-all:
+	@echo "📋 Showing all application logs..."
+	docker logs rxflow-pharmacy-assistant
+
+status:
+	@echo "🔍 Checking application status..."
+	@echo "📊 Container Status:"
+	docker ps | grep rxflow || echo "❌ No rxflow container running"
+	@echo ""
+	@echo "🏥 Health Check:"
+	curl -s -f http://localhost:8080/_stcore/health && echo "✅ Application is healthy" || echo "❌ Health check failed"
+	@echo ""
+	@echo "📈 Resource Usage:"
+	docker stats rxflow-pharmacy-assistant --no-stream 2>/dev/null || echo "❌ Cannot get stats - container not running"
