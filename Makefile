@@ -1,4 +1,4 @@
-.PHONY: install run test clean format type-check docs docs-serve docs-build docker-build docker-run docker-run-detached docker-push docker-clean docker-rebuild
+.PHONY: install run test clean format type-check docs docs-serve docs-build docker-build docker-run docker-run-detached docker-push docker-clean docker-rebuild deploy-local deploy-server
 
 install:
 	poetry install
@@ -56,3 +56,26 @@ docker-rebuild:
 	docker build --no-cache -t zarreh/rxflow-pharmacy-assistant:2.0.0 .
 	docker tag zarreh/rxflow-pharmacy-assistant:2.0.0 zarreh/rxflow-pharmacy-assistant:latest
 	docker-compose up
+
+# Deployment commands
+deploy-local:
+	@echo "🚀 Deploying from LOCAL side after changes..."
+	@echo "📝 Step 1: Building and pushing Docker image..."
+	./build-and-push.sh
+	@echo "🔄 Step 2: Restarting local container with new image..."
+	docker-compose down
+	docker-compose up -d
+	@echo "✅ Local deployment complete! App running at http://localhost:8080"
+
+deploy-server:
+	@echo "🌐 Deploying on SERVER side..."
+	@echo "📥 Step 1: Pulling latest code from GitHub..."
+	git pull origin main
+	@echo "🐳 Step 2: Pulling updated Docker image..."
+	docker pull zarreh/rxflow-pharmacy-assistant:latest
+	@echo "🔄 Step 3: Restarting container with new image..."
+	docker-compose down
+	docker-compose up -d
+	@echo "🏥 Step 4: Checking deployment status..."
+	docker ps | grep rxflow || echo "❌ Container not running!"
+	@echo "✅ Server deployment complete!"
