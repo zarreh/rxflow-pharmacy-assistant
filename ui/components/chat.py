@@ -37,7 +37,7 @@ def render_empty_chat_state() -> None:
         <div style="text-align: center; padding: 3rem; color: #9ca3af;">
             <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
             <p>Hi! I'm your pharmacy assistant. How can I help you today?</p>
-            <p style="font-size: 0.875rem;">You can type a message or use the quick actions on the right.</p>
+            <p style="font-size: 0.875rem;">You can type a message below or use the sidebar for quick access to your information.</p>
         </div>
         """,
         unsafe_allow_html=True

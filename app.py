@@ -103,8 +103,9 @@ from ui.components.sidebar import render_sidebar
 
 # Import UI components
 from ui.components.styles import apply_custom_css, get_page_config
+from ui.components.actions import render_quick_actions
 from ui.message_processor import process_user_input
-from ui.session_manager import initialize_session_state, reset_conversation
+from ui.session_manager import initialize_session_state, reset_conversation, add_quick_message
 
 # Setup logging
 setup_logging()
@@ -176,8 +177,17 @@ def main() -> None:
     if updated_debug_info != st.session_state.show_debug_info:
         st.session_state.show_debug_info = updated_debug_info
 
-    # Chat interface - now takes full width
-    render_chat_interface(st.session_state.messages)
+    # Create main layout with columns for chat and quick actions
+    col1, col2 = st.columns([3, 1])
+    
+    with col1:
+        # Chat interface
+        render_chat_interface(st.session_state.messages)
+
+    with col2:
+        # Quick actions panel
+        st.markdown("### ⚡ Quick Actions")
+        render_quick_actions(add_quick_message)
 
     # Chat input
     user_input = st.chat_input("Type your message here...", key="chat_input")
