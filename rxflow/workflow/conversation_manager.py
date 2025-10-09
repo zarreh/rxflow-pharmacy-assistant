@@ -53,8 +53,6 @@ from typing import Any, Dict, List, Optional, Union, cast
 from langchain.agents import AgentExecutor, create_openai_tools_agent
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_openai import ChatOpenAI
-from pydantic import SecretStr
 
 from rxflow.config.settings import get_settings
 from rxflow.tools.cost_tools import (
@@ -203,13 +201,9 @@ class ConversationManager:
         self.settings = get_settings()
         self.sessions: Dict[str, Dict[str, Any]] = {}
 
-        # Initialize LLM
-        api_key = (
-            SecretStr(self.settings.openai_api_key)
-            if self.settings.openai_api_key
-            else None
-        )
-        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.1, api_key=api_key)
+        # Initialize LLM using centralized LLM manager
+        from rxflow.llm import get_tool_llm
+        self.llm = get_tool_llm()
 
         # Register tools and setup agent
         self._register_tools()
